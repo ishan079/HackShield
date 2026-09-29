@@ -27,7 +27,7 @@ body{padding-bottom:70px}
 .art-label{position:absolute;z-index:3;top:20%;left:11%;right:auto;max-width:78%;gap:12px;line-height:1.45}
 .label-top{top:20%;left:11%}
 .shield-stage{grid-row:1;align-self:center;justify-self:center;width:100%;display:grid;place-items:center;margin-top:2%;}
-.shield-svg{width:83%;transform:scale(1);transform-origin:center}
+.shield-svg{width:55%;transform:scale(1);transform-origin:center}
 .art-caption{position:absolute;z-index:3;left:14.5%;right:auto;bottom:13%;display:flex;align-items:center;width:max-content;max-width:72%;gap:9px;white-space:nowrap}
 .caption-cross{display:none}
 .art-plus{position:absolute;z-index:3;right:13.5%;bottom:13%;font:18px/1 var(--mono);color:var(--orange)}
