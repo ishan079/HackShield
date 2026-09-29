@@ -10,8 +10,13 @@ if (stage && heroArt && !reducedMotion.matches) {
     const y = (event.clientY - bounds.top) / bounds.height - 0.5;
     // Follow the pointer in both directions so each corner can lean toward it.
     stage.style.transform = `perspective(900px) rotateX(${y * 17}deg) rotateY(${x * -17}deg)`;
+    const tilt = Math.min(1, Math.hypot(x, y) / Math.SQRT1_2);
+    heroArt.style.setProperty('--shadow-scale', (1 + tilt * 0.18).toFixed(3));
   });
-  heroArt.addEventListener('pointerleave', () => { stage.style.transform = ''; });
+  heroArt.addEventListener('pointerleave', () => {
+    stage.style.transform = '';
+    heroArt.style.removeProperty('--shadow-scale');
+  });
 }
 
 const toggle = document.querySelector('.menu-toggle');
