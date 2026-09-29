@@ -56,8 +56,8 @@ html{scroll-padding-top:102px}
 .contact-section{background:var(--ink);color:var(--paper);padding-top:82px;padding-bottom:92px}
 .contact-kicker{max-width:var(--wrap);margin:0 auto 34px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #4c504a;padding-bottom:14px}
 .contact-kicker .eyebrow{color:#c0beb5;margin:0}
-.contact-kicker>span{font:8px var(--mono);letter-spacing:.08em;color:#c0beb5}
-.contact-kicker i{display:inline-block;width:6px;height:6px;margin-left:7px;border-radius:50%;background:#e8845b;vertical-align:1px}
+.contact-kicker>span{display:inline-flex;align-items:center;gap:7px;font:8px var(--mono);letter-spacing:.08em;color:#c0beb5}
+.contact-kicker i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#e8845b}
 .contact-layout{max-width:var(--wrap);margin:auto;display:grid;grid-template-columns:1fr .8fr;gap:12%;align-items:start}
 .contact-layout h2{margin-bottom:20px}
 .contact-layout h2 em{color:#e8845b}
