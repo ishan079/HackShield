@@ -8,7 +8,7 @@ if (stage && heroArt && !reducedMotion.matches) {
     const bounds = heroArt.getBoundingClientRect();
     const y = (event.clientY - bounds.top) / bounds.height - 0.5;
     // Constrain the tilt to one fixed diagonal axis, like a ball mounted on a rod.
-    stage.style.transform = `perspective(900px) rotate3d(1, 1, 0, ${y * -10}deg)`;
+    stage.style.transform = `perspective(900px) rotate3d(1, 1, 0, ${y * -24}deg)`;
   });
   heroArt.addEventListener('pointerleave', () => { stage.style.transform = ''; });
 }
