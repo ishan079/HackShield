@@ -6,9 +6,11 @@ if (stage && heroArt && !reducedMotion.matches) {
   heroArt.addEventListener('pointermove', (event) => {
     if (event.pointerType === 'touch') return;
     const bounds = heroArt.getBoundingClientRect();
-    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-    // Constrain the tilt to one fixed diagonal axis, like a ball mounted on a rod.
-    stage.style.transform = `perspective(900px) rotate3d(1, 1, 0, ${y * -24}deg)`;
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    // Select the matching diagonal axis on each side; keep the swing capped at 12°.
+    const diagonal = x < 0 ? 1 : -1;
+    const angle = Math.abs(x) * 24;
+    stage.style.transform = `perspective(900px) rotate3d(1, ${diagonal}, 0, ${angle}deg)`;
   });
   heroArt.addEventListener('pointerleave', () => { stage.style.transform = ''; });
 }
