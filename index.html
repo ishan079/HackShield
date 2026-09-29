@@ -40,10 +40,14 @@
             <title id="shieldTitle">A shield constructed from three interlocking layers</title>
             <desc id="shieldDesc">An abstract dimensional shield in warm orange, pale sand, and charcoal.</desc>
             <defs>
-              <linearGradient id="face" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0a167"/><stop offset="1" stop-color="#db673c"/></linearGradient>
-              <linearGradient id="side" x1="0" y1="0" x2="0.9" y2="1"><stop stop-color="#bd4e2d"/><stop offset="1" stop-color="#873c2b"/></linearGradient>
+              <linearGradient id="face-left" gradientUnits="userSpaceOnUse" x1="90" y1="80" x2="270" y2="410"><stop stop-color="#f6b078"/><stop offset=".48" stop-color="#e77b45"/><stop offset="1" stop-color="#bd4e31"/></linearGradient>
+              <linearGradient id="face-right" gradientUnits="userSpaceOnUse" x1="255" y1="70" x2="400" y2="430"><stop stop-color="#c65332"/><stop offset=".5" stop-color="#a3432c"/><stop offset="1" stop-color="#632d24"/></linearGradient>
+              <linearGradient id="ridge-highlight" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe2bd" stop-opacity=".84"/><stop offset="1" stop-color="#ffbf86" stop-opacity=".16"/></linearGradient>
+              <radialGradient id="crown-glow" gradientUnits="userSpaceOnUse" cx="180" cy="150" r="250"><stop stop-color="#ffd3a2" stop-opacity=".42"/><stop offset="1" stop-color="#ffd3a2" stop-opacity="0"/></radialGradient>
+              <linearGradient id="side" x1="0" y1="0" x2="0.9" y2="1"><stop stop-color="#8c3b2a"/><stop offset=".48" stop-color="#532d27"/><stop offset="1" stop-color="#171d1b"/></linearGradient>
               <linearGradient id="sand" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff8e8"/><stop offset="1" stop-color="#d9d0bd"/></linearGradient>
               <filter id="shadow" x="-40%" y="-30%" width="180%" height="190%"><feGaussianBlur stdDeviation="15"/></filter>
+              <clipPath id="shield-face-clip"><path d="M260 39 426 104v132c0 123-72 207-166 267C166 443 94 359 94 236V104z"/></clipPath>
             </defs>
             <ellipse cx="270" cy="485" rx="150" ry="31" fill="#3a2923" opacity=".18" filter="url(#shadow)"/>
             <g class="shield-back" transform="translate(33 38)">
@@ -56,8 +60,14 @@
               <path d="M260 76 390 127v105c0 92-50 162-130 218-80-56-130-126-130-218V127z" fill="#efe9da" opacity=".55"/>
             </g>
             <g class="shield-front">
-              <path d="M260 39 426 104v132c0 123-72 207-166 267C166 443 94 359 94 236V104z" fill="url(#face)"/>
-              <path d="m260 39 166 65v132c0 123-72 207-166 267V39z" fill="url(#side)"/>
+              <path d="M260 39 426 104v132c0 123-72 207-166 267C166 443 94 359 94 236V104z" fill="url(#face-left)"/>
+              <path d="m260 39 166 65v132c0 123-72 207-166 267V39z" fill="url(#face-right)"/>
+              <ellipse cx="180" cy="150" rx="245" ry="285" fill="url(#crown-glow)" clip-path="url(#shield-face-clip)"/>
+              <g clip-path="url(#shield-face-clip)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M260 42 C259 116 260 190 260 260 M98 106 C157 163 211 216 260 260 M422 106 C363 163 309 216 260 260" stroke="#542820" stroke-width="8" opacity=".08"/>
+                <path d="M260 42 C260 118 260 190 260 260 M99 105 C160 164 211 214 260 258 M421 105 C360 164 309 214 260 258" stroke="url(#ridge-highlight)" stroke-width="1.8" opacity=".3"/>
+                <path d="M260 260 C260 291 260 322 260 350" stroke="#542820" stroke-width="8" opacity=".07"/>
+              </g>
               <path d="M260 89 382 137v94c0 82-43 145-122 201-79-56-122-119-122-201v-94z" fill="none" stroke="#f8d4b0" stroke-width="2" opacity=".72"/>
               <path d="M260 145v205m-49-49 49 49 49-49" fill="none" stroke="#fff0dc" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".92"/>
             </g>
