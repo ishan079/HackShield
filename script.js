@@ -7,10 +7,9 @@ if (stage && heroArt && !reducedMotion.matches) {
     if (event.pointerType === 'touch') return;
     const bounds = heroArt.getBoundingClientRect();
     const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-    // Select the matching diagonal axis on each side; keep the swing capped at 12°.
-    const diagonal = x < 0 ? 1 : -1;
-    const angle = Math.abs(x) * 24;
-    stage.style.transform = `perspective(900px) rotate3d(1, ${diagonal}, 0, ${angle}deg)`;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    // Follow the pointer in both directions so each corner can lean toward it.
+    stage.style.transform = `perspective(900px) rotateX(${y * 17}deg) rotateY(${x * -17}deg)`;
   });
   heroArt.addEventListener('pointerleave', () => { stage.style.transform = ''; });
 }
