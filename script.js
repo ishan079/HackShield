@@ -6,9 +6,9 @@ if (stage && heroArt && !reducedMotion.matches) {
   heroArt.addEventListener('pointermove', (event) => {
     if (event.pointerType === 'touch') return;
     const bounds = heroArt.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
     const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-    stage.style.transform = `perspective(900px) rotateY(${x * 5}deg) rotateX(${y * -4}deg)`;
+    // Constrain the tilt to one fixed diagonal axis, like a ball mounted on a rod.
+    stage.style.transform = `perspective(900px) rotate3d(1, 1, 0, ${y * -10}deg)`;
   });
   heroArt.addEventListener('pointerleave', () => { stage.style.transform = ''; });
 }
