@@ -10,10 +10,11 @@
 @media(max-width:390px){.nav-cta{display:none}.hero-actions{align-items:flex-start;flex-direction:column}.hero-art{height:310px}.art-label{gap:7px}.program-row .program-detail{padding-right:28px}.week-row{grid-template-columns:25px 30px minmax(0,1fr) 13px;gap:9px}.week-row h3{font-size:15px}.week-row p:last-child{font-size:9px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
 
-/* Keep navigation accessible while scrolling. */
+/* Keep navigation accessible while scrolling and dock the footer at the viewport edge. */
 html{scroll-padding-top:102px}
 .site-header{position:sticky;top:0;backdrop-filter:blur(14px);background:rgba(244,241,232,.96);}
 .site-header nav{margin-left:0;gap:clamp(18px,2.5vw,34px)}
+.site-footer{position:sticky;z-index:25;top:calc(100vh - 58px);min-height:58px;padding:9px max(5.5vw,24px) calc(9px + env(safe-area-inset-bottom));border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(32,37,34,.045)}
 .site-footer .footer-coord{margin-left:12px}
 
 /* Keep the hero annotation in its own rows so it never sits on top of the shield. */
@@ -172,6 +173,8 @@ html{scroll-padding-top:102px}
   .art-plus{font-size:15px}
   .field-line h3{font-size:13px}
 }
+@media(max-width:720px){.site-footer{top:calc(100vh - 56px - env(safe-area-inset-bottom))}}
+
 @media(max-width:720px){
   .program-row{grid-template-areas:"index main" ". copy" ". visual" ". link"}
   .program-index{grid-area:index}
