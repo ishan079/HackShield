@@ -145,3 +145,7 @@ html{scroll-padding-top:102px}
   .program-visual{grid-area:visual;grid-column:1 / -1;position:relative;right:auto;top:auto;justify-self:center;opacity:1;transform:none;margin:0}
   .program-detail .arrow-link{grid-area:link;align-self:start}
 }
+
+@media(max-width:720px){
+  .guest-row .program-visual{top:-8px}
+}
