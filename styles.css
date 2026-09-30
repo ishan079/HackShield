@@ -72,7 +72,6 @@ html{scroll-padding-top:102px}
 .contact-people-column{border-top:1px solid #4c504a}
 .contact-person{display:grid;gap:8px;padding:19px 0 21px;border-bottom:1px solid #4c504a}
 .contact-person h3{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:6px;row-gap:2px;margin:0 0 5px;letter-spacing:normal}
-.person-arrow{font:400 18px/1 var(--sans);color:#f2ede3}
 .person-name{font:600 22px/1.2 var(--display);letter-spacing:-.045em;color:var(--paper)}
 .person-role{font:400 11px/1.5 var(--sans);letter-spacing:normal;color:#aaa99f}
 .alias-switch{position:relative;display:inline-grid;vertical-align:baseline;outline:none}
@@ -84,6 +83,7 @@ html{scroll-padding-top:102px}
 .alias-switch:focus-visible{outline:1px solid #f2ede3;outline-offset:3px}
 .contact-person>a{width:fit-content;font-size:12px;line-height:1.5;color:#c0beb5;overflow-wrap:anywhere}
 .contact-person>a:hover{color:#f2ede3}
+.contact-person .contact-email{display:inline-flex;align-items:center;gap:9px}
 .contact-person .contact-social{display:inline-flex;align-items:center;gap:9px}
 .social-icon{width:16px;height:16px;flex:none;fill:none;stroke:#f2ede3;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
 
