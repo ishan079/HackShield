@@ -158,3 +158,5 @@ html{scroll-padding-top:102px}
 .starting-point-link .nav-link-label{position:relative;display:inline-block}
 .starting-point-link .nav-link-label::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left center;transition:transform .24s ease}
 .starting-point-link:hover .nav-link-label::after,.starting-point-link:focus-visible .nav-link-label::after{transform:scaleX(1)}
+
+.starting-point-link:hover .nav-link-label{color:#000}
