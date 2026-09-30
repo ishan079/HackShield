@@ -8,7 +8,7 @@
     ]]></style>
     <mask id="center-knockout" maskUnits="userSpaceOnUse" x="92" y="92" width="116" height="116" style="mask-type:luminance">
       <circle cx="150" cy="150" r="58" fill="#fff"/>
-      <g fill="#000" font-family="DM Mono Embedded" font-size="15" font-weight="600" letter-spacing="1.5" text-anchor="middle">
+      <g fill="#000" font-family="DM Mono Embedded" font-size="15" font-weight="400" letter-spacing="1.5" text-anchor="middle" text-rendering="geometricPrecision">
         <text x="150" y="132">LISTEN</text>
         <text x="150" y="154">ASK</text>
         <text x="150" y="176">CONNECT</text>
