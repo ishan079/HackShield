@@ -7,9 +7,9 @@
     .svg-copy { fill: #ab482c; font-family: "DM Mono Embedded"; font-size: 16px; font-weight: 400; letter-spacing: 2px; text-anchor: middle; }
   ]]></style>
   <g fill="none" stroke="#d9633a">
-    <circle cx="150" cy="150" r="149" stroke-width="1.2" opacity=".32"/>
-    <circle cx="150" cy="150" r="103" stroke-width="1.5" opacity=".52"/>
-    <circle cx="150" cy="150" r="59" stroke-width="1.5" opacity=".78"/>
+    <circle cx="150" cy="150" r="149" stroke-width="1.8" opacity=".32"/>
+    <circle cx="150" cy="150" r="103" stroke-width="2" opacity=".52"/>
+    <circle cx="150" cy="150" r="59" stroke-width="2" opacity=".78"/>
   </g>
   <circle cx="260" cy="19" r="6" fill="#202522"/>
   <g class="svg-copy">
