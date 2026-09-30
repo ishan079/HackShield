@@ -46,7 +46,7 @@ html{scroll-padding-top:102px}
 .field-line{min-height:67px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:36px 1fr 24px;gap:12px;align-items:center}
 .field-line>span:first-child{font:9px var(--mono);color:var(--orange)}
 .field-line h3{font:500 clamp(14px,1.4vw,18px)/1.3 var(--display);letter-spacing:-.035em;margin:0}
-.field-glyph{font-size:16px;text-align:right;color:var(--orange)}
+.field-glyph{font-size:16px;text-align:right;color:var(--orange);margin-left:12px}
 .expert-footer{grid-column:1/-1;border-top:1px solid var(--line);padding-top:18px;display:grid;grid-template-columns:120px 1fr auto;gap:18px;align-items:center}
 .weekend-mark{font:10px var(--mono);letter-spacing:.07em;color:var(--orange-dark)}
 .expert-footer p{font-size:11px;color:#76766f;margin:0}
