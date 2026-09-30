@@ -68,13 +68,9 @@ html{scroll-padding-top:102px}
 .contact-options>a b{font-size:16px;font-weight:400;color:#e8845b;text-align:right;transition:transform .2s}
 .contact-options>a:hover b{transform:translate(3px,-3px)}
 .contact-options>p{margin:17px 0 0;font-size:10px;line-height:1.7;color:#aaa99f}
-.contact-people-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(210px,1fr));min-height:420px;margin-top:46px}
-.contact-people-grid::after{content:"";grid-column:1;grid-row:2;background:rgba(0,0,0,.16)}
-.contact-people-empty{grid-column:2;grid-row:1;background:rgba(0,0,0,.16)}
-.contact-people-column{display:contents}
-.contact-people-column>.contact-person:first-child{grid-column:2;grid-row:2}
-.contact-people-column>.contact-person:last-child{grid-column:1;grid-row:1}
+.contact-people-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:46px}
 .contact-person{display:grid;gap:8px;padding:19px 0 21px;border-bottom:1px solid #4c504a}
+.contact-person:last-child{border-bottom:0}
 .contact-person h3{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:6px;row-gap:2px;margin:0 0 5px;letter-spacing:normal}
 .person-name{font:600 22px/1.2 var(--display);letter-spacing:-.045em;color:var(--paper)}
 .person-role{font:400 11px/1.5 var(--sans);letter-spacing:normal;color:#aaa99f}
