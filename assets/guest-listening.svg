@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img" aria-labelledby="title desc">
+  <title id="title">Listen, ask, connect</title>
+  <desc id="desc">Three fine concentric orange rings around the words Listen, Ask, Connect, with a small dark marker near the outer ring.</desc>
+  <g fill="none" stroke="#d9633a">
+    <circle cx="150" cy="150" r="148" stroke-width="1.2" opacity=".32"/>
+    <circle cx="150" cy="150" r="102" stroke-width="1.35" opacity=".52"/>
+    <circle cx="150" cy="150" r="58" stroke-width="1.5" opacity=".78"/>
+  </g>
+  <circle cx="224" cy="20" r="6" fill="#202522"/>
+  <g fill="#ab482c" font-family="'DM Mono', 'Courier New', monospace" font-size="11" letter-spacing="1.7" text-anchor="middle">
+    <text x="150" y="132">LISTEN</text>
+    <text x="150" y="154">ASK</text>
+    <text x="150" y="176">CONNECT</text>
+  </g>
+</svg>
