@@ -12,7 +12,7 @@
     <circle cx="78" cy="196" r="7.5" fill="#d9633a" stroke="#d9633a"/>
   </g>
   <g fill="#202522" font-family="'DM Mono', 'Courier New', monospace" font-size="13" letter-spacing="1.3">
-    <text x="113" y="59">WEEK</text>
+    <text x="43" y="59" text-anchor="end">WEEK</text>
     <text x="113" y="201">01 — 06</text>
   </g>
 </svg>
