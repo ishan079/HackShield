@@ -2,14 +2,14 @@
   <title id="title">Listen, ask, connect</title>
   <desc id="desc">Three fine concentric orange rings around the words Listen, Ask, Connect, with a small dark marker near the outer ring.</desc>
   <g fill="none" stroke="#d9633a">
-    <circle cx="150" cy="150" r="148" stroke-width="1.2" opacity=".32"/>
-    <circle cx="150" cy="150" r="102" stroke-width="1.35" opacity=".52"/>
-    <circle cx="150" cy="150" r="58" stroke-width="1.5" opacity=".78"/>
+    <circle cx="150" cy="150" r="149" stroke-width="1.2" opacity=".32"/>
+    <circle cx="150" cy="150" r="103" stroke-width="1.5" opacity=".52"/>
+    <circle cx="150" cy="150" r="59" stroke-width="1.5" opacity=".78"/>
   </g>
   <circle cx="260" cy="19" r="6" fill="#202522"/>
-  <g fill="#ab482c" font-family="'DM Mono', 'Courier New', monospace" font-size="16" font-weight="600" letter-spacing="1.7" text-anchor="middle" stroke="#ab482c" stroke-width=".25" paint-order="stroke fill">
-    <text x="150" y="132">LISTEN</text>
-    <text x="150" y="154">ASK</text>
-    <text x="150" y="176">CONNECT</text>
+  <g fill="#ab482c" font-family="'DM Mono', 'Courier New', monospace" font-size="16" letter-spacing="2" text-anchor="middle">
+    <text x="150" y="124">LISTEN</text>
+    <text x="150" y="155">ASK</text>
+    <text x="150" y="187">CONNECT</text>
   </g>
 </svg>
