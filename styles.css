@@ -18,8 +18,10 @@ html{scroll-padding-top:102px}
 .site-footer .footer-coord{margin-left:12px}
 .icon-library{position:absolute;width:0;height:0;overflow:hidden}
 .glyph{display:inline;line-height:1}
-.glyph-svg{display:none;width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
-.glyph-image{display:none;width:1em;height:1em;object-fit:contain;vertical-align:middle}
+.glyph-text{display:none}
+.glyph-svg,.glyph-image{display:inline-block;width:1em;height:1em;vertical-align:middle}
+.glyph-svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.glyph-image{object-fit:contain}
 
 /* Keep the hero annotation in its own rows so it never sits on top of the shield. */
 .hero{max-width:1600px;padding-left:5%;padding-right:5%}
@@ -187,12 +189,6 @@ html{scroll-padding-top:102px}
   .program-detail p{grid-area:copy}
   .program-visual{grid-area:visual;grid-column:1 / -1;position:relative;right:auto;top:auto;justify-self:center;opacity:1;transform:none;margin:0}
   .program-detail .arrow-link{grid-area:link;align-self:start}
-}
-
-@media(max-width:720px),(hover:none) and (pointer:coarse){
-  .glyph-text{display:none}
-  .glyph-svg{display:inline-block}
-  .glyph-image{display:inline-block}
 }
 
 @media(max-width:720px){
