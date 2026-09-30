@@ -142,6 +142,6 @@ html{scroll-padding-top:102px}
   .program-main{grid-area:main}
   .program-detail{display:contents}
   .program-detail p{grid-area:copy}
-  .program-visual{grid-area:visual;position:relative;right:auto;top:auto;justify-self:center;opacity:1;transform:none;margin:0}
+  .program-visual{grid-area:visual;grid-column:1 / -1;position:relative;right:auto;top:auto;justify-self:center;opacity:1;transform:none;margin:0}
   .program-detail .arrow-link{grid-area:link;align-self:start}
 }
