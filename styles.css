@@ -111,6 +111,7 @@ html{scroll-padding-top:102px}
   .expert-fields{margin-top:42px}
   .field-line{min-height:62px;grid-template-columns:28px 1fr 20px;gap:8px}
   .field-line h3{font-size:14px}
+  .field-glyph{margin-left:6px}
   .expert-footer{margin-top:38px;grid-template-columns:80px 1fr;gap:10px 14px}
   .expert-footer p{font-size:10px}
   .expert-footer .arrow-link{grid-column:2;white-space:normal}
