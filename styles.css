@@ -67,10 +67,11 @@ html{scroll-padding-top:102px}
 .contact-visual svg{display:block;width:100%;height:100%}
 .contact-orbiter{transform-box:view-box;transform-origin:374px 83px;animation:contact-orbit 24s linear infinite}
 @keyframes contact-orbit{to{transform:rotate(360deg)}}
-.contact-wave{transform-box:fill-box;transform-origin:center;transform:scale(.02);opacity:0;stroke-width:1.6;animation:contact-wave 9s ease-out infinite}
-.contact-wave-orange{animation-delay:3s}
-.contact-wave-gray{animation-delay:6s}
-@keyframes contact-wave{0%{transform:scale(.02);opacity:.78}30%{transform:scale(1);opacity:.38}35%,100%{transform:scale(1);opacity:0}}
+.contact-wave{transform-box:fill-box;transform-origin:center;transform:scale(1);opacity:0;stroke-width:1.6;animation:contact-wave-contract 9s ease-in infinite}
+.contact-wave-gray{--wave-end:.694;animation-delay:0s}
+.contact-wave-orange{--wave-end:.56;animation-delay:3s}
+.contact-wave-center{--wave-end:.143;animation-delay:6s}
+@keyframes contact-wave-contract{0%{transform:scale(1);opacity:.78}30%{transform:scale(var(--wave-end));opacity:.38}35%,100%{transform:scale(var(--wave-end));opacity:0}}
 .contact-options{border-top:1px solid #4c504a}
 .contact-options>a{display:grid;grid-template-columns:34px 1fr 22px;gap:12px;align-items:center;padding:17px 0;border-bottom:1px solid #4c504a;font-size:12px}
 .contact-options>a>span:first-child{font:9px var(--mono);color:#e8845b}
