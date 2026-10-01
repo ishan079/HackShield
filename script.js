@@ -34,3 +34,18 @@ if (toggle && nav) {
     nav.classList.remove('is-open');
   }));
 }
+
+const aliasSwitch = document.querySelector('.alias-switch');
+const mobileAliasViewport = window.matchMedia('(max-width: 720px)');
+if (aliasSwitch) {
+  aliasSwitch.addEventListener('click', () => {
+    if (!mobileAliasViewport.matches) return;
+    const isToggled = aliasSwitch.classList.toggle('is-toggled');
+    aliasSwitch.setAttribute('aria-pressed', String(isToggled));
+  });
+  mobileAliasViewport.addEventListener('change', (event) => {
+    if (event.matches) return;
+    aliasSwitch.classList.remove('is-toggled');
+    aliasSwitch.setAttribute('aria-pressed', 'false');
+  });
+}

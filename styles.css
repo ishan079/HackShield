@@ -93,13 +93,17 @@ html{scroll-padding-top:102px}
 .contact-person h3{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:6px;row-gap:2px;margin:0 0 5px;letter-spacing:normal}
 .person-name{font:600 22px/1.2 var(--display);letter-spacing:-.045em;color:var(--paper)}
 .person-role{font:400 11px/1.5 var(--sans);letter-spacing:normal;color:#aaa99f}
-.alias-switch{position:relative;display:inline-grid;vertical-align:baseline;outline:none}
+.alias-switch{position:relative;display:inline-grid;vertical-align:baseline;outline:none;padding:0;border:0;background:none;color:inherit;font:inherit;line-height:inherit;letter-spacing:inherit;cursor:pointer}
 .alias-switch>span{grid-area:1/1;transition:opacity .18s ease}
 .alias-original{font-family:"Noto Sans Devanagari","Nirmala UI",sans-serif}
 .alias-hover{opacity:0;visibility:hidden}
-.alias-switch:hover .alias-original,.alias-switch:focus .alias-original{opacity:0;visibility:hidden}
-.alias-switch:hover .alias-hover,.alias-switch:focus .alias-hover{opacity:1;visibility:visible}
 .alias-switch:focus-visible{outline:1px solid #f2ede3;outline-offset:3px}
+@media(hover:hover) and (pointer:fine){
+  .alias-switch:hover .alias-original,.alias-switch:focus-visible .alias-original{opacity:0;visibility:hidden}
+  .alias-switch:hover .alias-hover,.alias-switch:focus-visible .alias-hover{opacity:1;visibility:visible}
+}
+.alias-switch.is-toggled .alias-original{opacity:0;visibility:hidden}
+.alias-switch.is-toggled .alias-hover{opacity:1;visibility:visible}
 .contact-person>a{width:fit-content;font-size:12px;line-height:1.5;color:#c0beb5;overflow-wrap:anywhere}
 .contact-person>a:hover{color:#f2ede3}
 .contact-person .contact-email{display:inline-flex;align-items:center;gap:9px}
