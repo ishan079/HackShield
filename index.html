@@ -176,11 +176,7 @@
               <circle class="contact-wave contact-wave-orange" cx="374" cy="83" r="50" fill="none" stroke="url(#contact-wave-orange-ring)"/>
               <circle class="contact-wave contact-wave-gray" cx="374" cy="83" r="72" fill="none" stroke="url(#contact-wave-gray-ring)"/>
               <circle cx="374" cy="83" r="4" fill="#e8845b"/>
-              <g>
-                <animateMotion id="contact-line-travel" dur="8s" fill="freeze" calcMode="paced"><mpath href="#contact-underline"/></animateMotion>
-                <animateMotion id="contact-ring-jump" begin="contact-line-travel.end" dur=".25s" fill="freeze" path="M263 112 L430 36"/>
-                <circle cy="-8" r="4" fill="#f2ede3"><animateTransform attributeName="transform" type="rotate" begin="contact-ring-jump.end" from="0 -56 47" to="360 -56 47" dur="24s" repeatCount="indefinite"/></circle>
-              </g>
+              <circle cy="-8" r="4" fill="#f2ede3"><animateMotion dur="16s" repeatCount="indefinite" calcMode="paced"><mpath href="#contact-underline"/></animateMotion></circle>
               <text x="0" y="42" fill="#aaa99f" font-family="DM Mono, monospace" font-size="9" letter-spacing="1.2">A DIRECT LINE TO THE COMMUNITY</text>
         </svg>
       </div>
