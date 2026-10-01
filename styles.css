@@ -104,6 +104,7 @@ html{scroll-padding-top:102px}
 .contact-person>a:hover{color:#f2ede3}
 .contact-person .contact-email{display:inline-flex;align-items:center;gap:9px}
 .contact-person .contact-social{display:inline-flex;align-items:center;gap:9px}
+.contact-person .contact-website .social-icon{filter:brightness(0) invert(1)}
 .social-icon{width:16px;height:16px;flex:none;fill:none;stroke:#f2ede3;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
 @media(prefers-reduced-motion:reduce){.contact-wave{display:none}}
 
