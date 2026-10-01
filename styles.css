@@ -71,8 +71,6 @@ html{scroll-padding-top:102px}
 .contact-copy{max-width:480px;color:#c0beb5;font-size:14px;line-height:1.8}
 .contact-visual{width:min(100%,540px);height:170px;max-width:540px;margin:34px auto 0;overflow:hidden}
 .contact-visual svg{display:block;width:100%;height:100%}
-.contact-orbiter{transform-box:view-box;transform-origin:374px 83px;animation:contact-orbit 24s linear infinite}
-@keyframes contact-orbit{to{transform:rotate(360deg)}}
 .contact-wave{transform-box:fill-box;transform-origin:center;transform:scale(1);opacity:0;stroke-width:1.6;animation:contact-wave-contract 9s ease-in infinite}
 .contact-wave-gray{--wave-end:.694;animation-delay:0s}
 .contact-wave-orange{--wave-end:.56;animation-delay:3s}
