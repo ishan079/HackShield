@@ -210,7 +210,7 @@ html{scroll-padding-top:82px}
 
 /* Subtle, fluid ripples around each stationary status dot. */
 .live-dot,.contact-kicker i{position:relative;flex-shrink:0}
-.live-dot{--ping-color:var(--orange)}
+.live-dot{--ping-color:var(--orange);box-shadow:0 0 0 4px rgba(217,99,58,.045)}
 .contact-kicker i{--ping-color:#e8845b}
 .live-dot::before,.live-dot::after,
 .contact-kicker i::before,.contact-kicker i::after{
