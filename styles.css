@@ -211,7 +211,7 @@ html{scroll-padding-top:82px}
 /* The community diagram is a shallow 3D assembly, with readable front labels. */
 .community-visual{
   --sphere-x:0px;--sphere-y:0px;--sphere-light-x:31%;--sphere-light-y:24%;--sphere-tilt-x:0deg;--sphere-tilt-y:0deg;
-  --sphere-shadow-x:0px;--sphere-shadow-y:0px;--outer-ring-x:0px;--outer-ring-y:0px;
+  --sphere-shadow-x:0px;--sphere-shadow-y:0px;
   perspective:850px;isolation:isolate;overflow:visible;
 }
 .community-visual::before,.community-visual::after{
@@ -219,7 +219,7 @@ html{scroll-padding-top:82px}
   transform:translate(-50%,-50%);z-index:1;
 }
 .community-visual::before{width:230px;height:230px;border:1px solid rgba(217,99,58,.32);background:rgba(217,99,58,.04)}
-.community-visual::after{width:278px;height:278px;border:1px solid rgba(217,99,58,.16);transform:translate(calc(-50% + var(--outer-ring-x)),calc(-50% + var(--outer-ring-y)))}
+.community-visual::after{width:278px;height:278px;border:1px solid rgba(217,99,58,.16)}
 .community-core{
   transform-style:preserve-3d;
   background:radial-gradient(circle at var(--sphere-light-x) var(--sphere-light-y),#f7b58c 0 2%,#ed8a59 17%,var(--orange) 53%,#bf4f2e 100%);
