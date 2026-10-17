@@ -209,7 +209,7 @@ html{scroll-padding-top:82px}
 
 
 /* The community diagram is a shallow 3D assembly, with readable front labels. */
-.community-visual{perspective:850px;isolation:isolate}
+.community-visual{perspective:850px;isolation:isolate;overflow:visible}
 .community-core{
   transform-style:preserve-3d;
   background:linear-gradient(135deg,#e57e50 0%,var(--orange) 58%,#bd502e 100%);
