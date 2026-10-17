@@ -241,7 +241,7 @@ html{scroll-padding-top:82px}
 .community-orbit.orbit-right{animation:community-orbit-right 23s ease-in-out infinite}
 .community-label{box-shadow:0 5px 12px rgba(32,37,34,.045)}
 .label-discord{animation:community-discord-drift 10s ease-in-out infinite}
-.label-whatsapp{animation:community-whatsapp-drift 10s ease-in-out infinite}
+.label-whatsapp{left:16px;animation:community-whatsapp-drift 10s ease-in-out infinite}
 @keyframes community-core-float{
   0%,100%{transform:translate3d(0,3px,18px) rotateX(5deg) rotateY(-7deg)}
   50%{transform:translate3d(0,-7px,28px) rotateX(-5deg) rotateY(7deg)}
