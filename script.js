@@ -21,7 +21,7 @@ if (communityVisual && !reducedMotion.matches) {
     let moving = false;
     Object.keys(sphere.current).forEach((key) => {
       const remaining = sphere.target[key] - sphere.current[key];
-      sphere.current[key] += remaining * (key.startsWith('inner') ? .09 : .14);
+      sphere.current[key] += remaining * (key.startsWith('inner') ? .055 : .14);
       if (Math.abs(remaining) > .05) moving = true;
       else sphere.current[key] = sphere.target[key];
     });
@@ -51,12 +51,13 @@ if (communityVisual && !reducedMotion.matches) {
     const sphereX = x * range * 68;
     const sphereY = y * range * 68;
     const sphereDistance = Math.hypot(sphereX, sphereY);
-    const contact = Math.max(0, Math.min(1, (sphereDistance - 20) / 10));
+    const contactProgress = Math.max(0, Math.min(1, (sphereDistance - 17) / 13));
+    const contact = contactProgress * contactProgress * (3 - 2 * contactProgress);
     Object.assign(sphere.target, {
       x: sphereX, y: sphereY,
       lightX: 50 + x * 52, lightY: 50 + y * 52,
       shadowX: -x * 14, shadowY: -y * 14,
-      innerX: sphereX * contact * .3, innerY: sphereY * contact * .3,
+      innerX: sphereX * contact * .44, innerY: sphereY * contact * .44,
     });
     settleSphere();
   });
