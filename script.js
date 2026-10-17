@@ -23,7 +23,7 @@ if (communityVisual && !reducedMotion.matches) {
     communityVisual.style.removeProperty('--sphere-tilt-y');
   };
   communityVisual.addEventListener('pointerenter', (event) => {
-    if (event.pointerType === 'mouse') communityVisual.classList.add('is-sphere-tracking');
+    if (event.pointerType !== 'mouse') return;
   });
   communityVisual.addEventListener('pointermove', (event) => {
     if (event.pointerType !== 'mouse') return;
@@ -44,7 +44,6 @@ if (communityVisual && !reducedMotion.matches) {
     communityVisual.style.setProperty('--sphere-tilt-y', `${(sphereY * -.12).toFixed(1)}deg`);
   });
   communityVisual.addEventListener('pointerleave', () => {
-    communityVisual.classList.remove('is-sphere-tracking');
     resetSphereLight();
   });
 }

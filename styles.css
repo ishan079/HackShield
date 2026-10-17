@@ -240,13 +240,9 @@ html{scroll-padding-top:82px}
 .community-label{box-shadow:0 5px 12px rgba(32,37,34,.045)}
 .label-discord{animation:community-discord-drift 10s ease-in-out infinite}
 .label-whatsapp{left:16px;animation:community-whatsapp-drift 10s ease-in-out infinite}
-.community-visual.is-sphere-tracking .community-core{
-  animation:none;
-  transform:translate3d(var(--sphere-x),var(--sphere-y),28px) rotateX(var(--sphere-tilt-y)) rotateY(var(--sphere-tilt-x));
-}
 @keyframes community-core-float{
-  0%,100%{transform:translate3d(0,3px,18px) rotateX(5deg) rotateY(-7deg)}
-  50%{transform:translate3d(0,-7px,28px) rotateX(-5deg) rotateY(7deg)}
+  0%,100%{transform:translate3d(calc(var(--sphere-x) + 0px),calc(var(--sphere-y) + 3px),18px) rotateX(calc(5deg + var(--sphere-tilt-y))) rotateY(calc(-7deg + var(--sphere-tilt-x)))}
+  50%{transform:translate3d(calc(var(--sphere-x) + 0px),calc(var(--sphere-y) - 7px),28px) rotateX(calc(-5deg + var(--sphere-tilt-y))) rotateY(calc(7deg + var(--sphere-tilt-x)))}
 }
 @keyframes community-layer-near{
   0%,100%{transform:translate3d(-3px,5px,-24px) rotateY(-4deg)}
