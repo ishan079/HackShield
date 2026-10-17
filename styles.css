@@ -210,19 +210,26 @@ html{scroll-padding-top:82px}
 
 /* The community diagram is a shallow 3D assembly, with readable front labels. */
 .community-visual{perspective:850px;isolation:isolate}
-.community-visual::before,.community-visual::after{
-  content:"";position:absolute;left:50%;top:50%;border-radius:50%;pointer-events:none;
-  border:1px solid rgba(217,99,58,.22);transform:translate(-50%,-50%);
-}
-.community-visual::before{width:236px;height:236px;background:rgba(217,99,58,.045)}
-.community-visual::after{width:292px;height:292px;border-color:rgba(217,99,58,.12)}
 .community-core{
   transform-style:preserve-3d;
   background:linear-gradient(135deg,#e57e50 0%,var(--orange) 58%,#bd502e 100%);
   box-shadow:0 3px 0 #b64d2c,0 12px 24px rgba(105,53,30,.12);
   animation:community-core-float 10s ease-in-out infinite;
 }
-.community-core::before,.community-core::after{content:none}
+.community-core::before,.community-core::after{
+  content:"";position:absolute;border-radius:50%;pointer-events:none;
+  border:1px solid rgba(217,99,58,.14);
+}
+.community-core::before{
+  inset:-17px;background:rgba(217,99,58,.105);
+  transform:translateZ(-24px);
+  animation:community-layer-near 10s ease-in-out infinite;
+}
+.community-core::after{
+  inset:-34px;background:rgba(217,99,58,.045);
+  transform:translateZ(-52px);
+  animation:community-layer-far 10s ease-in-out infinite;
+}
 .community-core>span{transform:translateZ(4px)}
 .community-core .core-dot{
   inset:0;margin:auto;
@@ -236,10 +243,16 @@ html{scroll-padding-top:82px}
 .label-discord{animation:community-discord-drift 10s ease-in-out infinite}
 .label-whatsapp{animation:community-whatsapp-drift 10s ease-in-out infinite}
 @keyframes community-core-float{
-  0%,100%{transform:translate3d(-33px,16px,18px) rotateX(5deg) rotateY(-7deg)}
-  25%{transform:translate3d(26px,28px,25px) rotateX(-3deg) rotateY(8deg)}
-  52%{transform:translate3d(40px,-15px,30px) rotateX(-6deg) rotateY(5deg)}
-  77%{transform:translate3d(-20px,-35px,22px) rotateX(4deg) rotateY(-9deg)}
+  0%,100%{transform:translate3d(0,3px,18px) rotateX(5deg) rotateY(-7deg)}
+  50%{transform:translate3d(0,-7px,28px) rotateX(-5deg) rotateY(7deg)}
+}
+@keyframes community-layer-near{
+  0%,100%{transform:translate3d(-3px,5px,-24px) rotateY(-4deg)}
+  50%{transform:translate3d(5px,11px,-36px) rotateY(6deg)}
+}
+@keyframes community-layer-far{
+  0%,100%{transform:translate3d(-6px,10px,-52px) rotateY(-6deg)}
+  50%{transform:translate3d(10px,20px,-76px) rotateY(9deg)}
 }
 @keyframes community-satellite{
   from{transform:rotate(-55deg) translateX(68px)}
@@ -266,8 +279,6 @@ html{scroll-padding-top:82px}
 .community-visual.is-motion-paused *::after{animation-play-state:paused}
 @media(max-width:720px){
   .community-visual{perspective:1000px}
-  .community-visual::before{width:196px;height:196px}
-  .community-visual::after{width:246px;height:246px}
   .community-core .core-dot{width:6px;height:6px;animation-name:community-satellite-mobile}
 }
 @keyframes community-satellite-mobile{
@@ -276,7 +287,7 @@ html{scroll-padding-top:82px}
 }
 @media(prefers-reduced-motion:reduce){
   .community-visual *,.community-visual *::before,.community-visual *::after{animation:none!important}
-  .community-core{transform:translate3d(-18px,9px,18px) rotateX(5deg) rotateY(-7deg)}
+  .community-core{transform:translateZ(18px) rotateX(5deg) rotateY(-7deg)}
   .community-core .core-dot{transform:rotate(-55deg) translateX(54px)}
 }
 
