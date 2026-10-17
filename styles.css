@@ -212,8 +212,8 @@ html{scroll-padding-top:82px}
 .community-visual{perspective:850px;isolation:isolate;overflow:visible}
 .community-core{
   transform-style:preserve-3d;
-  background:linear-gradient(135deg,#e57e50 0%,var(--orange) 58%,#bd502e 100%);
-  box-shadow:0 3px 0 #b64d2c,0 12px 24px rgba(105,53,30,.12);
+  background:radial-gradient(circle at 31% 24%,#f7b58c 0 2%,#ed8a59 17%,var(--orange) 53%,#bf4f2e 100%);
+  box-shadow:inset 13px 14px 22px rgba(255,232,209,.19),inset -17px -20px 27px rgba(119,45,25,.25),0 16px 28px rgba(105,53,30,.16);
   animation:community-core-float 10s ease-in-out infinite;
 }
 .community-core::before,.community-core::after{
