@@ -11,6 +11,44 @@ if (communityVisual && 'IntersectionObserver' in window) {
   communityVisibility.observe(communityVisual);
 }
 
+if (communityVisual && !reducedMotion.matches) {
+  const resetSphereLight = () => {
+    communityVisual.style.removeProperty('--sphere-x');
+    communityVisual.style.removeProperty('--sphere-y');
+    communityVisual.style.removeProperty('--sphere-light-x');
+    communityVisual.style.removeProperty('--sphere-light-y');
+    communityVisual.style.removeProperty('--sphere-shadow-x');
+    communityVisual.style.removeProperty('--sphere-shadow-y');
+    communityVisual.style.removeProperty('--sphere-tilt-x');
+    communityVisual.style.removeProperty('--sphere-tilt-y');
+  };
+  communityVisual.addEventListener('pointerenter', (event) => {
+    if (event.pointerType === 'mouse') communityVisual.classList.add('is-sphere-tracking');
+  });
+  communityVisual.addEventListener('pointermove', (event) => {
+    if (event.pointerType !== 'mouse') return;
+    const bounds = communityVisual.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - .5;
+    const y = (event.clientY - bounds.top) / bounds.height - .5;
+    const distance = Math.hypot(x, y) || 1;
+    const range = Math.min(1, .42 / distance);
+    const sphereX = x * range * 68;
+    const sphereY = y * range * 68;
+    communityVisual.style.setProperty('--sphere-x', `${sphereX.toFixed(1)}px`);
+    communityVisual.style.setProperty('--sphere-y', `${sphereY.toFixed(1)}px`);
+    communityVisual.style.setProperty('--sphere-light-x', `${(50 + x * 52).toFixed(1)}%`);
+    communityVisual.style.setProperty('--sphere-light-y', `${(50 + y * 52).toFixed(1)}%`);
+    communityVisual.style.setProperty('--sphere-shadow-x', `${(-x * 14).toFixed(1)}px`);
+    communityVisual.style.setProperty('--sphere-shadow-y', `${(-y * 14).toFixed(1)}px`);
+    communityVisual.style.setProperty('--sphere-tilt-x', `${(sphereX * .12).toFixed(1)}deg`);
+    communityVisual.style.setProperty('--sphere-tilt-y', `${(sphereY * -.12).toFixed(1)}deg`);
+  });
+  communityVisual.addEventListener('pointerleave', () => {
+    communityVisual.classList.remove('is-sphere-tracking');
+    resetSphereLight();
+  });
+}
+
 if (stage && heroArt && !reducedMotion.matches) {
   heroArt.addEventListener('pointermove', (event) => {
     if (event.pointerType === 'touch') return;
