@@ -208,6 +208,89 @@ html{scroll-padding-top:82px}
 .starting-point-link:hover .nav-link-label{color:#000}
 
 
+/* The community diagram is a shallow 3D assembly, with readable front labels. */
+.community-visual{
+  --sphere-x:0px;--sphere-y:0px;--sphere-light-x:31%;--sphere-light-y:24%;--sphere-tilt-x:0deg;--sphere-tilt-y:0deg;
+  --sphere-shadow-x:0px;--sphere-shadow-y:0px;--inner-ring-x:0px;--inner-ring-y:0px;
+  perspective:850px;isolation:isolate;overflow:visible;
+}
+.community-visual::before,.community-visual::after{
+  content:"";position:absolute;left:50%;top:50%;border-radius:50%;pointer-events:none;
+  transform:translate(-50%,-50%);z-index:1;
+}
+.community-visual::before{width:230px;height:230px;border:1px solid rgba(217,99,58,.32);background:rgba(217,99,58,.04);transform:translate(calc(-50% + var(--inner-ring-x)),calc(-50% + var(--inner-ring-y)))}
+.community-visual::after{width:278px;height:278px;border:1px solid rgba(217,99,58,.16)}
+.community-core{
+  transform-style:preserve-3d;
+  background:radial-gradient(circle at var(--sphere-light-x) var(--sphere-light-y),#f7b58c 0 2%,#ed8a59 17%,var(--orange) 53%,#bf4f2e 100%);
+  box-shadow:inset calc(13px + var(--sphere-shadow-x)) calc(14px + var(--sphere-shadow-y)) 22px rgba(255,232,209,.19),inset calc(-17px + var(--sphere-shadow-x)) calc(-20px + var(--sphere-shadow-y)) 27px rgba(119,45,25,.25),var(--sphere-shadow-x) calc(16px + var(--sphere-shadow-y)) 28px rgba(105,53,30,.16);
+  animation:community-core-float 10s ease-in-out infinite;
+  transition:transform .18s ease-out,background .25s ease,box-shadow .25s ease;
+}
+.community-core::before,.community-core::after{content:none}
+.community-core>span{transform:translateZ(4px)}
+.community-core .core-dot{
+  inset:0;margin:auto;
+  transform:rotate(-55deg) translateX(68px);
+  animation:community-satellite 24s linear infinite;
+}
+.community-orbit{border-color:rgba(32,37,34,.2);will-change:transform}
+.community-orbit.orbit-left{animation:community-orbit-left 19s ease-in-out infinite}
+.community-orbit.orbit-right{animation:community-orbit-right 23s ease-in-out infinite}
+.community-label{box-shadow:0 5px 12px rgba(32,37,34,.045)}
+.label-discord{animation:community-discord-drift 10s ease-in-out infinite}
+.label-whatsapp{left:16px;animation:community-whatsapp-drift 10s ease-in-out infinite}
+@keyframes community-core-float{
+  0%,100%{transform:translate3d(calc(var(--sphere-x) + 0px),calc(var(--sphere-y) + 3px),18px) rotateX(calc(5deg + var(--sphere-tilt-y))) rotateY(calc(-7deg + var(--sphere-tilt-x)))}
+  50%{transform:translate3d(calc(var(--sphere-x) + 0px),calc(var(--sphere-y) - 7px),28px) rotateX(calc(-5deg + var(--sphere-tilt-y))) rotateY(calc(7deg + var(--sphere-tilt-x)))}
+}
+@keyframes community-layer-near{
+  0%,100%{transform:translate3d(-3px,5px,-24px) rotateY(-4deg)}
+  50%{transform:translate3d(5px,11px,-36px) rotateY(6deg)}
+}
+@keyframes community-layer-far{
+  0%,100%{transform:translate3d(-6px,10px,-52px) rotateY(-6deg)}
+  50%{transform:translate3d(10px,20px,-76px) rotateY(9deg)}
+}
+@keyframes community-satellite{
+  from{transform:rotate(-55deg) translateX(68px)}
+  to{transform:rotate(305deg) translateX(68px)}
+}
+@keyframes community-orbit-left{
+  0%,100%{transform:translateZ(-12px) rotateZ(50deg) rotateX(12deg) rotateY(-9deg)}
+  50%{transform:translateZ(12px) rotateZ(64deg) rotateX(-16deg) rotateY(12deg)}
+}
+@keyframes community-orbit-right{
+  0%,100%{transform:translateZ(8px) rotateZ(-50deg) rotateX(-14deg) rotateY(8deg)}
+  50%{transform:translateZ(-18px) rotateZ(-64deg) rotateX(18deg) rotateY(-12deg)}
+}
+@keyframes community-discord-drift{
+  0%,100%{transform:translate3d(0,2px,20px) rotate(4deg)}
+  50%{transform:translate3d(-5px,-7px,30px) rotate(1deg)}
+}
+@keyframes community-whatsapp-drift{
+  0%,100%{transform:translate3d(0,-3px,18px) rotate(-5deg)}
+  50%{transform:translate3d(5px,6px,26px) rotate(-2deg)}
+}
+.community-visual.is-motion-paused *,
+.community-visual.is-motion-paused *::before,
+.community-visual.is-motion-paused *::after{animation-play-state:paused}
+@media(max-width:720px){
+  .community-visual{perspective:1000px}
+  .community-visual::before{width:196px;height:196px}
+  .community-visual::after{width:238px;height:238px}
+  .community-core .core-dot{width:6px;height:6px;animation-name:community-satellite-mobile}
+}
+@keyframes community-satellite-mobile{
+  from{transform:rotate(-55deg) translateX(54px)}
+  to{transform:rotate(305deg) translateX(54px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .community-visual *,.community-visual *::before,.community-visual *::after{animation:none!important}
+  .community-core{transform:translateZ(18px) rotateX(5deg) rotateY(-7deg)}
+  .community-core .core-dot{transform:rotate(-55deg) translateX(54px)}
+}
+
 /* Subtle, fluid ripples around each stationary status dot. */
 .live-dot,.contact-kicker i{position:relative;flex-shrink:0}
 .live-dot{--ping-color:var(--orange);box-shadow:0 0 0 4px rgba(217,99,58,.045)}
