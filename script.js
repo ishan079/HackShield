@@ -13,25 +13,27 @@ if (communityVisual && 'IntersectionObserver' in window) {
 
 if (communityVisual && !reducedMotion.matches) {
   const sphere = {
-    current: { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0 },
-    target: { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0 },
+    current: { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0, outerX: 0, outerY: 0 },
+    target: { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0, outerX: 0, outerY: 0 },
   };
   let sphereFrame;
   const renderSphere = () => {
     let moving = false;
     Object.keys(sphere.current).forEach((key) => {
       const remaining = sphere.target[key] - sphere.current[key];
-      sphere.current[key] += remaining * .14;
+      sphere.current[key] += remaining * (key.startsWith('outer') ? .09 : .14);
       if (Math.abs(remaining) > .05) moving = true;
       else sphere.current[key] = sphere.target[key];
     });
-    const { x, y, lightX, lightY, shadowX, shadowY } = sphere.current;
+    const { x, y, lightX, lightY, shadowX, shadowY, outerX, outerY } = sphere.current;
     communityVisual.style.setProperty('--sphere-x', `${x.toFixed(1)}px`);
     communityVisual.style.setProperty('--sphere-y', `${y.toFixed(1)}px`);
     communityVisual.style.setProperty('--sphere-light-x', `${lightX.toFixed(1)}%`);
     communityVisual.style.setProperty('--sphere-light-y', `${lightY.toFixed(1)}%`);
     communityVisual.style.setProperty('--sphere-shadow-x', `${shadowX.toFixed(1)}px`);
     communityVisual.style.setProperty('--sphere-shadow-y', `${shadowY.toFixed(1)}px`);
+    communityVisual.style.setProperty('--outer-ring-x', `${outerX.toFixed(1)}px`);
+    communityVisual.style.setProperty('--outer-ring-y', `${outerY.toFixed(1)}px`);
     communityVisual.style.setProperty('--sphere-tilt-x', `${(x * .12).toFixed(1)}deg`);
     communityVisual.style.setProperty('--sphere-tilt-y', `${(y * -.12).toFixed(1)}deg`);
     sphereFrame = moving ? requestAnimationFrame(renderSphere) : undefined;
@@ -45,18 +47,22 @@ if (communityVisual && !reducedMotion.matches) {
     const x = (event.clientX - bounds.left) / bounds.width - .5;
     const y = (event.clientY - bounds.top) / bounds.height - .5;
     const distance = Math.hypot(x, y) || 1;
-    const range = Math.min(1, .42 / distance);
-    const sphereX = x * range * 68;
-    const sphereY = y * range * 68;
+    const maxTravel = window.matchMedia('(max-width: 720px)').matches ? 47 : 54;
+    const range = Math.min(1, .5 / distance);
+    const sphereX = x * range * maxTravel * 2;
+    const sphereY = y * range * maxTravel * 2;
+    const sphereDistance = Math.hypot(sphereX, sphereY);
+    const pull = Math.max(0, Math.min(1, (sphereDistance - (maxTravel - 12)) / 12));
     Object.assign(sphere.target, {
       x: sphereX, y: sphereY,
       lightX: 50 + x * 52, lightY: 50 + y * 52,
       shadowX: -x * 14, shadowY: -y * 14,
+      outerX: sphereX * pull * .35, outerY: sphereY * pull * .35,
     });
     settleSphere();
   });
   communityVisual.addEventListener('pointerleave', () => {
-    Object.assign(sphere.target, { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0 });
+    Object.assign(sphere.target, { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0, outerX: 0, outerY: 0 });
     settleSphere();
   });
 }
