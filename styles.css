@@ -227,7 +227,6 @@ html{scroll-padding-top:82px}
   animation:community-core-float 10s ease-in-out infinite;
   transition:transform .18s ease-out,background .25s ease,box-shadow .25s ease;
 }
-.community-visual.is-pointer-active .community-core{animation-play-state:paused}
 .community-core::before,.community-core::after{content:none}
 .community-core>span{transform:translateZ(4px)}
 .community-core .core-dot{
