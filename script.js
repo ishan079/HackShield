@@ -12,19 +12,33 @@ if (communityVisual && 'IntersectionObserver' in window) {
 }
 
 if (communityVisual && !reducedMotion.matches) {
-  const resetSphereLight = () => {
-    communityVisual.style.removeProperty('--sphere-x');
-    communityVisual.style.removeProperty('--sphere-y');
-    communityVisual.style.removeProperty('--sphere-light-x');
-    communityVisual.style.removeProperty('--sphere-light-y');
-    communityVisual.style.removeProperty('--sphere-shadow-x');
-    communityVisual.style.removeProperty('--sphere-shadow-y');
-    communityVisual.style.removeProperty('--sphere-tilt-x');
-    communityVisual.style.removeProperty('--sphere-tilt-y');
+  const sphere = {
+    current: { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0 },
+    target: { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0 },
   };
-  communityVisual.addEventListener('pointerenter', (event) => {
-    if (event.pointerType !== 'mouse') return;
-  });
+  let sphereFrame;
+  const renderSphere = () => {
+    let moving = false;
+    Object.keys(sphere.current).forEach((key) => {
+      const remaining = sphere.target[key] - sphere.current[key];
+      sphere.current[key] += remaining * .14;
+      if (Math.abs(remaining) > .05) moving = true;
+      else sphere.current[key] = sphere.target[key];
+    });
+    const { x, y, lightX, lightY, shadowX, shadowY } = sphere.current;
+    communityVisual.style.setProperty('--sphere-x', `${x.toFixed(1)}px`);
+    communityVisual.style.setProperty('--sphere-y', `${y.toFixed(1)}px`);
+    communityVisual.style.setProperty('--sphere-light-x', `${lightX.toFixed(1)}%`);
+    communityVisual.style.setProperty('--sphere-light-y', `${lightY.toFixed(1)}%`);
+    communityVisual.style.setProperty('--sphere-shadow-x', `${shadowX.toFixed(1)}px`);
+    communityVisual.style.setProperty('--sphere-shadow-y', `${shadowY.toFixed(1)}px`);
+    communityVisual.style.setProperty('--sphere-tilt-x', `${(x * .12).toFixed(1)}deg`);
+    communityVisual.style.setProperty('--sphere-tilt-y', `${(y * -.12).toFixed(1)}deg`);
+    sphereFrame = moving ? requestAnimationFrame(renderSphere) : undefined;
+  };
+  const settleSphere = () => {
+    if (!sphereFrame) sphereFrame = requestAnimationFrame(renderSphere);
+  };
   communityVisual.addEventListener('pointermove', (event) => {
     if (event.pointerType !== 'mouse') return;
     const bounds = communityVisual.getBoundingClientRect();
@@ -34,17 +48,16 @@ if (communityVisual && !reducedMotion.matches) {
     const range = Math.min(1, .42 / distance);
     const sphereX = x * range * 68;
     const sphereY = y * range * 68;
-    communityVisual.style.setProperty('--sphere-x', `${sphereX.toFixed(1)}px`);
-    communityVisual.style.setProperty('--sphere-y', `${sphereY.toFixed(1)}px`);
-    communityVisual.style.setProperty('--sphere-light-x', `${(50 + x * 52).toFixed(1)}%`);
-    communityVisual.style.setProperty('--sphere-light-y', `${(50 + y * 52).toFixed(1)}%`);
-    communityVisual.style.setProperty('--sphere-shadow-x', `${(-x * 14).toFixed(1)}px`);
-    communityVisual.style.setProperty('--sphere-shadow-y', `${(-y * 14).toFixed(1)}px`);
-    communityVisual.style.setProperty('--sphere-tilt-x', `${(sphereX * .12).toFixed(1)}deg`);
-    communityVisual.style.setProperty('--sphere-tilt-y', `${(sphereY * -.12).toFixed(1)}deg`);
+    Object.assign(sphere.target, {
+      x: sphereX, y: sphereY,
+      lightX: 50 + x * 52, lightY: 50 + y * 52,
+      shadowX: -x * 14, shadowY: -y * 14,
+    });
+    settleSphere();
   });
   communityVisual.addEventListener('pointerleave', () => {
-    resetSphereLight();
+    Object.assign(sphere.target, { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0 });
+    settleSphere();
   });
 }
 
