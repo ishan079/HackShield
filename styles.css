@@ -208,7 +208,7 @@ html{scroll-padding-top:82px}
 .starting-point-link:hover .nav-link-label{color:#000}
 
 
-/* Two staggered ripple rings around each stationary status dot. */
+/* Subtle, fluid ripples around each stationary status dot. */
 .live-dot,.contact-kicker i{position:relative;flex-shrink:0}
 .live-dot{--ping-color:var(--orange)}
 .contact-kicker i{--ping-color:#e8845b}
@@ -216,18 +216,18 @@ html{scroll-padding-top:82px}
 .contact-kicker i::before,.contact-kicker i::after{
   content:"";
   position:absolute;
-  inset:-2px;
-  border:1px solid var(--ping-color);
+  inset:-1px;
+  border:1px solid color-mix(in srgb,var(--ping-color) 42%,transparent);
   border-radius:50%;
   pointer-events:none;
   opacity:0;
-  animation:status-ripple 2.8s ease-out infinite;
+  animation:status-ripple 3.6s cubic-bezier(.22,.61,.36,1) infinite;
 }
-.live-dot::after,.contact-kicker i::after{animation-delay:.55s}
+.live-dot::after,.contact-kicker i::after{animation-delay:1.05s}
 @keyframes status-ripple{
-  0%{transform:scale(.7);opacity:0}
-  12%{opacity:.75}
-  75%,100%{transform:scale(2.8);opacity:0}
+  0%{transform:scale(.82);opacity:0}
+  14%{opacity:.38}
+  78%,100%{transform:scale(2.15);opacity:0}
 }
 @media(prefers-reduced-motion:reduce){
   .live-dot::before,.live-dot::after,
