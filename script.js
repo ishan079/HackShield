@@ -2,6 +2,15 @@ const stage = document.querySelector('#shieldStage');
 const heroArt = document.querySelector('.hero-art');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+// Preserve the phase of the layered diagram while it is outside the viewport.
+const communityVisual = document.querySelector('.community-visual');
+if (communityVisual && 'IntersectionObserver' in window) {
+  const communityVisibility = new IntersectionObserver(([entry]) => {
+    communityVisual.classList.toggle('is-motion-paused', !entry.isIntersecting);
+  });
+  communityVisibility.observe(communityVisual);
+}
+
 if (stage && heroArt && !reducedMotion.matches) {
   heroArt.addEventListener('pointermove', (event) => {
     if (event.pointerType === 'touch') return;
