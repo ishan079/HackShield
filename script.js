@@ -15,15 +15,24 @@ if (communityVisual && !reducedMotion.matches) {
   const sphere = {
     current: { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0, innerX: 0, innerY: 0 },
     target: { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0, innerX: 0, innerY: 0 },
+    innerVelocity: { x: 0, y: 0 },
   };
   let sphereFrame;
   const renderSphere = () => {
     let moving = false;
     Object.keys(sphere.current).forEach((key) => {
       const remaining = sphere.target[key] - sphere.current[key];
-      sphere.current[key] += remaining * (key.startsWith('inner') ? .055 : .14);
-      if (Math.abs(remaining) > .05) moving = true;
-      else sphere.current[key] = sphere.target[key];
+      if (key.startsWith('inner')) {
+        const axis = key === 'innerX' ? 'x' : 'y';
+        sphere.innerVelocity[axis] = (sphere.innerVelocity[axis] + remaining * .018) * .88;
+        sphere.current[key] += sphere.innerVelocity[axis];
+        if (Math.abs(remaining) > .05 || Math.abs(sphere.innerVelocity[axis]) > .05) moving = true;
+        else sphere.current[key] = sphere.target[key];
+      } else {
+        sphere.current[key] += remaining * .14;
+        if (Math.abs(remaining) > .05) moving = true;
+        else sphere.current[key] = sphere.target[key];
+      }
     });
     const { x, y, lightX, lightY, shadowX, shadowY, innerX, innerY } = sphere.current;
     communityVisual.style.setProperty('--sphere-x', `${x.toFixed(1)}px`);
@@ -57,7 +66,7 @@ if (communityVisual && !reducedMotion.matches) {
       x: sphereX, y: sphereY,
       lightX: 50 + x * 52, lightY: 50 + y * 52,
       shadowX: -x * 14, shadowY: -y * 14,
-      innerX: sphereX * contact * .44, innerY: sphereY * contact * .44,
+      innerX: sphereX * contact * .68, innerY: sphereY * contact * .68,
     });
     settleSphere();
   });
