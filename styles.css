@@ -209,7 +209,12 @@ html{scroll-padding-top:82px}
 
 
 /* The community diagram is a shallow 3D assembly, with readable front labels. */
-.community-visual{perspective:850px;isolation:isolate;overflow:visible}
+.community-visual{
+  --community-scale:1;--community-tilt-x:0deg;--community-tilt-y:0deg;
+  perspective:850px;isolation:isolate;overflow:visible;
+  transform:scale(var(--community-scale)) rotateX(var(--community-tilt-y)) rotateY(var(--community-tilt-x));
+  transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.8,.2,1);
+}
 .community-core{
   transform-style:preserve-3d;
   background:linear-gradient(135deg,#e57e50 0%,var(--orange) 58%,#bd502e 100%);
@@ -242,6 +247,14 @@ html{scroll-padding-top:82px}
 .community-label{box-shadow:0 5px 12px rgba(32,37,34,.045)}
 .label-discord{animation:community-discord-drift 10s ease-in-out infinite}
 .label-whatsapp{left:16px;animation:community-whatsapp-drift 10s ease-in-out infinite}
+.community-visual.is-pointer-active .community-core{animation-duration:6.5s}
+.community-visual.is-pointer-active .orbit-left{animation-duration:12s}
+.community-visual.is-pointer-active .orbit-right{animation-duration:15s}
+.community-visual.is-pointer-pulsed .community-core{
+  filter:brightness(1.08) saturate(1.08);
+  box-shadow:0 3px 0 #b64d2c,0 0 0 12px rgba(217,99,58,.13),0 18px 28px rgba(105,53,30,.17);
+}
+.community-core{transition:filter .2s ease,box-shadow .2s ease}
 @keyframes community-core-float{
   0%,100%{transform:translate3d(0,3px,18px) rotateX(5deg) rotateY(-7deg)}
   50%{transform:translate3d(0,-7px,28px) rotateX(-5deg) rotateY(7deg)}
@@ -277,8 +290,9 @@ html{scroll-padding-top:82px}
 .community-visual.is-motion-paused *,
 .community-visual.is-motion-paused *::before,
 .community-visual.is-motion-paused *::after{animation-play-state:paused}
+@media(max-width:1000px){.community-visual{--community-scale:.92}}
 @media(max-width:720px){
-  .community-visual{perspective:1000px}
+  .community-visual{--community-scale:1;perspective:1000px}
   .community-core .core-dot{width:6px;height:6px;animation-name:community-satellite-mobile}
 }
 @keyframes community-satellite-mobile{

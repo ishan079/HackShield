@@ -11,6 +11,38 @@ if (communityVisual && 'IntersectionObserver' in window) {
   communityVisibility.observe(communityVisual);
 }
 
+if (communityVisual && !reducedMotion.matches) {
+  let communityPulseTimer;
+  const isMousePointer = (event) => event.pointerType === 'mouse';
+
+  communityVisual.addEventListener('pointerenter', (event) => {
+    if (!isMousePointer(event)) return;
+    communityVisual.classList.add('is-pointer-active');
+  });
+  communityVisual.addEventListener('pointermove', (event) => {
+    if (!isMousePointer(event)) return;
+    const bounds = communityVisual.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    communityVisual.style.setProperty('--community-tilt-x', `${x * -10}deg`);
+    communityVisual.style.setProperty('--community-tilt-y', `${y * 8}deg`);
+  });
+  communityVisual.addEventListener('pointerleave', () => {
+    communityVisual.classList.remove('is-pointer-active');
+    communityVisual.style.setProperty('--community-tilt-x', '0deg');
+    communityVisual.style.setProperty('--community-tilt-y', '0deg');
+  });
+  communityVisual.addEventListener('pointerdown', (event) => {
+    if (!isMousePointer(event)) return;
+    communityVisual.classList.remove('is-pointer-pulsed');
+    window.clearTimeout(communityPulseTimer);
+    requestAnimationFrame(() => communityVisual.classList.add('is-pointer-pulsed'));
+    communityPulseTimer = window.setTimeout(() => {
+      communityVisual.classList.remove('is-pointer-pulsed');
+    }, 360);
+  });
+}
+
 if (stage && heroArt && !reducedMotion.matches) {
   heroArt.addEventListener('pointermove', (event) => {
     if (event.pointerType === 'touch') return;
