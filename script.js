@@ -23,15 +23,31 @@ if (communityVisual && !reducedMotion.matches) {
     Object.keys(sphere.current).forEach((key) => {
       const remaining = sphere.target[key] - sphere.current[key];
       if (key.startsWith('inner')) {
-        const axis = key === 'innerX' ? 'x' : 'y';
-        sphere.innerVelocity[axis] = (sphere.innerVelocity[axis] + remaining * .018) * .88;
-        sphere.current[key] += sphere.innerVelocity[axis];
-        if (Math.abs(remaining) > .05 || Math.abs(sphere.innerVelocity[axis]) > .05) moving = true;
-        else sphere.current[key] = sphere.target[key];
+        return;
       } else {
         sphere.current[key] += remaining * .14;
         if (Math.abs(remaining) > .05) moving = true;
         else sphere.current[key] = sphere.target[key];
+      }
+    });
+    const ringDeltaX = sphere.current.x - sphere.current.innerX;
+    const ringDeltaY = sphere.current.y - sphere.current.innerY;
+    const ringDistance = Math.hypot(ringDeltaX, ringDeltaY);
+    if (ringDistance > 27) {
+      const pressure = Math.min(ringDistance - 27, 7);
+      sphere.innerVelocity.x += (ringDeltaX / ringDistance) * pressure * .065;
+      sphere.innerVelocity.y += (ringDeltaY / ringDistance) * pressure * .065;
+    }
+    ['innerX', 'innerY'].forEach((key) => {
+      const axis = key === 'innerX' ? 'x' : 'y';
+      const position = sphere.current[key];
+      const velocity = (sphere.innerVelocity[axis] - position * .014) * .89;
+      sphere.innerVelocity[axis] = Math.max(-.72, Math.min(.72, velocity));
+      sphere.current[key] += sphere.innerVelocity[axis];
+      if (Math.abs(sphere.current[key]) > .05 || Math.abs(sphere.innerVelocity[axis]) > .05) moving = true;
+      else {
+        sphere.current[key] = 0;
+        sphere.innerVelocity[axis] = 0;
       }
     });
     const { x, y, lightX, lightY, shadowX, shadowY, innerX, innerY } = sphere.current;
@@ -59,19 +75,15 @@ if (communityVisual && !reducedMotion.matches) {
     const range = Math.min(1, .42 / distance);
     const sphereX = x * range * 68;
     const sphereY = y * range * 68;
-    const sphereDistance = Math.hypot(sphereX, sphereY);
-    const contactProgress = Math.max(0, Math.min(1, (sphereDistance - 17) / 13));
-    const contact = contactProgress * contactProgress * (3 - 2 * contactProgress);
     Object.assign(sphere.target, {
       x: sphereX, y: sphereY,
       lightX: 50 + x * 52, lightY: 50 + y * 52,
       shadowX: -x * 14, shadowY: -y * 14,
-      innerX: sphereX * contact * .68, innerY: sphereY * contact * .68,
     });
     settleSphere();
   });
   communityVisual.addEventListener('pointerleave', () => {
-    Object.assign(sphere.target, { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0, innerX: 0, innerY: 0 });
+    Object.assign(sphere.target, { x: 0, y: 0, lightX: 31, lightY: 24, shadowX: 0, shadowY: 0 });
     settleSphere();
   });
 }
