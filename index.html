@@ -141,7 +141,7 @@
             <p>Planned for <strong>early November.</strong></p>
             <p class="ctf-small">The registration link, exact dates, and participation details will be shared here once confirmed.</p>
           </div>
-          <a class="ctf-contact" href="#contact">Have a question? Talk to us <span aria-hidden="true">↗</span></a>
+          <a class="ctf-contact" href="#ctf-registration">See registration details <span aria-hidden="true">↓</span></a>
         </div>
         <div class="ctf-art" aria-hidden="true">
           <div class="ctf-art-caption"><span>CAPTURE THE FLAG</span><span>CTF / 01</span></div>
@@ -162,6 +162,29 @@
           </svg>
           <p class="ctf-art-note">A LITTLE CURIOSITY. A NEW CHALLENGE.</p>
         </div>
+      </div>
+      <div class="ctf-signup" id="ctf-registration" aria-labelledby="ctf-signup-title">
+        <div class="ctf-signup-copy">
+          <p class="eyebrow">YOUR NEXT STEP</p>
+          <h3 id="ctf-signup-title">Curiosity looks<br>good on <em>you.</em></h3>
+          <p>Register for the mini CTF when entries open. You’ll need your institute email and your pwn.college username.</p>
+          <a class="ctf-contact" href="#contact">Questions before you join? <span aria-hidden="true">↗</span></a>
+        </div>
+        <form class="ctf-form" aria-labelledby="ctf-form-title" aria-describedby="ctf-form-note" onsubmit="return false">
+          <div class="ctf-form-heading"><h4 id="ctf-form-title">Mini CTF registration</h4><span>COMING SOON</span></div>
+          <p id="ctf-form-note">Registration is planned for early November. This form will open once the date is confirmed.</p>
+          <fieldset disabled>
+            <legend class="ctf-form-legend">Participant details</legend>
+            <label for="ctf-email">Institute email <span>Required</span></label>
+            <input id="ctf-email" name="email" type="email" autocomplete="email" placeholder="Your institute email address" required aria-describedby="ctf-email-help">
+            <p class="ctf-field-help" id="ctf-email-help">Use the email address provided by your institute.</p>
+            <label for="ctf-username">pwn.college username <span>Required</span></label>
+            <input id="ctf-username" name="username" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Your pwn.college username" required aria-describedby="ctf-username-help">
+            <p class="ctf-field-help" id="ctf-username-help">Enter your username, not your password.</p>
+            <button type="submit" class="ctf-submit">Registration opening soon <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></button>
+          </fieldset>
+          <p class="ctf-form-footnote">Entries are not being collected yet.</p>
+        </form>
       </div>
     </section>
 
