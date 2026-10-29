@@ -349,7 +349,8 @@ html{scroll-padding-top:82px}
 .faq-intro>p:not(.eyebrow){color:#5f6059;font-size:14px;line-height:1.7}
 .faq-draft{display:block;font:9px/1.8 var(--mono);letter-spacing:.06em;color:#676960;max-width:32ch;margin:24px 0 14px}
 .faq-contact{display:inline-flex;align-items:center;gap:18px;min-height:44px;font-size:13px;font-weight:500}
-.faq-contact span{color:var(--orange-dark);font-size:22px}
+.faq-contact span{color:var(--orange-dark);font-size:22px;transition:transform .25s ease}
+.faq-contact:hover span,.faq-contact:focus-visible span{transform:translate(2px,-2px)}
 .faq-list{min-width:0;border-top:1px solid var(--line)}
 .faq-item{border-bottom:1px solid var(--line)}
 .faq-item summary{list-style:none;display:grid;grid-template-columns:24px minmax(0,1fr) 18px;gap:16px;align-items:center;min-height:76px;padding:22px 8px;cursor:pointer;font:500 clamp(15px,1.5vw,19px)/1.5 var(--display);letter-spacing:-.025em;transition:color .2s ease,background-color .2s ease}
@@ -367,7 +368,7 @@ html{scroll-padding-top:82px}
 .faq-item[open] .faq-answer{animation:faq-answer-in .22s ease-out}
 @keyframes faq-answer-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:720px){.faq{padding-top:52px;padding-bottom:52px}.faq-inner{grid-template-columns:minmax(0,1fr);gap:30px}.faq-item summary{gap:12px;padding:20px 4px}.faq-answer{padding-left:40px;padding-right:24px}}
-@media(prefers-reduced-motion:reduce){.faq-item summary,.faq-toggle::after{transition:none}.faq-item[open] .faq-answer{animation:none}}
+@media(prefers-reduced-motion:reduce){.faq-contact span,.faq-item summary,.faq-toggle::after{transition:none}.faq-item[open] .faq-answer{animation:none}}
 
 /* Community announcements stay in normal document flow at every viewport size. */
 .notice-board{padding-top:64px;padding-bottom:64px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
