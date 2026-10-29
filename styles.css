@@ -291,6 +291,31 @@ html{scroll-padding-top:82px}
   .community-core .core-dot{transform:rotate(-55deg) translateX(54px)}
 }
 
+/* Mini CTF: a quiet, illustrated invitation before registration opens. */
+.mini-ctf{background:var(--ink);color:var(--paper);padding-top:88px;padding-bottom:88px}
+.ctf-inner{max-width:var(--wrap);margin:auto;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,6vw,80px);align-items:center}
+.mini-ctf .eyebrow{color:#e8845b}
+.ctf-copy h2{font:600 clamp(36px,4.5vw,64px)/1.08 var(--display);letter-spacing:-.055em;margin:22px 0}
+.ctf-copy h2 em{font-family:var(--serif);font-weight:400;color:#e8845b}
+.ctf-intro{max-width:45ch;font-size:16px;line-height:1.8;color:#cfcdc3}
+.ctf-registration{border-top:1px solid #4c504a;border-bottom:1px solid #4c504a;padding:24px 0;margin:30px 0 24px}
+.ctf-status{font:10px/1.7 var(--mono);letter-spacing:.1em;color:#e8845b}
+.ctf-registration p{margin:10px 0;font-size:18px}.ctf-registration strong{font-weight:500}
+.ctf-registration .ctf-small{font-size:13px;line-height:1.7;color:#bcbdb3;max-width:49ch;margin-bottom:0}
+.ctf-contact,.ctf-notice-link{display:inline-flex;align-items:center;gap:18px;font-size:13px;font-weight:500;min-height:44px}
+.ctf-contact span,.ctf-notice-link span{color:#e8845b;font-size:22px;transition:transform .25s ease}
+.ctf-notice-link span{color:var(--orange-dark)}
+.ctf-contact:hover span,.ctf-notice-link:hover span{transform:translate(2px,-2px)}
+.ctf-contact:focus-visible{outline-color:#e8845b}
+.ctf-art{min-width:0;border:1px solid #4c504a;padding:22px;color:var(--paper)}
+.ctf-art-caption{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font:9px/1.6 var(--mono);letter-spacing:.08em;color:#bcbdb3}
+.ctf-art svg{display:block;width:100%;height:auto;margin:12px 0}
+.ctf-art-note{font:9px/1.8 var(--mono);letter-spacing:.08em;color:#bcbdb3;margin:0;text-align:center}
+.ctf-flag{transform-origin:200px 130px;animation:ctf-breeze 6s ease-in-out infinite}
+@keyframes ctf-breeze{0%,100%{transform:skewY(-2deg) scaleX(.98)}50%{transform:skewY(2deg) scaleX(1)}}
+@media(max-width:720px){.mini-ctf{padding-top:52px;padding-bottom:52px}.ctf-inner{grid-template-columns:minmax(0,1fr);gap:32px}.ctf-art{width:100%;max-width:400px;justify-self:center}.ctf-intro{font-size:14px}.ctf-copy h2{font-size:clamp(34px,8vw,48px)}}
+@media(prefers-reduced-motion:reduce){.ctf-flag{animation:none}.ctf-contact span,.ctf-notice-link span{transition:none}}
+
 /* Community announcements stay in normal document flow at every viewport size. */
 .notice-board{padding-top:64px;padding-bottom:64px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
 .notice-board-inner{max-width:var(--wrap);margin:0 auto;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(28px,6vw,88px);align-items:start}
