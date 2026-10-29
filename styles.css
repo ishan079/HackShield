@@ -291,6 +291,23 @@ html{scroll-padding-top:82px}
   .community-core .core-dot{transform:rotate(-55deg) translateX(54px)}
 }
 
+/* Community announcements stay in normal document flow at every viewport size. */
+.notice-board{padding-top:64px;padding-bottom:64px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
+.notice-board-inner{max-width:var(--wrap);margin:0 auto;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(28px,6vw,88px);align-items:start}
+.notice-board-heading h2{font:600 clamp(36px,4vw,54px)/1.08 var(--display);letter-spacing:-.05em;margin:16px 0}
+.notice-board-heading h2 em{font-family:var(--serif);font-weight:400;color:var(--orange)}
+.notice-board-heading>p:last-child{color:#5f6059;font-size:14px;line-height:1.6}
+.notice-card{min-width:0;padding:clamp(22px,3vw,38px);border:1px solid var(--line);border-top:3px solid var(--orange);background:var(--paper-deep)}
+.notice-meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;font:10px/1.6 var(--mono);letter-spacing:.08em;color:var(--orange-dark)}
+.notice-status{padding:4px 8px;border:1px solid rgba(171,72,44,.25);border-radius:2px}
+.notice-card h3{font:600 clamp(24px,2.5vw,34px)/1.15 var(--display);letter-spacing:-.04em;margin:24px 0 14px}
+.notice-card>p{font-size:14px;line-height:1.75;color:#555a54;max-width:48ch}
+.notice-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:10px;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
+.notice-foot>span{font:10px/1.6 var(--mono);letter-spacing:.07em;color:#5f6059}
+.notice-foot strong{font-size:17px;font-weight:500;color:var(--ink)}
+.notice-card .notice-detail{font-size:12px;margin:12px 0 0}
+@media(max-width:720px){.notice-board{padding-top:40px;padding-bottom:40px}.notice-board-inner{grid-template-columns:minmax(0,1fr);gap:20px}.notice-board-heading h2{margin:12px 0}.notice-card h3{margin-top:20px}}
+
 /* Subtle, fluid ripples around each stationary status dot. */
 .live-dot,.contact-kicker i{position:relative;flex-shrink:0}
 .live-dot{--ping-color:var(--orange);box-shadow:0 0 0 4px rgba(217,99,58,.045)}
