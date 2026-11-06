@@ -12,10 +12,9 @@ export const metadata: Metadata = {
     'HackShield — Official Cybersecurity Club & Community at IIT Patna. Learn, compete in CTFs, build security tools, and defend together.',
   icons: {
     icon: [
-      { url: '/favicon.png', type: 'image/png' },
       { url: '/favicon.svg', type: 'image/svg+xml' },
     ],
-    apple: '/favicon.png',
+    apple: '/favicon.svg',
   },
 }
 
