@@ -19,7 +19,7 @@ const NAV_LINKS: NavLinkItem[] = [
 
 const ShieldLogo = ({ size = 28 }: { size?: number }) => (
   <Image
-    src="/logo.png"
+    src="/favicon.svg"
     alt="HackShield Logo"
     width={size}
     height={size}

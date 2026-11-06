@@ -53,9 +53,37 @@ function CTFContent() {
     }
   }, [searchParams])
 
+  useEffect(() => {
+    const sprintId = searchParams.get('register')
+    setFlippedSprintId(sprintId)
+
+    if (!sprintId) return
+
+    const frame = window.requestAnimationFrame(() => {
+      document
+        .getElementById(`registration-${sprintId}`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    })
+
+    return () => window.cancelAnimationFrame(frame)
+  }, [searchParams])
+
   const handleTabChange = (tab: 'flagship' | 'mini') => {
     setActiveTab(tab)
     router.push(`/ctf?type=${tab}`, { scroll: false })
+  }
+
+  const openRegistration = (sprintId: string) => {
+    setFlippedSprintId(sprintId)
+    router.push(
+      `/ctf?type=mini&register=${encodeURIComponent(sprintId)}#registration-${encodeURIComponent(sprintId)}`,
+      { scroll: false }
+    )
+  }
+
+  const closeRegistration = () => {
+    setFlippedSprintId(null)
+    router.push('/ctf?type=mini', { scroll: false })
   }
 
   const { ref: heroRef, inView: heroInView } = useInView({
@@ -1230,6 +1258,7 @@ function CTFContent() {
                     return (
                       <div
                         key={sprint.id}
+                        id={`registration-${sprint.id}`}
                         style={{ perspective: '1600px', width: '100%' }}
                       >
                         <AnimatePresence mode="wait" initial={false}>
@@ -1332,9 +1361,7 @@ function CTFContent() {
 
                                 <button
                                   type="button"
-                                  onClick={() =>
-                                    setFlippedSprintId(sprint.id)
-                                  }
+                                  onClick={() => openRegistration(sprint.id)}
                                   style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
@@ -1515,7 +1542,7 @@ function CTFContent() {
                                   </span>
                                   <button
                                     type="button"
-                                    onClick={() => setFlippedSprintId(null)}
+                                    onClick={closeRegistration}
                                     aria-label="Back to sprint details"
                                     style={{
                                       display: 'inline-flex',
