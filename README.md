@@ -23,6 +23,29 @@ npm run build
 npm run start
 ```
 
+### 4. Backend + PostgreSQL
+
+```bash
+cp .env.example .env.local
+docker compose up -d postgres
+npm run db:migrate
+npm run dev:server
+```
+
+Run `npm run dev` in a second terminal. Browser calls to `/api/v1/*` are
+proxied by Next.js to the Fastify server on port 5000.
+
+### 5. Test everything
+
+```bash
+npm test
+npm run typecheck
+npm run build
+```
+
+The suite covers the API contract, PostgreSQL migration/repository behavior,
+backend HTTP routes, and the Mini CTF frontend registration flow.
+
 ---
 
 ## 📁 Architecture

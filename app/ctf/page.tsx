@@ -28,6 +28,7 @@ import {
   MiniCTFSprint,
   MiniStatItem,
 } from '@/types'
+import { api } from '@/lib/api'
 
 function CTFContent() {
   const router = useRouter()
@@ -39,6 +40,10 @@ function CTFContent() {
     email: '',
     pwnUsername: '',
   })
+  const [registrationState, setRegistrationState] = useState<
+    'idle' | 'submitting' | 'success' | 'error'
+  >('idle')
+  const [registrationMessage, setRegistrationMessage] = useState('')
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -84,6 +89,31 @@ function CTFContent() {
   const closeRegistration = () => {
     setFlippedSprintId(null)
     router.push('/ctf?type=mini', { scroll: false })
+  }
+
+  const submitRegistration = async (sprintId: string) => {
+    if (!regForm.email.trim() || !regForm.pwnUsername.trim()) {
+      setRegistrationState('error')
+      setRegistrationMessage('Institute email and pwn.college username are required.')
+      return
+    }
+
+    setRegistrationState('submitting')
+    setRegistrationMessage('')
+    const result = await api.registerMiniSprint(sprintId, {
+      email: regForm.email.trim(),
+      pwnUsername: regForm.pwnUsername.trim(),
+    })
+
+    if (result.success) {
+      setRegistrationState('success')
+      setRegistrationMessage(
+        `Registration confirmed. Reference: ${result.data.registrationId}`
+      )
+    } else {
+      setRegistrationState('error')
+      setRegistrationMessage(result.error.message)
+    }
   }
 
   const { ref: heroRef, inView: heroInView } = useInView({
@@ -1538,7 +1568,7 @@ function CTFContent() {
                                       letterSpacing: '0.2px',
                                     }}
                                   >
-                                    Coming soon
+                                    Registration open
                                   </span>
                                   <button
                                     type="button"
@@ -1593,8 +1623,8 @@ function CTFContent() {
                                   margin: '0 0 24px',
                                 }}
                               >
-                                Registration is planned for early November. This
-                                form will open once the date is confirmed.
+                                Register with your IIT Patna institute email and
+                                pwn.college username. Each participant may register once.
                               </p>
 
                               <h4
@@ -1750,34 +1780,57 @@ function CTFContent() {
 
                               <button
                                 type="button"
-                                disabled
+                                disabled={
+                                  registrationState === 'submitting' ||
+                                  registrationState === 'success'
+                                }
+                                onClick={() => submitRegistration(sprint.id)}
                                 style={{
                                   width: '100%',
                                   padding: '14px 20px',
                                   borderRadius: '12px',
-                                  background: 'rgba(120, 120, 128, 0.45)',
+                                  background:
+                                    registrationState === 'success'
+                                      ? '#059669'
+                                      : 'var(--accent)',
                                   border: '1px solid var(--border-subtle)',
                                   color: '#ffffff',
                                   fontSize: '0.98rem',
                                   fontWeight: 700,
-                                  cursor: 'not-allowed',
+                                  cursor:
+                                    registrationState === 'submitting' ||
+                                    registrationState === 'success'
+                                      ? 'not-allowed'
+                                      : 'pointer',
                                   textAlign: 'center',
                                   marginBottom: '14px',
                                   opacity: 0.88,
                                   transition: 'all 0.2s ease',
                                 }}
                               >
-                                Registration opening soon
+                                {registrationState === 'submitting'
+                                  ? 'Submitting registration…'
+                                  : registrationState === 'success'
+                                    ? 'Registration confirmed'
+                                    : 'Register for this sprint'}
                               </button>
 
                               <div
+                                role="status"
+                                aria-live="polite"
                                 style={{
                                   fontSize: '0.84rem',
-                                  color: 'var(--text-muted)',
+                                  color:
+                                    registrationState === 'error'
+                                      ? '#f87171'
+                                      : registrationState === 'success'
+                                        ? '#34d399'
+                                        : 'var(--text-muted)',
                                   lineHeight: 1.5,
                                 }}
                               >
-                                Entries are not being collected yet.
+                                {registrationMessage ||
+                                  'Your username and institute email will be sent securely to the HackShield registration API.'}
                               </div>
                             </motion.div>
                           )}

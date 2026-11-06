@@ -141,6 +141,18 @@ values. Add the language-specific PostgreSQL driver and migration tool only when
 the backend runtime is scaffolded; remove superseded drivers if the runtime or
 ORM changes.
 
+The runtime is scaffolded in `server/` with Fastify, `pg`, Zod validation, and
+SQL migrations. Start the database with Docker when available:
+
+```bash
+docker compose up -d postgres
+npm run db:migrate
+npm run dev:server
+```
+
+Without Docker, point `DATABASE_URL` at any PostgreSQL 16+ instance. The server
+runs migrations at startup, so a newly created database is immediately ready.
+
 ## Frontend verification
 
 ```bash
@@ -149,9 +161,9 @@ npm run typecheck
 npm run build
 ```
 
-The frontend unit suite mocks transport; it does not require a running backend.
-For end-to-end integration, point `BACKEND_URL` at the backend service and run
-the app through the Next.js proxy.
+The suite includes transport mocks, frontend interaction tests, and backend
+route integration tests backed by an in-process PostgreSQL-compatible engine.
+For a real end-to-end run, start PostgreSQL and both application processes.
 
 ## Security requirements
 

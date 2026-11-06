@@ -4,27 +4,46 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:server": "tsx watch server/index.ts",
     "build": "next build",
     "start": "next start",
+    "start:server": "tsx server/index.ts",
+    "db:migrate": "tsx server/migrate.ts",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:registration": "vitest run tests/server/mini-sprint-registration.integration.test.ts tests/frontend/registration-flow.test.tsx",
     "test:watch": "vitest"
   },
   "dependencies": {
+    "dotenv": "^18.0.9",
+    "fastify": "^5.12.8",
     "framer-motion": "^12.0.0",
     "lucide-react": "^0.475.0",
     "next": "^15.1.0",
+    "pg": "^8.23.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-intersection-observer": "^9.15.1"
+    "react-intersection-observer": "^9.15.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
     "@types/node": "^22.0.0",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.2.1",
+    "jsdom": "^31.0.0",
+    "pg-mem": "^3.0.14",
+    "tsx": "^4.23.15",
     "typescript": "^5.7.0",
     "vitest": "^5.1.0",
     "yaml": "^2.9.1"
+  },
+  "overrides": {
+    "postcss": "8.5.23"
   }
 }
