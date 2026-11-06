@@ -142,7 +142,7 @@ export default function Footer() {
               }}
             >
               <Image
-                src="/logo.png"
+                src="/favicon.svg"
                 alt="HackShield Logo"
                 width={26}
                 height={26}
