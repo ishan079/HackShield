@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ──────────────────────────────────────────────
+   THEME VARIABLES
+   ────────────────────────────────────────────── */
+:root, [data-theme="dark"] {
+  --bg-primary: #0b0f14;
+  --bg-secondary: #0e1319;
+  --bg-surface: linear-gradient(180deg, rgba(0, 0, 0, 0.48) 0%, rgba(10, 16, 24, 0.38) 100%);
+  --bg-card: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(20, 26, 35, 0.65) 40%, rgba(10, 15, 22, 0.75) 100%);
+  --bg-card-hover: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(25, 33, 44, 0.70) 45%, rgba(12, 17, 25, 0.82) 100%);
+  --bg-card-solid: #0e1319;
+  --bg-glass: rgba(14, 20, 28, 0.68);
+  --border-subtle: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.22);
+  --border-specular: rgba(255, 255, 255, 0.42);
+  --border-bottom: rgba(0, 0, 0, 0.50);
+  --border-divider: rgba(255, 255, 255, 0.08);
+  --accent: #e8845b;
+  --accent-hover: #f09568;
+  --accent-dim: rgba(232, 132, 91, 0.15);
+  --accent-glow: rgba(232, 132, 91, 0.35);
+  --accent-subtle: rgba(232, 132, 91, 0.08);
+  --text-primary: #f0f3f6;
+  --text-secondary: rgba(240, 243, 246, 0.72);
+  --text-muted: rgba(240, 243, 246, 0.46);
+  --shadow-card: 0 24px 50px -10px rgba(0, 0, 0, 0.78), 0 10px 24px -5px rgba(0, 0, 0, 0.52), inset 0 1px 1px 0 rgba(255, 255, 255, 0.40), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.45);
+  --shadow-card-hover: 0 32px 64px -12px rgba(0, 0, 0, 0.85), 0 16px 32px -6px rgba(0, 0, 0, 0.60), inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.55), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.45), 0 0 28px rgba(232, 132, 91, 0.20);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
+  --nav-bg: rgba(11, 15, 20, 0.82);
+  --tag-bg: rgba(255, 255, 255, 0.07);
+  --input-bg: rgba(0, 0, 0, 0.45);
+  --card-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(20, 26, 35, 0.62) 40%, rgba(10, 15, 22, 0.72) 100%);
+  --cursor-spotlight: rgba(232, 132, 91, 0.08);
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Space Grotesk', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --card-radius: 28px;
+}
+
+[data-theme="light"] {
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #f1f3f5;
+  --bg-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.90) 0%, rgba(240, 244, 248, 0.65) 100%);
+  --bg-card: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.60) 50%, rgba(240, 244, 248, 0.75) 100%), rgba(255, 255, 255, 0.80);
+  --bg-card-hover: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.70) 50%, rgba(245, 248, 252, 0.85) 100%), rgba(255, 255, 255, 0.88);
+  --bg-card-solid: #ffffff;
+  --bg-glass: rgba(248, 249, 250, 0.88);
+  --border-subtle: rgba(255, 255, 255, 0.80);
+  --border-strong: rgba(255, 255, 255, 0.95);
+  --border-specular: rgba(255, 255, 255, 1);
+  --border-bottom: rgba(0, 0, 0, 0.08);
+  --border-divider: rgba(0, 0, 0, 0.06);
+  --accent: #d8683e;
+  --accent-hover: #e3744a;
+  --accent-dim: rgba(216, 104, 62, 0.1);
+  --accent-glow: rgba(216, 104, 62, 0.22);
+  --accent-subtle: rgba(216, 104, 62, 0.05);
+  --text-primary: #0f1419;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+  --shadow-card: 0 18px 40px -10px rgba(0, 0, 0, 0.08), 0 6px 14px -3px rgba(0, 0, 0, 0.04), inset 0 1px 2px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 26px 52px -10px rgba(0, 0, 0, 0.12), 0 10px 20px -3px rgba(0, 0, 0, 0.06), inset 0 1.5px 2px 0 rgba(255, 255, 255, 1), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.05), 0 0 24px rgba(216, 104, 62, 0.14);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+  --nav-bg: rgba(248, 249, 250, 0.88);
+  --tag-bg: rgba(0, 0, 0, 0.05);
+  --input-bg: rgba(255, 255, 255, 0.65);
+  --card-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(245, 248, 252, 0.80) 100%);
+  --cursor-spotlight: rgba(216, 104, 62, 0.05);
+  --card-radius: 26px;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+::selection {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 120, 120, 0.25);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 120, 120, 0.45);
+}
+
+/* ──────────────────────────────────────────────
+   UNIVERSAL THEME-AWARE HELPERS
+   ────────────────────────────────────────────── */
+.theme-card,
+.hs-glass-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-top: 1.5px solid var(--border-specular);
+  border-bottom: 1px solid var(--border-bottom);
+  color: var(--text-primary);
+  border-radius: var(--card-radius, 28px);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.32s ease;
+}
+
+.theme-card:hover,
+.hs-glass-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255, 255, 255, 0.30);
+  border-top-color: rgba(255, 255, 255, 0.58);
+  border-bottom-color: var(--border-bottom);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+[data-theme="light"] .theme-card:hover,
+[data-theme="light"] .hs-glass-card:hover {
+  border-color: rgba(0, 0, 0, 0.18);
+  border-top-color: rgba(255, 255, 255, 1);
+}
+
+.hs-nested-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  border-bottom: 1px solid var(--border-bottom);
+  border-radius: 16px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.40), inset 0 -1px 1px rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.theme-input {
+  background: var(--input-bg);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.theme-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-dim);
+}
+
+@keyframes terminalBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background-color: var(--accent);
+  vertical-align: middle;
+  margin-left: 4px;
+  animation: terminalBlink 1s infinite;
+}
+
