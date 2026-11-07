@@ -275,17 +275,17 @@ export default function InteractiveTerminal() {
               {line.type === 'success' && (
                 <div
                   style={{
-                    color: '#34d399',
+                    color: 'var(--color-green)',
                     fontWeight: 700,
                     paddingLeft: '14px',
-                    textShadow: '0 0 10px rgba(52, 211, 153, 0.4)',
+                    textShadow: '0 0 10px var(--color-green-glow)',
                   }}
                 >
                   {line.text}
                 </div>
               )}
               {line.type === 'error' && (
-                <div style={{ color: '#f87171', paddingLeft: '14px' }}>
+                <div style={{ color: 'var(--color-red)', paddingLeft: '14px' }}>
                   {line.text}
                 </div>
               )}

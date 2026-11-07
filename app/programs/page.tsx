@@ -150,25 +150,6 @@ export default function ProgramsPage() {
                     transition={{duration: 0.7}}
                     style={{textAlign: 'center', marginBottom: '70px'}}
                 >
-                    <div
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            background: 'var(--accent-dim)',
-                            border: '1px solid var(--accent)',
-                            borderRadius: '999px',
-                            padding: '6px 18px',
-                            marginBottom: '20px',
-                            fontSize: '0.85rem',
-                            letterSpacing: '1px',
-                            color: 'var(--accent)',
-                            textTransform: 'uppercase',
-                            fontWeight: 700,
-                        }}
-                    >
-                        <BookOpen size={14}/> Club Programs & Curriculums
-                    </div>
                     <h1
                         style={{
                             fontFamily: 'var(--font-display)',
