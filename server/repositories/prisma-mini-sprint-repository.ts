@@ -109,7 +109,7 @@ export class PrismaMiniSprintRepository implements MiniSprintRegistrationStore {
       })
 
       if (existing) {
-        const row = existing as Record<string, unknown>
+        const row = existing as unknown as Record<string, unknown>
         if (
           row.pwnUsernameNormalized === pwnUsernameNormalized ||
           (typeof row.pwnUsername === 'string' &&

@@ -20,7 +20,8 @@ const teamMembers: TeamMember[] = [
         linkedin: 'https://linkedin.com/in/aayushrambo8',
         website: 'https://www.aayushbabu.live',
         badge: 'LEAD COORDINATOR',
-    }, {
+    },
+    {
         name: 'Yash Bhople',
         role: 'Club Sub-coordinator',
         email: 'yash_ua2504aih274@iitp.ac.in',

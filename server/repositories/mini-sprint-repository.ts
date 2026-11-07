@@ -80,7 +80,7 @@ function mapSprint(row: MiniSprintRow): MiniSprintDto {
   }
 }
 
-export type RepositoryDatabase = Database | Record<string, unknown>
+export type RepositoryDatabase = Database | Record<string, any>
 
 export class MiniSprintRepository implements MiniSprintRegistrationStore {
   private readonly prismaRepo?: PrismaMiniSprintRepository
