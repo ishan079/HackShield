@@ -75,8 +75,8 @@ async function acceptRulebook(user: ReturnType<typeof userEvent.setup>) {
   expect(
     await screen.findByRole('dialog', { name: 'pwn.college Rulebook' })
   ).toBeVisible()
+  await user.click(screen.getByRole('button', { name: 'Close rulebook' }))
   await user.type(screen.getByRole('textbox', { name: 'Declaration' }), MINI_CTF_DECLARATION)
-  await user.click(screen.getByRole('button', { name: 'Confirm declaration' }))
 }
 
 describe('Mini CTF frontend registration flow', () => {
@@ -165,7 +165,7 @@ describe('Mini CTF frontend registration flow', () => {
     expect(username).toHaveValue('student.pwn')
   })
 
-  it('requires the exact rulebook declaration before enabling registration', async () => {
+  it('requires opening the rulebook and the exact declaration before enabling registration', async () => {
     const user = userEvent.setup()
     render(<CTFPage />)
 
@@ -177,12 +177,16 @@ describe('Mini CTF frontend registration flow', () => {
     await user.click(
       screen.getByRole('button', { name: 'Read the Mini CTF Rulebook' })
     )
-    const declaration = await screen.findByRole('textbox', { name: 'Declaration' })
+    expect(
+      await screen.findByRole('dialog', { name: 'pwn.college Rulebook' })
+    ).toBeVisible()
+    await user.click(screen.getByRole('button', { name: 'Close rulebook' }))
+    const declaration = screen.getByRole('textbox', { name: 'Declaration' })
     await user.type(declaration, 'I agree')
-    expect(screen.getByRole('button', { name: 'Confirm declaration' })).toBeDisabled()
+    expect(screen.getByText('The declaration must match exactly.')).toBeVisible()
+    expect(registrationButton).toBeDisabled()
     await user.clear(declaration)
     await user.type(declaration, MINI_CTF_DECLARATION)
-    await user.click(screen.getByRole('button', { name: 'Confirm declaration' }))
     expect(registrationButton).toBeEnabled()
     await user.click(
       registrationButton

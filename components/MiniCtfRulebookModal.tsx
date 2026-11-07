@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Check, ExternalLink, FileText, X } from 'lucide-react'
+import { ExternalLink, FileText, X } from 'lucide-react'
 
 export const MINI_CTF_DECLARATION =
   'I have read and agree to the HackShield Mini CTF pwn.college Rulebook. I will use my own pwn.college account, submit my correct username, work only on authorised challenge environments, and not share flags or solutions during the event.'
@@ -10,15 +10,12 @@ export const MINI_CTF_DECLARATION =
 interface MiniCtfRulebookModalProps {
   isOpen: boolean
   onClose: () => void
-  onAccepted: () => void
 }
 
 export default function MiniCtfRulebookModal({
   isOpen,
   onClose,
-  onAccepted,
 }: MiniCtfRulebookModalProps) {
-  const [declaration, setDeclaration] = useState('')
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -37,14 +34,6 @@ export default function MiniCtfRulebookModal({
   }, [isOpen, onClose])
 
   if (!isOpen || !isMounted) return null
-
-  const declarationMatches = declaration.trim() === MINI_CTF_DECLARATION
-
-  const acceptRulebook = () => {
-    if (!declarationMatches) return
-    onAccepted()
-    onClose()
-  }
 
   return createPortal(
     <div className="mini-ctf-rulebook-overlay" role="presentation">
@@ -147,70 +136,13 @@ export default function MiniCtfRulebookModal({
             <h3>Rules of participation</h3>
             <ol>
               <li>Work only on HackShield challenges and authorised environments.</li>
-              <li>
-                Do not attack pwn.college, other participants, HackShield
-                infrastructure, or any system outside the challenge scope.
-              </li>
+              <li>Follow the pwn.college ground rules as well as these event rules.</li>
               <li>
                 Do not share flags, direct solutions, walkthroughs, or live
                 answers while the Mini CTF is active.
               </li>
               <li>Use your own account and do not share accounts or credentials.</li>
-              <li>Follow the pwn.college ground rules as well as these event rules.</li>
             </ol>
-          </section>
-
-          <section>
-            <h3>Username corrections and support</h3>
-            <p>
-              HackShield cannot reliably check that a submitted pwn.college
-              username exists before registration. pwn.college profiles can be
-              private, so a public-profile lookup can incorrectly look like a
-              missing account. For this Mini CTF, we bind the username you submit
-              to your institute email and prevent duplicate username records.
-            </p>
-            <p>
-              You are responsible for entering your username accurately. A false
-              or mistyped username does not register someone else, but it can
-              prevent us from matching your pwn.college solves to your registration.
-              If you need a correction, contact HackShield from the institute email
-              used for registration with the incorrect and replacement usernames.
-              Do not submit another registration.
-            </p>
-            <p>
-              For an invite failure, send the organisers a screenshot and your
-              registered pwn.college username. Never send your password, SSH private
-              key, or a flag.
-            </p>
-          </section>
-
-          <section className="mini-ctf-declaration-section">
-            <h3>Declaration required to register</h3>
-            <p>Copy or type the declaration below exactly, then confirm it.</p>
-            <blockquote>{MINI_CTF_DECLARATION}</blockquote>
-            <label htmlFor="mini-ctf-declaration">Declaration</label>
-            <textarea
-              id="mini-ctf-declaration"
-              value={declaration}
-              onChange={(event) => setDeclaration(event.target.value)}
-              placeholder="Paste or type the declaration here"
-              rows={4}
-              autoComplete="off"
-            />
-            <div className="mini-ctf-declaration-actions">
-              <span aria-live="polite">
-                {declaration && !declarationMatches
-                  ? 'The declaration must match exactly.'
-                  : ' '}
-              </span>
-              <button
-                type="button"
-                onClick={acceptRulebook}
-                disabled={!declarationMatches}
-              >
-                <Check size={16} aria-hidden="true" /> Confirm declaration
-              </button>
-            </div>
           </section>
         </div>
       </section>
