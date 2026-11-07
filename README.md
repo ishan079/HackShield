@@ -1,73 +1,104 @@
-# HackShield — Next.js & TypeScript Migration
+# HackShield
 
-Modern, high-performance Next.js App Router & TypeScript frontend for HackShield (IIT Patna's Official Cybersecurity Club).
+HackShield is the IIT Patna Cybersecurity Club web application. The repository contains a Next.js 15 frontend, a Fastify backend, PostgreSQL persistence, an OpenAPI contract, and isolated frontend/API/backend/database tests.
 
-> 📘 **Backend Engineers**: See the dedicated [Backend Integration Guide (`BACKEND_README.md`)](./BACKEND_README.md) for full API contracts, data schemas, CTFd integration, and proxy setups.
+## Current implementation
 
-## 🚀 Getting Started
+- Next.js App Router frontend with local fonts and packaged assets.
+- Direct Mini CTF registration URL: `http://localhost:3000/ctf?type=mini&register=mini-14#registration-mini-14`.
+- Fastify registration API on port `5001`.
+- PostgreSQL 16 schema and seed data for Mini CTF sprints and registrations.
+- Next.js `/api/*` proxy, so browser code never connects to PostgreSQL or needs the backend origin.
+- Case-insensitive duplicate protection for institute email and pwn.college username.
+- Contract, frontend, backend integration, and database repository tests.
 
-### 1. Install dependencies
+The OpenAPI file describes the intended complete platform. At present, only the Mini CTF list and registration endpoints are implemented by Fastify. See [Backend and API](./docs/BACKEND.md#implementation-status).
+
+## Prerequisites
+
+- Node.js 22 or newer. The current development machine uses Node 26.
+- npm.
+- PostgreSQL 16+, installed locally or run through Docker.
+
+## First-time setup
+
 ```bash
 npm install
+cp .env.example .env
 ```
 
-### 2. Run the development server
+Start PostgreSQL using one option:
+
 ```bash
+docker compose up -d postgres
+# or, on macOS/Homebrew:
+brew services start postgresql@16
+```
+
+Create the local `hackshield` role/database if using a fresh Homebrew server, then run:
+
+```bash
+npm run db:migrate
+```
+
+Start the application in separate terminals:
+
+```bash
+npm run dev:server
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### 3. Production Build
+Open [http://localhost:3000](http://localhost:3000).
+
+## Environment
+
+The backend uses `dotenv/config`, which reads `.env`. Next.js also reads `.env`. Local environment files are ignored by Git.
+
+| Variable | Used by | Local value | Purpose |
+| --- | --- | --- | --- |
+| `BACKEND_URL` | Next.js server | `http://localhost:5001` | Target for `/api/*` rewrites |
+| `DATABASE_URL` | Fastify/pg | `postgres://hackshield:hackshield@localhost:5432/hackshield` | PostgreSQL connection |
+| `HOST` | Fastify | `0.0.0.0` | Listen address |
+| `PORT` | Fastify | `5001` | Backend port; avoids macOS AirPlay on `5000` |
+| `LOG_LEVEL` | Fastify | `info` | Runtime log level |
+| `NEXT_PUBLIC_API_URL` | Browser | `/api/v1` | Relative API prefix |
+| `NEXT_PUBLIC_CTFD_URL` | Browser | CTFd origin | Future CTFd integration |
+| `NEXT_PUBLIC_WHATSAPP_LINK` | Browser | invite URL | Community navigation |
+
+The credentials in `.env.example` are local-development defaults only. Use secret-managed production credentials outside the repository.
+
+## Quality checks
+
 ```bash
-npm run build
-npm run start
-```
-
-### 4. Backend + PostgreSQL
-
-```bash
-cp .env.example .env.local
-docker compose up -d postgres
-npm run db:migrate
-npm run dev:server
-```
-
-Run `npm run dev` in a second terminal. Browser calls to `/api/v1/*` are
-proxied by Next.js to the Fastify server on port 5000.
-
-### 5. Test everything
-
-```bash
+npm run test:frontend
+npm run test:api-client
+npm run test:contracts
+npm run test:backend
+npm run test:database
+npm run test:registration
 npm test
 npm run typecheck
 npm run build
+npm audit
 ```
 
-The suite covers the API contract, PostgreSQL migration/repository behavior,
-backend HTTP routes, and the Mini CTF frontend registration flow.
+## Documentation
 
----
+- [Architecture](./docs/ARCHITECTURE.md)
+- [Frontend](./docs/FRONTEND.md)
+- [Backend and API](./docs/BACKEND.md)
+- [Database and pgAdmin](./docs/DATABASE.md)
+- [Testing strategy](./docs/TESTING.md)
+- [Operations and troubleshooting](./docs/OPERATIONS.md)
+- [Implemented work and decisions](./docs/WORK_LOG.md)
+- [OpenAPI contract](./contracts/openapi.yaml)
 
-## 📁 Architecture
+`BACKEND_README.md` remains as a compatibility pointer for existing links.
 
-- `app/` — Next.js App Router
-  - `layout.tsx` — Root layout with metadata, fonts, theme provider, ambient canvas overlays, Navbar, and Footer.
-  - `page.tsx` — Home page (Hero, 4 Pillars, Flagship CTF Banner, Programs, Community Stats, Interactive Sandbox Terminal, Team Organizers, CTA).
-  - `about/page.tsx` — About HackShield, mission, values, and milestone timeline.
-  - `ctf/page.tsx` — CTF hub (Flagship CTF countdown, challenge domains, past archive, 3D Flip Card Mini CTF registration).
-  - `programs/page.tsx` — Curriculums, 6-week pathway, workshops, and speaker series.
-  - `resources/page.tsx` — Segmented search and filterable security tools, platforms, and cheat sheets.
-  - `globals.css` — Liquid glass CSS variables, specular lighting, and typography.
-- `components/` — Modular, typed React components:
-  - `Navbar.tsx` — Adaptive floating pill navbar with theme switcher and WhatsApp redirect.
-  - `Footer.tsx` — Full-fidelity cybersecurity club footer.
-  - `BinaryRainTree.tsx` — Full-fidelity interactive Bonsai Binary Rain canvas with scroll morphing.
-  - `GrainOverlay.tsx` — GPU-optimized multi-orb ambient gradient mesh.
-  - `MouseSpotlight.tsx` — Trailing spring physics spotlight cursor.
-  - `Hero.tsx`, `Pillars.tsx`, `CTFBanner.tsx`, `ProgramsSection.tsx`, `StatsSection.tsx`, `InteractiveTerminal.tsx`, `TeamSection.tsx`, `CTASection.tsx`.
-- `context/`
-  - `ThemeContext.tsx` — Dark/light mode context with SSR-safe localStorage persistence.
-- `types/`
-  - `index.ts` — Comprehensive TypeScript interfaces for all components, routes, and data models.
-- `public/` — Static assets (official logo, favicon icons, hero graphics).
+## Contribution rules
 
+1. Update `contracts/openapi.yaml`, `types/api.ts`, and `lib/api.ts` together when changing a wire contract.
+2. Add or update tests in every affected layer.
+3. Never commit `.env`, credentials, CTFd tokens, flags, or production data.
+4. Run the full quality check before opening a pull request.
+5. Keep database constraints authoritative for integrity; UI validation exists for feedback, not security.
