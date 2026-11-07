@@ -116,6 +116,11 @@ export function createApp({
   )
 
   app.setErrorHandler((error, _request, reply) => {
+    if ((error as { statusCode?: number }).statusCode === 400) {
+      return reply
+        .code(400)
+        .send(failure('INVALID_REQUEST', 'The request body is not valid JSON.'))
+    }
     app.log.error(error)
     return reply
       .code(500)
