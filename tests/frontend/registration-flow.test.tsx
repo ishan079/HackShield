@@ -66,6 +66,18 @@ vi.mock('framer-motion', async () => {
 })
 
 import CTFPage from '@/app/ctf/page'
+import { MINI_CTF_DECLARATION } from '@/components/MiniCtfRulebookModal'
+
+async function acceptRulebook(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(
+    await screen.findByRole('button', { name: 'Read the Mini CTF Rulebook' })
+  )
+  expect(
+    await screen.findByRole('dialog', { name: 'pwn.college Rulebook' })
+  ).toBeVisible()
+  await user.type(screen.getByRole('textbox', { name: 'Declaration' }), MINI_CTF_DECLARATION)
+  await user.click(screen.getByRole('button', { name: 'Confirm declaration' }))
+}
 
 describe('Mini CTF frontend registration flow', () => {
   beforeEach(() => {
@@ -100,6 +112,7 @@ describe('Mini CTF frontend registration flow', () => {
     expect(
       await screen.findByRole('heading', { name: 'Mini CTF registration' })
     ).toBeVisible()
+    await acceptRulebook(user)
     await user.type(
       screen.getByPlaceholderText('Your institute email address'),
       'student@iitp.ac.in'
@@ -138,6 +151,7 @@ describe('Mini CTF frontend registration flow', () => {
       'Your institute email address'
     )
     const username = screen.getByPlaceholderText('Your pwn.college username')
+    await acceptRulebook(user)
     await user.type(email, 'student@iitp.ac.in')
     await user.type(username, 'student.pwn')
     await user.click(
@@ -151,13 +165,27 @@ describe('Mini CTF frontend registration flow', () => {
     expect(username).toHaveValue('student.pwn')
   })
 
-  it('blocks incomplete submissions before calling the API', async () => {
+  it('requires the exact rulebook declaration before enabling registration', async () => {
     const user = userEvent.setup()
     render(<CTFPage />)
 
     await screen.findByRole('heading', { name: 'Mini CTF registration' })
+    const registrationButton = screen.getByRole('button', {
+      name: 'Register for this sprint',
+    })
+    expect(registrationButton).toBeDisabled()
     await user.click(
-      screen.getByRole('button', { name: 'Register for this sprint' })
+      screen.getByRole('button', { name: 'Read the Mini CTF Rulebook' })
+    )
+    const declaration = await screen.findByRole('textbox', { name: 'Declaration' })
+    await user.type(declaration, 'I agree')
+    expect(screen.getByRole('button', { name: 'Confirm declaration' })).toBeDisabled()
+    await user.clear(declaration)
+    await user.type(declaration, MINI_CTF_DECLARATION)
+    await user.click(screen.getByRole('button', { name: 'Confirm declaration' }))
+    expect(registrationButton).toBeEnabled()
+    await user.click(
+      registrationButton
     )
 
     expect(registerMiniSprint).not.toHaveBeenCalled()
@@ -182,6 +210,7 @@ describe('Mini CTF frontend registration flow', () => {
     async (emailValue, usernameValue, message) => {
       const user = userEvent.setup()
       render(<CTFPage />)
+      await acceptRulebook(user)
 
       await user.type(
         await screen.findByPlaceholderText('Your institute email address'),
@@ -208,6 +237,7 @@ describe('Mini CTF frontend registration flow', () => {
     })
     const user = userEvent.setup()
     render(<CTFPage />)
+    await acceptRulebook(user)
 
     await user.type(
       await screen.findByPlaceholderText('Your institute email address'),

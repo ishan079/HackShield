@@ -21,6 +21,7 @@ import {
   Clock,
   Award,
   ChevronRight,
+  FileText,
 } from 'lucide-react'
 import {
   CTFCategory,
@@ -29,6 +30,7 @@ import {
   MiniStatItem,
 } from '@/types'
 import { api } from '@/lib/api'
+import MiniCtfRulebookModal from '@/components/MiniCtfRulebookModal'
 
 const IITP_EMAIL_PATTERN = /^[^\s@]+@iitp\.ac\.in$/i
 const PWN_USERNAME_PATTERN = /^[a-zA-Z0-9_.-]{2,64}$/
@@ -47,6 +49,8 @@ function CTFContent() {
     'idle' | 'submitting' | 'success' | 'error'
   >('idle')
   const [registrationMessage, setRegistrationMessage] = useState('')
+  const [isRulebookOpen, setIsRulebookOpen] = useState(false)
+  const [hasAcceptedRulebook, setHasAcceptedRulebook] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -101,6 +105,14 @@ function CTFContent() {
     if (!email || !pwnUsername) {
       setRegistrationState('error')
       setRegistrationMessage('Institute email and pwn.college username are required.')
+      return
+    }
+
+    if (!hasAcceptedRulebook) {
+      setRegistrationState('error')
+      setRegistrationMessage(
+        'Read the rulebook and confirm the declaration before registering.'
+      )
       return
     }
 
@@ -1647,6 +1659,74 @@ function CTFContent() {
                                 pwn.college username. Each participant may register once.
                               </p>
 
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                  flexWrap: 'wrap',
+                                  gap: '12px',
+                                  margin: '0 0 25px',
+                                  padding: '13px 15px',
+                                  background: 'var(--accent-subtle)',
+                                  border: '1px solid var(--accent-dim)',
+                                  borderRadius: '12px',
+                                }}
+                              >
+                                <div>
+                                  <div
+                                    style={{
+                                      color: 'var(--text-primary)',
+                                      fontSize: '0.88rem',
+                                      fontWeight: 700,
+                                      marginBottom: '2px',
+                                    }}
+                                  >
+                                    Rulebook declaration required
+                                  </div>
+                                  <div
+                                    style={{
+                                      color: hasAcceptedRulebook
+                                        ? '#34d399'
+                                        : 'var(--text-muted)',
+                                      fontSize: '0.8rem',
+                                    }}
+                                  >
+                                    {hasAcceptedRulebook
+                                      ? 'Declaration confirmed — you can register.'
+                                      : 'Read the guide and complete its declaration.'}
+                                  </div>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => setIsRulebookOpen(true)}
+                                  style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '7px',
+                                    padding: '9px 12px',
+                                    borderRadius: '9px',
+                                    background: hasAcceptedRulebook
+                                      ? 'rgba(16, 185, 129, 0.13)'
+                                      : 'var(--accent-dim)',
+                                    border: hasAcceptedRulebook
+                                      ? '1px solid rgba(52, 211, 153, 0.42)'
+                                      : '1px solid var(--accent)',
+                                    color: hasAcceptedRulebook
+                                      ? '#34d399'
+                                      : 'var(--accent)',
+                                    fontSize: '0.82rem',
+                                    fontWeight: 700,
+                                    cursor: 'pointer',
+                                  }}
+                                >
+                                  <FileText size={15} aria-hidden="true" />
+                                  {hasAcceptedRulebook
+                                    ? 'Review rulebook'
+                                    : 'Read the Mini CTF Rulebook'}
+                                </button>
+                              </div>
+
                               <h4
                                 style={{
                                   fontSize: '1.08rem',
@@ -1823,7 +1903,8 @@ function CTFContent() {
                                 type="button"
                                 disabled={
                                   registrationState === 'submitting' ||
-                                  registrationState === 'success'
+                                  registrationState === 'success' ||
+                                  !hasAcceptedRulebook
                                 }
                                 onClick={() => submitRegistration(sprint.id)}
                                 style={{
@@ -1840,12 +1921,13 @@ function CTFContent() {
                                   fontWeight: 700,
                                   cursor:
                                     registrationState === 'submitting' ||
-                                    registrationState === 'success'
+                                    registrationState === 'success' ||
+                                    !hasAcceptedRulebook
                                       ? 'not-allowed'
                                       : 'pointer',
                                   textAlign: 'center',
                                   marginBottom: '14px',
-                                  opacity: 0.88,
+                                  opacity: hasAcceptedRulebook ? 0.88 : 0.48,
                                   transition: 'all 0.2s ease',
                                 }}
                               >
@@ -1871,7 +1953,9 @@ function CTFContent() {
                                 }}
                               >
                                 {registrationMessage ||
-                                  'Your username and institute email will be sent securely to the HackShield registration API.'}
+                                  (hasAcceptedRulebook
+                                    ? 'Your username and institute email will be sent securely to the HackShield registration API.'
+                                    : 'Read the rulebook and confirm its declaration to enable registration.')}
                               </div>
                             </motion.div>
                           )}
@@ -2098,6 +2182,17 @@ function CTFContent() {
           )}
         </AnimatePresence>
       </div>
+      <MiniCtfRulebookModal
+        isOpen={isRulebookOpen}
+        onClose={() => setIsRulebookOpen(false)}
+        onAccepted={() => {
+          setHasAcceptedRulebook(true)
+          if (registrationState === 'error') {
+            setRegistrationState('idle')
+            setRegistrationMessage('')
+          }
+        }}
+      />
     </div>
   )
 }
