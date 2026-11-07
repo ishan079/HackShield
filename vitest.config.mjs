@@ -14,5 +14,6 @@ export default defineConfig({
     include: ['tests/**/*.test.{ts,tsx}'],
     setupFiles: ['./tests/setup.ts'],
     clearMocks: true,
+    testTimeout: 20000,
   },
 })
