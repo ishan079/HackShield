@@ -12,7 +12,12 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:registration": "vitest run tests/server/mini-sprint-registration.integration.test.ts tests/frontend/registration-flow.test.tsx",
+    "test:contracts": "vitest run tests/openapi.contract.test.ts",
+    "test:api-client": "vitest run tests/api.contract.test.ts",
+    "test:frontend": "vitest run tests/frontend",
+    "test:backend": "vitest run tests/server",
+    "test:database": "vitest run tests/database",
+    "test:registration": "vitest run tests/frontend/registration-flow.test.tsx tests/server/mini-sprint-registration.integration.test.ts tests/database/mini-sprint-repository.test.ts",
     "test:watch": "vitest"
   },
   "dependencies": {
