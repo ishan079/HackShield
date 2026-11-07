@@ -165,4 +165,61 @@ describe('Mini CTF frontend registration flow', () => {
       screen.getByText('Institute email and pwn.college username are required.')
     ).toBeVisible()
   })
+
+  it.each([
+    [
+      'student@example.com',
+      'student.pwn',
+      'Enter a valid @iitp.ac.in institute email address.',
+    ],
+    [
+      'student@iitp.ac.in',
+      'not valid!',
+      'Username must be 2–64 characters using letters, numbers, dots, hyphens, or underscores.',
+    ],
+  ])(
+    'blocks invalid participant details before calling the API',
+    async (emailValue, usernameValue, message) => {
+      const user = userEvent.setup()
+      render(<CTFPage />)
+
+      await user.type(
+        await screen.findByPlaceholderText('Your institute email address'),
+        emailValue
+      )
+      await user.type(
+        screen.getByPlaceholderText('Your pwn.college username'),
+        usernameValue
+      )
+      await user.click(
+        screen.getByRole('button', { name: 'Register for this sprint' })
+      )
+
+      expect(registerMiniSprint).not.toHaveBeenCalled()
+      expect(screen.getByText(message)).toBeVisible()
+    }
+  )
+
+  it('submits trimmed values when Enter is pressed', async () => {
+    registerMiniSprint.mockResolvedValue({
+      success: false,
+      error: { code: 'TEST', message: 'Handled response.' },
+      timestamp: '2026-11-07T03:00:00.000Z',
+    })
+    const user = userEvent.setup()
+    render(<CTFPage />)
+
+    await user.type(
+      await screen.findByPlaceholderText('Your institute email address'),
+      '  student@iitp.ac.in  '
+    )
+    const username = screen.getByPlaceholderText('Your pwn.college username')
+    await user.type(username, '  student.pwn  ')
+    await user.type(username, '{Enter}')
+
+    expect(registerMiniSprint).toHaveBeenCalledWith('mini-14', {
+      email: 'student@iitp.ac.in',
+      pwnUsername: 'student.pwn',
+    })
+  })
 })

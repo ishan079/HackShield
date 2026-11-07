@@ -30,6 +30,9 @@ import {
 } from '@/types'
 import { api } from '@/lib/api'
 
+const IITP_EMAIL_PATTERN = /^[^\s@]+@iitp\.ac\.in$/i
+const PWN_USERNAME_PATTERN = /^[a-zA-Z0-9_.-]{2,64}$/
+
 function CTFContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -92,17 +95,34 @@ function CTFContent() {
   }
 
   const submitRegistration = async (sprintId: string) => {
-    if (!regForm.email.trim() || !regForm.pwnUsername.trim()) {
+    const email = regForm.email.trim()
+    const pwnUsername = regForm.pwnUsername.trim()
+
+    if (!email || !pwnUsername) {
       setRegistrationState('error')
       setRegistrationMessage('Institute email and pwn.college username are required.')
+      return
+    }
+
+    if (!IITP_EMAIL_PATTERN.test(email)) {
+      setRegistrationState('error')
+      setRegistrationMessage('Enter a valid @iitp.ac.in institute email address.')
+      return
+    }
+
+    if (!PWN_USERNAME_PATTERN.test(pwnUsername)) {
+      setRegistrationState('error')
+      setRegistrationMessage(
+        'Username must be 2–64 characters using letters, numbers, dots, hyphens, or underscores.'
+      )
       return
     }
 
     setRegistrationState('submitting')
     setRegistrationMessage('')
     const result = await api.registerMiniSprint(sprintId, {
-      email: regForm.email.trim(),
-      pwnUsername: regForm.pwnUsername.trim(),
+      email,
+      pwnUsername,
     })
 
     if (result.success) {
@@ -1641,6 +1661,7 @@ function CTFContent() {
 
                               <div style={{ marginBottom: '20px' }}>
                                 <label
+                                  htmlFor={`registration-email-${sprint.id}`}
                                   style={{
                                     display: 'flex',
                                     alignItems: 'center',
@@ -1663,15 +1684,24 @@ function CTFContent() {
                                   </span>
                                 </label>
                                 <input
+                                  id={`registration-email-${sprint.id}`}
                                   type="email"
+                                  inputMode="email"
+                                  autoComplete="email"
+                                  maxLength={254}
+                                  aria-required="true"
                                   placeholder="Your institute email address"
                                   value={regForm.email}
-                                  onChange={(e) =>
-                                    setRegForm({
-                                      ...regForm,
-                                      email: e.target.value,
-                                    })
-                                  }
+                                  onChange={(e) => {
+                                    setRegForm({ ...regForm, email: e.target.value })
+                                    if (registrationState === 'error') {
+                                      setRegistrationState('idle')
+                                      setRegistrationMessage('')
+                                    }
+                                  }}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') submitRegistration(sprint.id)
+                                  }}
                                   style={{
                                     width: '100%',
                                     boxSizing: 'border-box',
@@ -1711,6 +1741,7 @@ function CTFContent() {
 
                               <div style={{ marginBottom: '26px' }}>
                                 <label
+                                  htmlFor={`registration-pwn-${sprint.id}`}
                                   style={{
                                     display: 'flex',
                                     alignItems: 'center',
@@ -1733,15 +1764,25 @@ function CTFContent() {
                                   </span>
                                 </label>
                                 <input
+                                  id={`registration-pwn-${sprint.id}`}
                                   type="text"
+                                  autoComplete="username"
+                                  minLength={2}
+                                  maxLength={64}
+                                  pattern="[a-zA-Z0-9_.-]+"
+                                  aria-required="true"
                                   placeholder="Your pwn.college username"
                                   value={regForm.pwnUsername}
-                                  onChange={(e) =>
-                                    setRegForm({
-                                      ...regForm,
-                                      pwnUsername: e.target.value,
-                                    })
-                                  }
+                                  onChange={(e) => {
+                                    setRegForm({ ...regForm, pwnUsername: e.target.value })
+                                    if (registrationState === 'error') {
+                                      setRegistrationState('idle')
+                                      setRegistrationMessage('')
+                                    }
+                                  }}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') submitRegistration(sprint.id)
+                                  }}
                                   style={{
                                     width: '100%',
                                     boxSizing: 'border-box',

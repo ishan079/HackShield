@@ -107,6 +107,47 @@ describe('Mini CTF registration backend', () => {
     })
   })
 
+  it('rejects duplicate pwn.college usernames case-insensitively', async () => {
+    await app.inject({
+      method: 'POST',
+      url: '/api/v1/ctf/mini-sprints/mini-14/register',
+      payload: {
+        email: 'first@iitp.ac.in',
+        pwnUsername: 'Ishan079',
+      },
+    })
+
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/v1/ctf/mini-sprints/mini-14/register',
+      payload: {
+        email: 'second@iitp.ac.in',
+        pwnUsername: 'ishan079',
+      },
+    })
+
+    expect(response.statusCode).toBe(409)
+    expect(response.json()).toMatchObject({
+      success: false,
+      error: { code: 'ALREADY_REGISTERED' },
+    })
+  })
+
+  it('returns a safe client error for malformed JSON', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/v1/ctf/mini-sprints/mini-14/register',
+      headers: { 'content-type': 'application/json' },
+      payload: '{"email":',
+    })
+
+    expect(response.statusCode).toBe(400)
+    expect(response.json()).toMatchObject({
+      success: false,
+      error: { code: 'INVALID_REQUEST' },
+    })
+  })
+
   it.each([
     [{ email: 'student@example.com', pwnUsername: 'valid-user' }, 'email'],
     [{ email: 'student@iitp.ac.in', pwnUsername: 'not valid!' }, 'pwnUsername'],

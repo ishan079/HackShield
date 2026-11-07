@@ -38,6 +38,9 @@ CREATE TABLE IF NOT EXISTS mini_sprint_registrations (
 CREATE INDEX IF NOT EXISTS mini_sprints_starts_at_idx
   ON mini_sprints (starts_at);
 
+CREATE UNIQUE INDEX IF NOT EXISTS mini_sprint_registrations_username_ci_idx
+  ON mini_sprint_registrations (sprint_id, lower(pwn_username));
+
 INSERT INTO mini_sprints (
   id,
   title,
