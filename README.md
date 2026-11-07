@@ -103,3 +103,4 @@ npm audit
 3. Never commit `.env`, credentials, CTFd tokens, flags, or production data.
 4. Run the full quality check before opening a pull request.
 5. Keep database constraints authoritative for integrity; UI validation exists for feedback, not security.
+empty commit
