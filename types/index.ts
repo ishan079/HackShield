@@ -57,10 +57,8 @@ export interface PastCTFEvent {
   title: string
   date: string
   type: string
-  teams: string
-  firstPlace: string
-  prizePool: string
-  status: string
+  teams?: string
+
 }
 
 export interface MiniCTFSprint {
@@ -108,8 +106,6 @@ export interface ResourceItem {
 export interface TeamMember {
   name: string
   role: string
-  aliasHindi: string
-  aliasEng: string
   email: string
   linkedin?: string
   website?: string

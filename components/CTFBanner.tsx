@@ -221,8 +221,7 @@ export default function CTFBanner() {
             maxWidth: '480px',
           }}
         >
-          Our annual Capture The Flag — real challenges, real skills, a national
-          community.
+          Our biannual Capture The Flag — real challenges, real skills, a strong community.
         </p>
       </div>
 
@@ -284,4 +283,3 @@ export default function CTFBanner() {
     </motion.div>
   )
 }
-
