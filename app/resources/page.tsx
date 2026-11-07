@@ -41,15 +41,25 @@ export default function ResourcesPage() {
 
   const resources: ResourceItem[] = [
     {
-      id: 'thm-htb',
+      id: 'thm',
       category: 'platforms',
-      title: 'TryHackMe & Hack The Box',
+      title: 'TryHackMe',
       badge: 'Interactive Labs',
       desc: 'Gamified labs covering Linux privilege escalation, network scanning, and Active Directory penetration testing.',
       tags: ['Labs', 'Network', 'PrivEsc'],
       link: 'https://tryhackme.com',
       icon: <Terminal size={19} color="var(--accent)" />,
     },
+      {
+          id: 'htb',
+          category: 'platforms',
+          title: 'Hack The Box',
+          badge: 'Interactive Labs',
+          desc: 'Gamified labs covering Linux privilege escalation, network scanning, and Active Directory penetration testing.',
+          tags: ['Labs', 'Network', 'PrivEsc'],
+          link: 'https://hackthebox.com',
+          icon: <Terminal size={19} color="var(--accent)" />,
+      },
     {
       id: 'portswigger',
       category: 'platforms',
@@ -60,6 +70,7 @@ export default function ResourcesPage() {
       link: 'https://portswigger.net/web-security',
       icon: <Globe size={19} color="var(--accent)" />,
     },
+
     {
       id: 'cryptohack',
       category: 'platforms',
@@ -81,16 +92,6 @@ export default function ResourcesPage() {
       icon: <Cpu size={19} color="var(--accent)" />,
     },
     {
-      id: 'burpsuite',
-      category: 'tools',
-      title: 'Burp Suite Community',
-      badge: 'HTTP Interception',
-      desc: 'The industry-standard proxy for intercepting, modifying, and replaying HTTP requests during web testing.',
-      tags: ['Proxy', 'Repeater', 'Decoder'],
-      link: 'https://portswigger.net/burp',
-      icon: <Globe size={19} color="var(--accent)" />,
-    },
-    {
       id: 'cyberchef',
       category: 'tools',
       title: 'CyberChef',
@@ -101,16 +102,6 @@ export default function ResourcesPage() {
       icon: <Code2 size={19} color="var(--accent)" />,
     },
     {
-      id: 'hackshield-playbook',
-      category: 'guides',
-      title: 'HackShield CTF Playbook',
-      badge: 'Curated Playbook',
-      desc: 'Internal cheatsheet maintained by IIT Patna club leads with reverse shell one-liners and pwn templates.',
-      tags: ['Payloads', 'Shells', 'Cheat Sheet'],
-      link: '#',
-      icon: <FileText size={19} color="var(--accent)" />,
-    },
-    {
       id: 'gtfobins',
       category: 'guides',
       title: 'PayloadsAllTheThings & GTFOBins',
@@ -119,16 +110,6 @@ export default function ResourcesPage() {
       tags: ['Linux', 'SUID', 'Bypass', 'PrivEsc'],
       link: 'https://gtfobins.github.io',
       icon: <BookmarkCheck size={19} color="var(--accent)" />,
-    },
-    {
-      id: 'discord',
-      category: 'community',
-      title: 'HackShield Discord Community',
-      badge: '24/7 Discussion',
-      desc: 'Matchmake for CTF squads, share challenge writeups, and receive direct mentorship from coordinators.',
-      tags: ['Community', 'Matchmaking', 'Live Labs'],
-      link: '#discord',
-      icon: <FolderGit2 size={19} color="var(--accent)" />,
     },
   ]
 
@@ -164,26 +145,6 @@ export default function ResourcesPage() {
           transition={{ duration: 0.65 }}
           style={{ textAlign: 'center', marginBottom: '45px' }}
         >
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: 'var(--accent-dim)',
-              border: '1px solid var(--accent)',
-              borderRadius: '999px',
-              padding: '5px 16px',
-              marginBottom: '16px',
-              fontSize: '0.8rem',
-              letterSpacing: '1px',
-              color: 'var(--accent)',
-              textTransform: 'uppercase',
-              fontWeight: 700,
-            }}
-          >
-            <BookOpen size={13} /> Knowledge Repository
-          </div>
-
           <h1
             style={{
               fontFamily: 'var(--font-display)',
