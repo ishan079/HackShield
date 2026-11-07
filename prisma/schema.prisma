@@ -7,35 +7,22 @@ datasource db {
   provider = "postgresql"
 }
 
-enum SprintStatus {
-  REGISTRATION_OPEN
-  REGISTRATION_OPENING_SOON
-  REGISTRATION_CLOSED
-  LIVE
-  COMPLETED
-}
-
-enum RegistrationStatus {
-  CONFIRMED
-  WAITLISTED
-}
-
 model MiniSprint {
-  id               String                   @id
+  id               String                      @id
   title            String
-  status           SprintStatus
-  statusColor      String                   @map("status_color")
-  startsAt         DateTime                 @map("starts_at") @db.Timestamptz(3)
-  endsAt           DateTime                 @map("ends_at") @db.Timestamptz(3)
-  durationMinutes  Int                      @map("duration_minutes")
-  challengeCount   Int                      @map("challenge_count")
+  status           String
+  statusColor      String                      @map("status_color")
+  startsAt         DateTime                    @map("starts_at")
+  endsAt           DateTime                    @map("ends_at")
+  durationMinutes  Int                         @map("duration_minutes")
+  challengeCount   Int                         @map("challenge_count")
   difficulty       String
   format           String
   reward           String
   description      String
-  registrationOpen Boolean                  @default(false) @map("registration_open")
-  createdAt        DateTime                 @default(now()) @map("created_at") @db.Timestamptz(3)
-  updatedAt        DateTime                 @updatedAt @map("updated_at") @db.Timestamptz(3)
+  registrationOpen Boolean                     @default(false) @map("registration_open")
+  createdAt        DateTime                    @default(now()) @map("created_at")
+  updatedAt        DateTime                    @default(now()) @map("updated_at")
   registrations    MiniSprintRegistration[]
 
   @@index([startsAt])
@@ -43,22 +30,21 @@ model MiniSprint {
 }
 
 model MiniSprintRegistration {
-  id                    String             @id @default(uuid()) @db.Uuid
-  sprintId              String             @map("sprint_id")
-  fullName              String?            @map("full_name")
-  rollNumber            String?            @map("roll_number")
-  subject               String?
-  semester              Int?
-  mobileNumber          String?            @map("mobile_number")
-  email                 String
-  emailNormalized       String             @map("email_normalized")
-  pwnUsername           String             @map("pwn_username")
-  pwnUsernameNormalized String             @map("pwn_username_normalized")
-  status                RegistrationStatus @default(CONFIRMED)
-  registeredAt          DateTime           @default(now()) @map("registered_at") @db.Timestamptz(3)
-  sprint                MiniSprint         @relation(fields: [sprintId], references: [id], onDelete: Cascade)
+  id              String     @id @db.Uuid
+  sprintId        String     @map("sprint_id")
+  fullName        String?    @map("full_name")
+  rollNumber      String?    @map("roll_number")
+  subject         String?
+  semester        Int?
+  mobileNumber    String?    @map("mobile_number")
+  email           String
+  emailNormalized String     @map("email_normalized")
+  pwnUsername     String     @map("pwn_username")
+  status          String
+  registeredAt    DateTime   @default(now()) @map("registered_at")
+  sprint          MiniSprint @relation(fields: [sprintId], references: [id], onDelete: Cascade)
 
   @@unique([sprintId, emailNormalized])
-  @@unique([sprintId, pwnUsernameNormalized])
+  @@unique([sprintId, pwnUsername])
   @@map("mini_sprint_registrations")
 }
