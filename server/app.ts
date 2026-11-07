@@ -10,11 +10,11 @@ import {
 import type { MiniSprintRegistrationStore } from '@/server/repositories/mini-sprint-store'
 import { MINI_CTF_SUBJECTS, type ApiFailure, type ApiSuccess } from '@/types/api'
 
-const sprintParamsSchema = z
+export const sprintParamsSchema = z
   .object({ sprintId: z.string().regex(/^mini-[a-zA-Z0-9-]+$/) })
   .strict()
 
-const registrationSchema = z
+export const registrationSchema = z
   .object({
     fullName: z.string().trim().min(2).max(120),
     rollNumber: z.string().trim().min(3).max(40).regex(/^[a-zA-Z0-9/_-]+$/),
@@ -34,15 +34,15 @@ const registrationSchema = z
   })
   .strict()
 
-function timestamp(): string {
+export function timestamp(): string {
   return new Date().toISOString()
 }
 
-function success<T>(data: T): ApiSuccess<T> {
+export function success<T>(data: T): ApiSuccess<T> {
   return { success: true, data, timestamp: timestamp() }
 }
 
-function failure(
+export function failure(
   code: string,
   message: string,
   details?: { field: string; issue: string }[]
@@ -54,7 +54,7 @@ function failure(
   }
 }
 
-function validationFailure(error: z.ZodError): ApiFailure {
+export function validationFailure(error: z.ZodError): ApiFailure {
   return failure(
     'VALIDATION_ERROR',
     'One or more fields are invalid.',
