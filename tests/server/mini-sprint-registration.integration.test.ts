@@ -1,7 +1,8 @@
+import { DataType, newDb } from 'pg-mem'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import type { Pool } from 'pg'
 import { createApp } from '@/server/app'
-import { MiniSprintRepository } from '@/server/repositories/mini-sprint-repository'
-import { createFakePrisma } from '@/tests/helpers/fake-prisma'
+import { runMigrations } from '@/server/database'
 
 const validParticipant = {
   fullName: 'Test Student',
@@ -12,20 +13,26 @@ const validParticipant = {
 }
 
 describe('Mini CTF registration backend', () => {
+  let pool: Pool
   let app: ReturnType<typeof createApp>
-  let fake: ReturnType<typeof createFakePrisma>
 
   beforeEach(async () => {
-    fake = createFakePrisma()
-    app = createApp({
-      repository: new MiniSprintRepository(fake.client),
-      logger: false,
+    const memory = newDb({ autoCreateForeignKeyIndices: true })
+    memory.public.registerFunction({
+      name: 'now',
+      returns: DataType.timestamptz,
+      implementation: () => new Date('2026-11-07T03:00:00.000Z'),
     })
+    const adapter = memory.adapters.createPg()
+    pool = new adapter.Pool() as Pool
+    await runMigrations(pool)
+    app = createApp({ database: pool, logger: false })
     await app.ready()
   })
 
   afterEach(async () => {
     await app.close()
+    await pool.end()
   })
 
   it('lists the seeded sprint using the public DTO shape', async () => {
@@ -65,7 +72,11 @@ describe('Mini CTF registration backend', () => {
       success: true,
       data: {
         sprintId: 'mini-14',
-        ...validParticipant,
+        fullName: 'Test Student',
+        rollNumber: 'UA2504AIH103',
+        subject: 'BS CSDA',
+        semester: 3,
+        mobileNumber: '9876543210',
         email: 'Student@IITP.AC.IN',
         pwnUsername: 'student.pwn',
         status: 'CONFIRMED',
@@ -73,17 +84,22 @@ describe('Mini CTF registration backend', () => {
       },
     })
 
-    expect(fake.registrations).toEqual([
-      expect.objectContaining({
-        fullName: 'Test Student',
-        rollNumber: 'UA2504AIH103',
+    const persisted = await pool.query(
+      `SELECT full_name, roll_number, subject, semester, mobile_number,
+              email, email_normalized, pwn_username
+         FROM mini_sprint_registrations`
+    )
+    expect(persisted.rows).toEqual([
+      {
+        full_name: 'Test Student',
+        roll_number: 'UA2504AIH103',
         subject: 'BS CSDA',
         semester: 3,
-        mobileNumber: '9876543210',
+        mobile_number: '9876543210',
         email: 'Student@IITP.AC.IN',
-        emailNormalized: 'student@iitp.ac.in',
-        pwnUsername: 'student.pwn',
-      }),
+        email_normalized: 'student@iitp.ac.in',
+        pwn_username: 'student.pwn',
+      },
     ])
   })
 
@@ -193,8 +209,11 @@ describe('Mini CTF registration backend', () => {
   })
 
   it('enforces registration state from PostgreSQL', async () => {
-    fake.sprints[0].registrationOpen = false
-    fake.sprints[0].status = 'REGISTRATION_CLOSED'
+    await pool.query(
+      `UPDATE mini_sprints
+          SET registration_open = false, status = 'REGISTRATION_CLOSED'
+        WHERE id = 'mini-14'`
+    )
 
     const response = await app.inject({
       method: 'POST',
