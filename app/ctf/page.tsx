@@ -1534,6 +1534,7 @@ function CTFContent() {
                                                         <span>Back</span>
                                                     </button>
                                                 </div>
+
                                             </div>
 
                                             <div
@@ -1618,37 +1619,7 @@ function CTFContent() {
                                                 </button>
                                             </div>
 
-                                            <section className="mini-ctf-declaration-section">
-                                                <h4>Declaration required to register</h4>
-                                                <p>Copy or type the declaration below exactly.</p>
-                                                <blockquote>{MINI_CTF_DECLARATION}</blockquote>
-                                                <label htmlFor={`registration-declaration-${sprint.id}`}>
-                                                    Declaration
-                                                </label>
-                                                <textarea
-                                                    id={`registration-declaration-${sprint.id}`}
-                                                    value={declaration}
-                                                    onChange={(event) => {
-                                                        setDeclaration(event.target.value)
-                                                        if (registrationState === 'error') {
-                                                            setRegistrationState('idle')
-                                                            setRegistrationMessage('')
-                                                        }
-                                                    }}
-                                                    placeholder="Paste or type the declaration here"
-                                                    rows={4}
-                                                    autoComplete="off"
-                                                />
-                                                <p className="mini-ctf-declaration-status" aria-live="polite">
-                                                    {!hasOpenedRulebook
-                                                        ? 'Open the rulebook once, then complete this declaration.'
-                                                        : declaration && !declarationMatches
-                                                            ? 'The declaration must match exactly.'
-                                                            : declarationMatches
-                                                                ? 'Declaration complete — you can register.'
-                                                                : 'Paste or type the declaration to continue.'}
-                                                </p>
-                                            </section>
+
 
                                             <h4
                                                 style={{
@@ -1937,7 +1908,41 @@ function CTFContent() {
                                                     }}
                                                 >
                                                     Enter your username, not your password.
+                                                    <h6>
+
+                                                    </h6>
                                                 </div>
+                                                <section className="mini-ctf-declaration-section">
+                                                    <h4>Declaration required to register</h4>
+                                                    <p>Copy or type the declaration below exactly.</p>
+                                                    <blockquote>{MINI_CTF_DECLARATION}</blockquote>
+                                                    <label htmlFor={`registration-declaration-${sprint.id}`}>
+                                                        Declaration
+                                                    </label>
+                                                    <textarea
+                                                        id={`registration-declaration-${sprint.id}`}
+                                                        value={declaration}
+                                                        onChange={(event) => {
+                                                            setDeclaration(event.target.value)
+                                                            if (registrationState === 'error') {
+                                                                setRegistrationState('idle')
+                                                                setRegistrationMessage('')
+                                                            }
+                                                        }}
+                                                        placeholder="Paste or type the declaration here"
+                                                        rows={4}
+                                                        autoComplete="off"
+                                                    />
+                                                    <p className="mini-ctf-declaration-status" aria-live="polite">
+                                                        {!hasOpenedRulebook
+                                                            ? 'Open the rulebook once, then complete this declaration.'
+                                                            : declaration && !declarationMatches
+                                                                ? 'The declaration must match exactly.'
+                                                                : declarationMatches
+                                                                    ? 'Declaration complete — you can register.'
+                                                                    : 'Paste or type the declaration to continue.'}
+                                                    </p>
+                                                </section>
                                             </div>
 
                                             <button
