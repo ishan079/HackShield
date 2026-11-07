@@ -77,4 +77,56 @@ describe('Next.js Vercel route handlers', () => {
       success: false, error: { code: 'ALREADY_REGISTERED' },
     })
   })
+
+  it('rejects dual entry for username through the native API route', async () => {
+    const first = JSON.stringify({
+      ...validParticipant,
+      email: 'user1@iitp.ac.in',
+      pwnUsername: 'common.username',
+      mobileNumber: '9111111111',
+    })
+    const secondWithSameUsername = JSON.stringify({
+      ...validParticipant,
+      email: 'user2@iitp.ac.in',
+      pwnUsername: 'common.username',
+      mobileNumber: '9222222222',
+    })
+
+    expect((await POST(registrationRequest(first), context)).status).toBe(201)
+    const response = await POST(registrationRequest(secondWithSameUsername), context)
+    expect(response.status).toBe(409)
+    await expect(response.json()).resolves.toMatchObject({
+      success: false,
+      error: {
+        code: 'ALREADY_REGISTERED',
+        message: expect.stringContaining('username is already registered'),
+      },
+    })
+  })
+
+  it('rejects dual entry for mobile number through the native API route', async () => {
+    const first = JSON.stringify({
+      ...validParticipant,
+      email: 'user1@iitp.ac.in',
+      pwnUsername: 'user1.pwn',
+      mobileNumber: '9876543210',
+    })
+    const secondWithSameMobile = JSON.stringify({
+      ...validParticipant,
+      email: 'user2@iitp.ac.in',
+      pwnUsername: 'user2.pwn',
+      mobileNumber: '9876543210',
+    })
+
+    expect((await POST(registrationRequest(first), context)).status).toBe(201)
+    const response = await POST(registrationRequest(secondWithSameMobile), context)
+    expect(response.status).toBe(409)
+    await expect(response.json()).resolves.toMatchObject({
+      success: false,
+      error: {
+        code: 'ALREADY_REGISTERED',
+        message: expect.stringContaining('mobile number is already registered'),
+      },
+    })
+  })
 })

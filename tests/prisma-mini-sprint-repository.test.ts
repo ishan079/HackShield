@@ -82,6 +82,65 @@ describe('PrismaMiniSprintRepository', () => {
     ).rejects.toBeInstanceOf(DuplicateRegistrationError)
   })
 
+  it('rejects duplicate username entry to prevent dual registration details', async () => {
+    const database = {
+      ...createDatabase(),
+      miniSprintRegistration: {
+        findFirst: vi.fn().mockResolvedValue({
+          sprintId: 'mini-14',
+          pwnUsername: 'student',
+          pwnUsernameNormalized: 'student',
+          email: 'other@iitp.ac.in',
+          emailNormalized: 'other@iitp.ac.in',
+          mobileNumber: '9123456789',
+        }),
+        create: vi.fn(),
+      },
+    }
+    database.miniSprint.findUnique.mockResolvedValue({ registrationOpen: true })
+    const repository = new PrismaMiniSprintRepository(database)
+
+    await expect(
+      repository.register('mini-14', {
+        ...validParticipant,
+        email: 'student@iitp.ac.in',
+        pwnUsername: 'student',
+      })
+    ).rejects.toMatchObject({
+      message: expect.stringContaining('username is already registered'),
+    })
+  })
+
+  it('rejects duplicate mobile number entry to prevent dual registration details', async () => {
+    const database = {
+      ...createDatabase(),
+      miniSprintRegistration: {
+        findFirst: vi.fn().mockResolvedValue({
+          sprintId: 'mini-14',
+          pwnUsername: 'otherstudent',
+          pwnUsernameNormalized: 'otherstudent',
+          email: 'other@iitp.ac.in',
+          emailNormalized: 'other@iitp.ac.in',
+          mobileNumber: '9876543210',
+        }),
+        create: vi.fn(),
+      },
+    }
+    database.miniSprint.findUnique.mockResolvedValue({ registrationOpen: true })
+    const repository = new PrismaMiniSprintRepository(database)
+
+    await expect(
+      repository.register('mini-14', {
+        ...validParticipant,
+        email: 'student@iitp.ac.in',
+        pwnUsername: 'student',
+        mobileNumber: '9876543210',
+      })
+    ).rejects.toMatchObject({
+      message: expect.stringContaining('mobile number is already registered'),
+    })
+  })
+
   it('does not create a registration for a missing or closed sprint', async () => {
     const missing = createDatabase()
     missing.miniSprint.findUnique.mockResolvedValue(null)

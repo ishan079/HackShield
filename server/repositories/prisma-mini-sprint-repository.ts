@@ -48,6 +48,7 @@ interface PrismaRegistrationDatabase {
     findUnique(args: unknown): Promise<Pick<PrismaMiniSprintRow, 'registrationOpen'> | null>
   }
   miniSprintRegistration: {
+    findFirst?(args: unknown): Promise<PrismaRegistrationRow | null>
     create(args: unknown): Promise<PrismaRegistrationRow>
   }
 }
@@ -90,6 +91,58 @@ export class PrismaMiniSprintRepository implements MiniSprintRegistrationStore {
     if (!sprint) throw new SprintNotFoundError()
     if (!sprint.registrationOpen) throw new RegistrationClosedError()
 
+    const emailNormalized = input.email.trim().toLowerCase()
+    const pwnUsernameTrimmed = input.pwnUsername.trim()
+    const pwnUsernameNormalized = pwnUsernameTrimmed.toLowerCase()
+    const mobileNumberTrimmed = input.mobileNumber.trim()
+
+    if (this.database.miniSprintRegistration.findFirst) {
+      const existing = await this.database.miniSprintRegistration.findFirst({
+        where: {
+          sprintId,
+          OR: [
+            { emailNormalized },
+            { pwnUsernameNormalized },
+            { mobileNumber: mobileNumberTrimmed },
+          ],
+        },
+      })
+
+      if (existing) {
+        const row = existing as Record<string, unknown>
+        if (
+          row.pwnUsernameNormalized === pwnUsernameNormalized ||
+          (typeof row.pwnUsername === 'string' &&
+            row.pwnUsername.trim().toLowerCase() === pwnUsernameNormalized)
+        ) {
+          throw new DuplicateRegistrationError(
+            'username',
+            'This username is already registered. Dual registration details are not allowed.'
+          )
+        }
+        if (
+          typeof row.mobileNumber === 'string' &&
+          row.mobileNumber.trim() === mobileNumberTrimmed
+        ) {
+          throw new DuplicateRegistrationError(
+            'mobileNumber',
+            'This mobile number is already registered. Dual registration details are not allowed.'
+          )
+        }
+        if (
+          row.emailNormalized === emailNormalized ||
+          (typeof row.email === 'string' &&
+            row.email.trim().toLowerCase() === emailNormalized)
+        ) {
+          throw new DuplicateRegistrationError(
+            'email',
+            'This email address is already registered.'
+          )
+        }
+        throw new DuplicateRegistrationError('email', 'This participant is already registered.')
+      }
+    }
+
     try {
       const row = await this.database.miniSprintRegistration.create({
         data: {
@@ -99,11 +152,11 @@ export class PrismaMiniSprintRepository implements MiniSprintRegistrationStore {
           rollNumber: input.rollNumber.trim(),
           subject: input.subject,
           semester: input.semester,
-          mobileNumber: input.mobileNumber.trim(),
+          mobileNumber: mobileNumberTrimmed,
           email: input.email.trim(),
-          emailNormalized: input.email.trim().toLowerCase(),
-          pwnUsername: input.pwnUsername.trim(),
-          pwnUsernameNormalized: input.pwnUsername.trim().toLowerCase(),
+          emailNormalized,
+          pwnUsername: pwnUsernameTrimmed,
+          pwnUsernameNormalized,
           status: 'CONFIRMED',
         },
       })
@@ -133,8 +186,32 @@ export class PrismaMiniSprintRepository implements MiniSprintRegistrationStore {
         registeredAt: row.registeredAt.toISOString(),
       }
     } catch (error) {
+      if (error instanceof DuplicateRegistrationError) {
+        throw error
+      }
       if ((error as { code?: string }).code === 'P2002') {
-        throw new DuplicateRegistrationError()
+        const target = (error as { meta?: { target?: unknown } }).meta?.target
+        if (Array.isArray(target)) {
+          if (target.some((t: string) => t.includes('username') || t.includes('pwn'))) {
+            throw new DuplicateRegistrationError(
+              'username',
+              'This username is already registered. Dual registration details are not allowed.'
+            )
+          }
+          if (target.some((t: string) => t.includes('mobile'))) {
+            throw new DuplicateRegistrationError(
+              'mobileNumber',
+              'This mobile number is already registered. Dual registration details are not allowed.'
+            )
+          }
+          if (target.some((t: string) => t.includes('email'))) {
+            throw new DuplicateRegistrationError(
+              'email',
+              'This email address is already registered.'
+            )
+          }
+        }
+        throw new DuplicateRegistrationError('email', 'This participant is already registered.')
       }
       throw error
     }

@@ -40,15 +40,48 @@ export function createFakePrisma() {
       },
     },
     miniSprintRegistration: {
+      findFirst: async ({ where }: { where: Record<string, any> }) => {
+        if (where.OR && Array.isArray(where.OR)) {
+          return (
+            registrations.find((item) => {
+              if (item.sprintId !== where.sprintId) return false
+              return where.OR.some((cond: Record<string, any>) => {
+                if (cond.emailNormalized && cond.emailNormalized === item.emailNormalized) return true
+                if (cond.pwnUsernameNormalized && cond.pwnUsernameNormalized === item.pwnUsernameNormalized) return true
+                if (cond.mobileNumber && cond.mobileNumber === item.mobileNumber) return true
+                return false
+              })
+            }) || null
+          )
+        }
+        return null
+      },
       create: async ({ data }: { data: Record<string, string> }) => {
-        const duplicate = registrations.some(
+        const duplicateUsername = registrations.some(
           (item) => item.sprintId === data.sprintId &&
-            (item.emailNormalized === data.emailNormalized ||
-             item.pwnUsernameNormalized === data.pwnUsernameNormalized)
+            item.pwnUsernameNormalized === data.pwnUsernameNormalized
         )
-        if (duplicate) {
-          throw new Prisma.PrismaClientKnownRequestError('Unique constraint failed', {
-            code: 'P2002', clientVersion: '7.10.1',
+        if (duplicateUsername) {
+          throw new Prisma.PrismaClientKnownRequestError('Unique constraint failed on username', {
+            code: 'P2002', clientVersion: '7.10.1', meta: { target: ['pwn_username'] },
+          })
+        }
+        const duplicateMobile = registrations.some(
+          (item) => item.sprintId === data.sprintId &&
+            item.mobileNumber === data.mobileNumber
+        )
+        if (duplicateMobile) {
+          throw new Prisma.PrismaClientKnownRequestError('Unique constraint failed on mobile', {
+            code: 'P2002', clientVersion: '7.10.1', meta: { target: ['mobile_number'] },
+          })
+        }
+        const duplicateEmail = registrations.some(
+          (item) => item.sprintId === data.sprintId &&
+            item.emailNormalized === data.emailNormalized
+        )
+        if (duplicateEmail) {
+          throw new Prisma.PrismaClientKnownRequestError('Unique constraint failed on email', {
+            code: 'P2002', clientVersion: '7.10.1', meta: { target: ['email_normalized'] },
           })
         }
         const row = {

@@ -116,7 +116,7 @@ export function createApp({
       if (error instanceof DuplicateRegistrationError) {
         return reply
           .code(409)
-          .send(failure('ALREADY_REGISTERED', 'This participant is already registered.'))
+          .send(failure('ALREADY_REGISTERED', error.message || 'This participant is already registered.'))
       }
       throw error
     }

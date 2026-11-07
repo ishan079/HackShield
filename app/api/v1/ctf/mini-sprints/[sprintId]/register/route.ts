@@ -60,7 +60,7 @@ export async function POST(request: Request, context: RouteContext): Promise<Res
     }
     if (error instanceof DuplicateRegistrationError) {
       return Response.json(
-        failure('ALREADY_REGISTERED', 'This participant is already registered.'),
+        failure('ALREADY_REGISTERED', error.message || 'This participant is already registered.'),
         { status: 409 }
       )
     }

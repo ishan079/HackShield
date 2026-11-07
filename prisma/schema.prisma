@@ -30,7 +30,8 @@ model MiniSprint {
 }
 
 model MiniSprintRegistration {
-  id              String     @id @db.Uuid
+  emailNormalized String     @id @map("email_normalized")
+  id              String     @default(uuid()) @map("id") @db.Uuid
   sprintId        String     @map("sprint_id")
   fullName        String?    @map("full_name")
   rollNumber      String?    @map("roll_number")
@@ -38,13 +39,12 @@ model MiniSprintRegistration {
   semester        Int?
   mobileNumber    String?    @map("mobile_number")
   email           String
-  emailNormalized String     @map("email_normalized")
   pwnUsername     String     @map("pwn_username")
   status          String
   registeredAt    DateTime   @default(now()) @map("registered_at")
   sprint          MiniSprint @relation(fields: [sprintId], references: [id], onDelete: Cascade)
 
-  @@unique([sprintId, emailNormalized])
   @@unique([sprintId, pwnUsername])
+  @@unique([sprintId, mobileNumber])
   @@map("mini_sprint_registrations")
 }

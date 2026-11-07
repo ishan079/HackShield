@@ -34,42 +34,42 @@ const teamMembers: TeamMember[] = [
         email: 'himanahu_ua2504cdh203@iitp.ac.in',
         linkedin: 'https://linkedin.com/in/himanshukundal',
         website: 'https://himanshuiitp.github.io/portfolio/',
-        badge: 'General Member',
+        badge: 'Member',
     },
     {
         name: 'Ishan Mishra',
         role: 'Core Member and Lead Researcher',
         email: 'ishanmishra079@gmail.com',
         linkedin: 'www.linkedin.com/in/ishanmishra079',
-        badge: 'Tech Lead'
+        badge: 'Member'
     },
     {
         name: 'Aditya Adep',
         role: 'Core Member',
         email: 'aditya_ua2504aih22@iitp.ac.in',
         linkedin: 'https://www.linkedin.com/in/aditya-adep-a08248366/',
-        badge: 'General Member',
+        badge: 'Member',
     },
     {
         name: 'Antra Priyadarshini',
         role: 'Club Member',
         email: 'antra_ua2503cdh63@iitp.ac.in',
         linkedin: 'https://www.linkedin.com/in/antra-priyadarshini-79a5a0399/',
-        badge: 'General Member',
+        badge: 'Member',
     },
     {
         name: 'Anurag Kumar',
         role: 'Club Member',
         email: 'anurag_ua2604aih15@iitp.ac.in',
         linkedin: 'https://www.linkedin.com/in/anurag-kumar-473736349',
-        badge: 'Management',
+        badge: 'Member',
     },
     {
         name: 'Ansh Kumar',
         role: 'Management',
         email: 'ansh_ua2602bbh09@iitp.ac.in',
         linkedin: 'https:// www.linkedin.com/in/Ansh-kumar',
-        badge: 'management member',
+        badge: 'Member',
     }
 ]
 

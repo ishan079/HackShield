@@ -181,6 +181,25 @@ function CTFContent() {
             return
         }
 
+        // Check username entry on form to confirm no dual/conflicting details
+        if (pwnUsername.toLowerCase() === email.toLowerCase() || pwnUsername.includes('@')) {
+            setRegistrationState('error')
+            setRegistrationMessage('pwn.college username cannot be an email address. Provide your unique platform username.')
+            return
+        }
+
+        if (pwnUsername === mobileNumber) {
+            setRegistrationState('error')
+            setRegistrationMessage('pwn.college username cannot be your mobile number. Provide your unique platform username.')
+            return
+        }
+
+        if (pwnUsername.toLowerCase() === rollNumber.toLowerCase()) {
+            setRegistrationState('error')
+            setRegistrationMessage('pwn.college username cannot be your roll number. Dual details are not allowed.')
+            return
+        }
+
         if (fullName.length < 2 || fullName.length > 120) {
             setRegistrationState('error')
             setRegistrationMessage('Enter your full name using 2–120 characters.')
@@ -1959,7 +1978,7 @@ function CTFContent() {
                                                         lineHeight: 1.4,
                                                     }}
                                                 >
-                                                    Enter your username, not your password.
+                                                    Enter your unique pwn.college username. Dual entries under the same username or mobile number are not allowed.
                                                 </div>
                                             </div>
 

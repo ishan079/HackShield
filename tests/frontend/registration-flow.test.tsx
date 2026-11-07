@@ -283,4 +283,61 @@ describe('Mini CTF frontend registration flow', () => {
       pwnUsername: 'student.pwn',
     })
   })
+
+  it('checks username entry on form to prevent dual or conflicting details', async () => {
+    const user = userEvent.setup()
+    render(<CTFPage />)
+    await acceptRulebook(user)
+    await fillParticipantDetails(user)
+
+    const email = await screen.findByPlaceholderText('Your institute email address')
+    const username = screen.getByPlaceholderText('Your pwn.college username')
+
+    await user.type(email, 'student@iitp.ac.in')
+    await user.type(username, '9876543210')
+    await user.click(screen.getByRole('button', { name: 'Register for this sprint' }))
+
+    expect(registerMiniSprint).not.toHaveBeenCalled()
+    expect(
+      screen.getByText('pwn.college username cannot be your mobile number. Provide your unique platform username.')
+    ).toBeVisible()
+
+    await user.clear(username)
+    await user.type(username, 'UA2504AIH103')
+    await user.click(screen.getByRole('button', { name: 'Register for this sprint' }))
+
+    expect(registerMiniSprint).not.toHaveBeenCalled()
+    expect(
+      screen.getByText('pwn.college username cannot be your roll number. Dual details are not allowed.')
+    ).toBeVisible()
+  })
+
+  it('renders dual entry error when backend rejects duplicate username or mobile number', async () => {
+    registerMiniSprint.mockResolvedValueOnce({
+      success: false,
+      error: {
+        code: 'ALREADY_REGISTERED',
+        message: 'This username is already registered. Dual registration details are not allowed.',
+      },
+      timestamp: '2026-11-07T03:00:00.000Z',
+    })
+    const user = userEvent.setup()
+    render(<CTFPage />)
+    await acceptRulebook(user)
+    await fillParticipantDetails(user)
+
+    await user.type(
+      await screen.findByPlaceholderText('Your institute email address'),
+      'student@iitp.ac.in'
+    )
+    await user.type(
+      screen.getByPlaceholderText('Your pwn.college username'),
+      'duplicate.user'
+    )
+    await user.click(screen.getByRole('button', { name: 'Register for this sprint' }))
+
+    expect(
+      await screen.findByText('This username is already registered. Dual registration details are not allowed.')
+    ).toBeVisible()
+  })
 })

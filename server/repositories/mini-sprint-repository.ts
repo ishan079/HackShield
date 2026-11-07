@@ -39,7 +39,22 @@ interface RegistrationRow {
   registered_at: Date
 }
 
-export class DuplicateRegistrationError extends Error {}
+export class DuplicateRegistrationError extends Error {
+  constructor(
+    public readonly field?: 'email' | 'username' | 'mobileNumber',
+    message?: string
+  ) {
+    super(
+      message ||
+        (field === 'username'
+          ? 'This username is already registered. Dual registration details are not allowed.'
+          : field === 'mobileNumber'
+          ? 'This mobile number is already registered. Dual registration details are not allowed.'
+          : 'This participant is already registered.')
+    )
+    this.name = 'DuplicateRegistrationError'
+  }
+}
 export class SprintNotFoundError extends Error {}
 export class RegistrationClosedError extends Error {}
 
@@ -108,6 +123,47 @@ export class MiniSprintRepository implements MiniSprintRegistrationStore {
     if (!sprint.rowCount) throw new SprintNotFoundError()
     if (!sprint.rows[0].registration_open) throw new RegistrationClosedError()
 
+    const emailNormalized = input.email.trim().toLowerCase()
+    const pwnUsernameNormalized = input.pwnUsername.trim().toLowerCase()
+    const mobileNumberTrimmed = input.mobileNumber.trim()
+
+    // Dual details check for email, username, and mobile number
+    const existing = await this.rawDatabase!.query<RegistrationRow & { email_normalized?: string }>(
+      `SELECT email, email_normalized, pwn_username, mobile_number
+         FROM mini_sprint_registrations
+        WHERE sprint_id = $1
+          AND (
+            email_normalized = $2
+            OR lower(pwn_username) = $3
+            OR mobile_number = $4
+          )
+        LIMIT 1`,
+      [sprintId, emailNormalized, pwnUsernameNormalized, mobileNumberTrimmed]
+    )
+
+    if (existing.rowCount && existing.rows.length > 0) {
+      const match = existing.rows[0]
+      if (match.pwn_username?.trim().toLowerCase() === pwnUsernameNormalized) {
+        throw new DuplicateRegistrationError(
+          'username',
+          'This username is already registered. Dual registration details are not allowed.'
+        )
+      }
+      if (match.mobile_number?.trim() === mobileNumberTrimmed) {
+        throw new DuplicateRegistrationError(
+          'mobileNumber',
+          'This mobile number is already registered. Dual registration details are not allowed.'
+        )
+      }
+      if (match.email_normalized === emailNormalized || match.email?.trim().toLowerCase() === emailNormalized) {
+        throw new DuplicateRegistrationError(
+          'email',
+          'This participant is already registered.'
+        )
+      }
+      throw new DuplicateRegistrationError('email', 'This participant is already registered.')
+    }
+
     try {
       const result = await this.rawDatabase!.query<RegistrationRow>(
         `INSERT INTO mini_sprint_registrations (
@@ -123,9 +179,9 @@ export class MiniSprintRepository implements MiniSprintRegistrationStore {
           input.rollNumber.trim(),
           input.subject,
           input.semester,
-          input.mobileNumber.trim(),
+          mobileNumberTrimmed,
           input.email.trim(),
-          input.email.trim().toLowerCase(),
+          emailNormalized,
           input.pwnUsername.trim(),
         ]
       )
@@ -145,8 +201,24 @@ export class MiniSprintRepository implements MiniSprintRegistrationStore {
         registeredAt: toIso(row.registered_at),
       }
     } catch (error) {
+      if (error instanceof DuplicateRegistrationError) {
+        throw error
+      }
       if ((error as { code?: string }).code === '23505') {
-        throw new DuplicateRegistrationError()
+        const detail = (error as { detail?: string }).detail || ''
+        if (detail.includes('pwn_username') || detail.includes('username')) {
+          throw new DuplicateRegistrationError(
+            'username',
+            'This username is already registered. Dual registration details are not allowed.'
+          )
+        }
+        if (detail.includes('mobile_number') || detail.includes('mobile')) {
+          throw new DuplicateRegistrationError(
+            'mobileNumber',
+            'This mobile number is already registered. Dual registration details are not allowed.'
+          )
+        }
+        throw new DuplicateRegistrationError('email', 'This participant is already registered.')
       }
       throw error
     }
