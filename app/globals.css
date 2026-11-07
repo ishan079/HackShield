@@ -3,7 +3,7 @@
   font-style: normal;
   font-weight: 300 900;
   font-display: swap;
-  src: url('/fonts/inter-latin-variable.woff2') format('woff2');
+  src: url('/public/fonts/inter-latin-variable.woff2') format('woff2');
 }
 
 @font-face {
@@ -11,7 +11,7 @@
   font-style: normal;
   font-weight: 400 700;
   font-display: swap;
-  src: url('/fonts/space-grotesk-latin-variable.woff2') format('woff2');
+  src: url('/public/fonts/space-grotesk-latin-variable.woff2') format('woff2');
 }
 
 @font-face {
@@ -19,7 +19,7 @@
   font-style: normal;
   font-weight: 400 800;
   font-display: swap;
-  src: url('/fonts/jetbrains-mono-latin-variable.woff2') format('woff2');
+  src: url('/public/fonts/jetbrains-mono-latin-variable.woff2') format('woff2');
 }
 
 *, *::before, *::after {
@@ -32,6 +32,7 @@
    THEME VARIABLES
    ────────────────────────────────────────────── */
 :root, [data-theme="dark"] {
+  color-scheme: dark;
   --bg-primary: #0b0f14;
   --bg-secondary: #0e1319;
   --bg-surface: linear-gradient(180deg, rgba(0, 0, 0, 0.48) 0%, rgba(10, 16, 24, 0.38) 100%);
@@ -44,22 +45,39 @@
   --border-specular: rgba(255, 255, 255, 0.42);
   --border-bottom: rgba(0, 0, 0, 0.50);
   --border-divider: rgba(255, 255, 255, 0.08);
-  --accent: #e8845b;
-  --accent-hover: #f09568;
-  --accent-dim: rgba(232, 132, 91, 0.15);
-  --accent-glow: rgba(232, 132, 91, 0.35);
-  --accent-subtle: rgba(232, 132, 91, 0.08);
-  --text-primary: #f0f3f6;
-  --text-secondary: rgba(240, 243, 246, 0.72);
-  --text-muted: rgba(240, 243, 246, 0.46);
+
+  /* Bright, vibrant accents in dark mode */
+  --accent: #ff8c5a;
+  --accent-hover: #ffa880;
+  --accent-dim: rgba(255, 140, 90, 0.18);
+  --accent-glow: rgba(255, 140, 90, 0.45);
+  --accent-subtle: rgba(255, 140, 90, 0.10);
+
+  /* All dark/grey texts turn bright white in dark mode */
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --text-muted: #ffffff;
+
+  /* Bright colors instead of darker contrasts */
+  --color-green: #34d399;
+  --color-green-glow: rgba(52, 211, 153, 0.40);
+  --color-green-dim: rgba(52, 211, 153, 0.18);
+  --color-green-border: rgba(52, 211, 153, 0.45);
+  --color-red: #f87171;
+  --color-blue: #60a5fa;
+  --color-orange: #fb923c;
+  --color-purple: #c084fc;
+  --color-amber: #fbbf24;
+
   --shadow-card: 0 24px 50px -10px rgba(0, 0, 0, 0.78), 0 10px 24px -5px rgba(0, 0, 0, 0.52), inset 0 1px 1px 0 rgba(255, 255, 255, 0.40), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.45);
-  --shadow-card-hover: 0 32px 64px -12px rgba(0, 0, 0, 0.85), 0 16px 32px -6px rgba(0, 0, 0, 0.60), inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.55), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.45), 0 0 28px rgba(232, 132, 91, 0.20);
+  --shadow-card-hover: 0 32px 64px -12px rgba(0, 0, 0, 0.85), 0 16px 32px -6px rgba(0, 0, 0, 0.60), inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.55), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.45), 0 0 28px rgba(255, 140, 90, 0.25);
   --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
   --nav-bg: rgba(11, 15, 20, 0.82);
   --tag-bg: rgba(255, 255, 255, 0.07);
   --input-bg: rgba(0, 0, 0, 0.45);
+  --input-text: #ffffff;
   --card-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(20, 26, 35, 0.62) 40%, rgba(10, 15, 22, 0.72) 100%);
-  --cursor-spotlight: rgba(232, 132, 91, 0.08);
+  --cursor-spotlight: rgba(255, 140, 90, 0.10);
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: 'Space Grotesk', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
@@ -67,6 +85,7 @@
 }
 
 [data-theme="light"] {
+  color-scheme: light;
   --bg-primary: #f8f9fa;
   --bg-secondary: #f1f3f5;
   --bg-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.90) 0%, rgba(240, 244, 248, 0.65) 100%);
@@ -79,20 +98,36 @@
   --border-specular: rgba(255, 255, 255, 1);
   --border-bottom: rgba(0, 0, 0, 0.08);
   --border-divider: rgba(0, 0, 0, 0.06);
+
+  /* Darker contrasts for light theme */
   --accent: #d8683e;
   --accent-hover: #e3744a;
   --accent-dim: rgba(216, 104, 62, 0.1);
   --accent-glow: rgba(216, 104, 62, 0.22);
   --accent-subtle: rgba(216, 104, 62, 0.05);
+
   --text-primary: #0f1419;
   --text-secondary: #4b5563;
   --text-muted: #6b7280;
+
+  /* Darker contrast colors for light theme */
+  --color-green: #059669;
+  --color-green-glow: rgba(5, 150, 105, 0.25);
+  --color-green-dim: rgba(5, 150, 105, 0.12);
+  --color-green-border: rgba(5, 150, 105, 0.35);
+  --color-red: #d33434;
+  --color-blue: #2563eb;
+  --color-orange: #ea580c;
+  --color-purple: #7c3aed;
+  --color-amber: #d97706;
+
   --shadow-card: 0 18px 40px -10px rgba(0, 0, 0, 0.08), 0 6px 14px -3px rgba(0, 0, 0, 0.04), inset 0 1px 2px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.04);
   --shadow-card-hover: 0 26px 52px -10px rgba(0, 0, 0, 0.12), 0 10px 20px -3px rgba(0, 0, 0, 0.06), inset 0 1.5px 2px 0 rgba(255, 255, 255, 1), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.05), 0 0 24px rgba(216, 104, 62, 0.14);
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
   --nav-bg: rgba(248, 249, 250, 0.88);
   --tag-bg: rgba(0, 0, 0, 0.05);
   --input-bg: rgba(255, 255, 255, 0.65);
+  --input-text: #0f1419;
   --card-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(245, 248, 252, 0.80) 100%);
   --cursor-spotlight: rgba(216, 104, 62, 0.05);
   --card-radius: 26px;
@@ -129,6 +164,49 @@ button {
 img {
   max-width: 100%;
   display: block;
+}
+
+/* ──────────────────────────────────────────────
+   THEME-AWARE TYPOGRAPHY & NATIVE FORM RESETS
+   ────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+}
+
+p, li, blockquote, dd, dt {
+  color: var(--text-secondary);
+}
+
+input, textarea, select, button {
+  font-family: inherit;
+  color: inherit;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] ::placeholder {
+  color: rgba(255, 255, 255, 0.72);
+  opacity: 1;
+}
+
+[data-theme="light"] ::placeholder {
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+/* Global smooth transition when switching themes */
+html,
+body,
+h1, h2, h3, h4, h5, h6,
+p, span, a, label, li, code, pre,
+input, textarea, select, button {
+  transition: color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 ::selection {

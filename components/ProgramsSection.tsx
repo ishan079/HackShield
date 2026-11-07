@@ -13,7 +13,7 @@ const programs: ProgramCardItem[] = [
     description:
       'From fundamentals to advanced binary exploitation. Weekly hands-on labs, hardware hacking teardowns, and personal mentorship.',
     tag: 'Ended',
-    dotColor: '#d33434',
+    dotColor: 'var(--color-red)',
   },
   {
     index: '02',
@@ -22,7 +22,7 @@ const programs: ProgramCardItem[] = [
     description:
       'Collaborative drills across web exploitation, cryptography, reverse engineering, and forensics with senior club members.',
     tag: 'EVERY WEEK',
-    dotColor: '#e8845b',
+    dotColor: 'var(--accent)',
   },
   {
     index: '03',
@@ -31,7 +31,7 @@ const programs: ProgramCardItem[] = [
     description:
       'Experienced engineers and certified professionals share unfiltered insights.',
     tag: 'MONTHLY',
-    dotColor: '#60a5fa',
+    dotColor: 'var(--color-blue)',
   },
 ]
 

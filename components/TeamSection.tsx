@@ -109,7 +109,7 @@ export default function TeamSection() {
               style={{
                   width: '24px',
                   height: '2px',
-                  background: '#e8845b',
+                  background: 'var(--accent)',
                   display: 'inline-block',
                   borderRadius: '1px',
               }}

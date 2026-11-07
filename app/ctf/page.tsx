@@ -266,13 +266,13 @@ function CTFContent() {
         type: 'Jeopardy Style',
         teams: '100+ Teams',
     }
-       ]
+    ]
 
     const miniSprints: MiniCTFSprint[] = [{
         id: 'mini-14',
-        title: 'The Mini CTF',
+        title: 'Practice CTF',
         status: 'REGISTRATION OPEN',
-        statusColor: '#10b981',
+        statusColor: 'var(--color-green)',
         date: 'November 10,2026|12:00 PM – November 13,2026|12:00 PM IST',
         duration: '72 Hours',
         challenges: 'Multiple Targets',
@@ -282,15 +282,19 @@ function CTFContent() {
         description: 'Paced marathon targeting practice towards upcoming fast paced Hackathon.',
     },]
 
-    const miniStats: MiniStatItem[] = [{
-        label: 'Marathon Duration', val: '72 Hours', icon: <Clock size={18} color="var(--accent)"/>,
-    }, {
-        label: 'Frequency', val: 'Monthly', icon: <Calendar size={18} color="var(--accent)"/>,
-    }, {
-        label: 'Team Format', val: 'Solo or Duos', icon: <Users size={18} color="var(--accent)"/>,
-    }, {
-        label: 'Rewards', val: 'Club XP & Badges', icon: <Award size={18} color="var(--accent)"/>,
-    },]
+    const miniStats: MiniStatItem[] = [
+        {
+            label: 'Marathon Duration', val: '72 Hours', icon: <Clock size={18} color="var(--accent)"/>,
+        },
+        {
+            label: 'Frequency', val: 'Monthly', icon: <Calendar size={18} color="var(--accent)"/>,
+        },
+        {
+            label: 'Team Format', val: 'Solo or Duos', icon: <Users size={18} color="var(--accent)"/>,
+        },
+        {
+            label: 'Rewards', val: 'Club XP & Badges', icon: <Award size={18} color="var(--accent)"/>,
+        },]
 
     return (<div
         style={{
@@ -312,26 +316,6 @@ function CTFContent() {
                 transition={{duration: 0.7}}
                 style={{textAlign: 'center', marginBottom: '45px'}}
             >
-                <div
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        background: 'var(--accent-dim)',
-                        border: '1px solid var(--accent)',
-                        borderRadius: '999px',
-                        padding: '6px 18px',
-                        marginBottom: '20px',
-                        fontSize: '0.82rem',
-                        letterSpacing: '1px',
-                        color: 'var(--accent)',
-                        textTransform: 'uppercase',
-                        fontWeight: 700,
-                    }}
-                >
-                    <Flag size={14}/> Official Competitions Hub
-                </div>
-
                 <h1
                     style={{
                         fontFamily: 'var(--font-display)',
@@ -703,7 +687,7 @@ function CTFContent() {
                                     onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
                                     onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
                                 >
-                                    Pre-Register Now <ArrowUpRight size={18}/>
+                                    Pre-Registeration Open soon
                                 </a>
                             </div>
                         </div>
@@ -993,15 +977,15 @@ function CTFContent() {
                                     width: '48px',
                                     height: '48px',
                                     borderRadius: '14px',
-                                    background: 'rgba(16, 185, 129, 0.15)',
-                                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                                    background: 'var(--color-green-dim)',
+                                    border: '1px solid var(--color-green-border)',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     flexShrink: 0,
                                 }}
                             >
-                                <Zap size={24} color="#10b981"/>
+                                <Zap size={24} color="var(--color-green)"/>
                             </div>
                             <div>
                                 <h4
@@ -1033,22 +1017,22 @@ function CTFContent() {
                                 gap: '8px',
                                 padding: '12px 24px',
                                 borderRadius: '9999px',
-                                background: 'rgba(16, 185, 129, 0.15)',
-                                border: '1.5px solid #10b981',
-                                color: '#10b981',
+                                background: 'var(--color-green-dim)',
+                                border: '1.5px solid var(--color-green)',
+                                color: 'var(--color-green)',
                                 fontSize: '0.92rem',
                                 fontWeight: 700,
                                 cursor: 'pointer',
                                 transition: 'all 0.2s ease',
-                                boxShadow: '0 4px 14px rgba(16, 185, 129, 0.15)',
+                                boxShadow: '0 4px 14px var(--color-green-glow)',
                             }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.background = '#10b981'
+                                e.currentTarget.style.background = 'var(--color-green)'
                                 e.currentTarget.style.color = '#ffffff'
                             }}
                             onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'rgba(16, 185, 129, 0.15)'
-                                e.currentTarget.style.color = '#10b981'
+                                e.currentTarget.style.background = 'var(--color-green-dim)'
+                                e.currentTarget.style.color = 'var(--color-green)'
                             }}
                         >
                             <span>Explore Mini CTF Track</span>
@@ -1094,9 +1078,9 @@ function CTFContent() {
                                         display: 'inline-flex',
                                         alignItems: 'center',
                                         gap: '6px',
-                                        background: 'rgba(16, 185, 129, 0.15)',
-                                        border: '1px solid rgba(16, 185, 129, 0.4)',
-                                        color: '#10b981',
+                                        background: 'var(--color-green-dim)',
+                                        border: '1px solid var(--color-green-border)',
+                                        color: 'var(--color-green)',
                                         fontSize: '0.75rem',
                                         fontWeight: 800,
                                         letterSpacing: '1.2px',
@@ -1307,8 +1291,8 @@ function CTFContent() {
                                             letterSpacing: '1px',
                                             padding: '3px 10px',
                                             borderRadius: '6px',
-                                            background: `${sprint.statusColor}22`,
-                                            border: `1px solid ${sprint.statusColor}66`,
+                                            background: 'var(--color-green-dim)',
+                                            border: '1px solid var(--color-green-border)',
                                             color: sprint.statusColor,
                                             textTransform: 'uppercase',
                                         }}
@@ -1497,7 +1481,7 @@ function CTFContent() {
                                       style={{
                                           fontSize: '0.94rem',
                                           fontWeight: 700,
-                                          color: '#ea580c',
+                                          color: 'var(--color-orange)',
                                           letterSpacing: '0.2px',
                                       }}
                                   >
@@ -1584,7 +1568,7 @@ function CTFContent() {
                                                     </div>
                                                     <div
                                                         style={{
-                                                            color: hasOpenedRulebook ? '#34d399' : 'var(--text-muted)',
+                                                            color: hasOpenedRulebook ? 'var(--color-green)' : 'var(--text-muted)',
                                                             fontSize: '0.8rem',
                                                         }}
                                                     >
@@ -1605,9 +1589,9 @@ function CTFContent() {
                                                         gap: '7px',
                                                         padding: '9px 12px',
                                                         borderRadius: '9px',
-                                                        background: hasOpenedRulebook ? 'rgba(16, 185, 129, 0.13)' : 'var(--accent-dim)',
-                                                        border: hasOpenedRulebook ? '1px solid rgba(52, 211, 153, 0.42)' : '1px solid var(--accent)',
-                                                        color: hasOpenedRulebook ? '#34d399' : 'var(--accent)',
+                                                        background: hasOpenedRulebook ? 'var(--color-green-dim)' : 'var(--accent-dim)',
+                                                        border: hasOpenedRulebook ? '1px solid var(--color-green-border)' : '1px solid var(--accent)',
+                                                        color: hasOpenedRulebook ? 'var(--color-green)' : 'var(--accent)',
                                                         fontSize: '0.82rem',
                                                         fontWeight: 700,
                                                         cursor: 'pointer',
@@ -1719,7 +1703,10 @@ function CTFContent() {
                                                         required
                                                         value={regForm.subject}
                                                         onChange={(e) => {
-                                                            setRegForm({...regForm, subject: e.target.value as '' | MiniCtfSubject})
+                                                            setRegForm({
+                                                                ...regForm,
+                                                                subject: e.target.value as '' | MiniCtfSubject
+                                                            })
                                                             if (registrationState === 'error') {
                                                                 setRegistrationState('idle')
                                                                 setRegistrationMessage('')
@@ -1752,11 +1739,13 @@ function CTFContent() {
                                                     >
                                                         <option value="" disabled>Select your semester</option>
                                                         {[1, 2, 3, 4, 5, 6, 7].map((semester) => (
-                                                            <option key={semester} value={semester}>Semester {semester}</option>
+                                                            <option key={semester}
+                                                                    value={semester}>Semester {semester}</option>
                                                         ))}
                                                     </select>
                                                 </div>
-                                                <div className="mini-ctf-registration-field mini-ctf-registration-field-wide">
+                                                <div
+                                                    className="mini-ctf-registration-field mini-ctf-registration-field-wide">
                                                     <label htmlFor={`registration-mobile-number-${sprint.id}`}>
                                                         Mobile number <span>Required</span>
                                                     </label>
@@ -1771,7 +1760,10 @@ function CTFContent() {
                                                         placeholder="10-digit Indian mobile number"
                                                         value={regForm.mobileNumber}
                                                         onChange={(e) => {
-                                                            setRegForm({...regForm, mobileNumber: e.target.value.replace(/\D/g, '')})
+                                                            setRegForm({
+                                                                ...regForm,
+                                                                mobileNumber: e.target.value.replace(/\D/g, '')
+                                                            })
                                                             if (registrationState === 'error') {
                                                                 setRegistrationState('idle')
                                                                 setRegistrationMessage('')
@@ -1948,7 +1940,7 @@ function CTFContent() {
                                                     width: '100%',
                                                     padding: '14px 20px',
                                                     borderRadius: '12px',
-                                                    background: registrationState === 'success' ? '#059669' : 'var(--accent)',
+                                                    background: registrationState === 'success' ? 'var(--color-green)' : 'var(--accent)',
                                                     border: '1px solid var(--border-subtle)',
                                                     color: '#ffffff',
                                                     fontSize: '0.98rem',
@@ -1968,7 +1960,7 @@ function CTFContent() {
                                                 aria-live="polite"
                                                 style={{
                                                     fontSize: '0.84rem',
-                                                    color: registrationState === 'error' ? '#f87171' : registrationState === 'success' ? '#34d399' : 'var(--text-muted)',
+                                                    color: registrationState === 'error' ? 'var(--color-red)' : registrationState === 'success' ? 'var(--color-green)' : 'var(--text-muted)',
                                                     lineHeight: 1.5,
                                                 }}
                                             >
@@ -2030,7 +2022,7 @@ function CTFContent() {
                         >
                             {[{
                                 step: '01',
-                                title: 'Speed Run Window',
+                                title: 'Practice',
                                 desc: 'Each sprint runs for strictly 2.5 to 3 hours on our self-hosted CTFd instance.',
                             }, {
                                 step: '02',
