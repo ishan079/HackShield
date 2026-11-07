@@ -20,6 +20,13 @@ function registrationRequest(body: string): Request {
 }
 
 const context = { params: Promise.resolve({ sprintId: 'mini-14' }) }
+const validParticipant = {
+  fullName: 'Test Student',
+  rollNumber: 'UA2504AIH103',
+  subject: 'BS CSDA',
+  semester: 3,
+  mobileNumber: '9876543210',
+}
 
 describe('Next.js Vercel route handlers', () => {
   beforeEach(() => {
@@ -38,6 +45,7 @@ describe('Next.js Vercel route handlers', () => {
   it('registers through the native API route', async () => {
     const response = await POST(
       registrationRequest(JSON.stringify({
+        ...validParticipant,
         email: 'student@iitp.ac.in', pwnUsername: 'student.pwn',
       })),
       context
@@ -59,6 +67,7 @@ describe('Next.js Vercel route handlers', () => {
 
   it('rejects duplicate registrations through the native API route', async () => {
     const payload = JSON.stringify({
+      ...validParticipant,
       email: 'student@iitp.ac.in', pwnUsername: 'student.pwn',
     })
     expect((await POST(registrationRequest(payload), context)).status).toBe(201)

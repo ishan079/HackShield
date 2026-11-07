@@ -1,6 +1,7 @@
 import { Prisma } from '@/generated/prisma/client'
 import type { PrismaClient } from '@/generated/prisma/client'
 import type {
+  MiniCtfSubject,
   MiniSprintDto,
   MiniSprintRegistrationDto,
   MiniSprintRegistrationRequest,
@@ -49,10 +50,18 @@ export class MiniSprintRepository {
 
     const email = input.email.trim()
     const pwnUsername = input.pwnUsername.trim()
+    const fullName = input.fullName.trim()
+    const rollNumber = input.rollNumber.trim()
+    const mobileNumber = input.mobileNumber.trim()
     try {
       const registration = await this.database.miniSprintRegistration.create({
         data: {
           sprintId,
+          fullName,
+          rollNumber,
+          subject: input.subject,
+          semester: input.semester,
+          mobileNumber,
           email,
           emailNormalized: email.toLowerCase(),
           pwnUsername,
@@ -63,6 +72,11 @@ export class MiniSprintRepository {
       return {
         registrationId: registration.id,
         sprintId: registration.sprintId,
+        fullName: registration.fullName ?? fullName,
+        rollNumber: registration.rollNumber ?? rollNumber,
+        subject: (registration.subject ?? input.subject) as MiniCtfSubject,
+        semester: registration.semester ?? input.semester,
+        mobileNumber: registration.mobileNumber ?? mobileNumber,
         email: registration.email,
         pwnUsername: registration.pwnUsername,
         status: registration.status,
