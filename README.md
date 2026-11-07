@@ -1,6 +1,6 @@
 # HackShield
 
-HackShield is the IIT Patna Cybersecurity Club web application. The repository contains a Next.js 15 frontend, a Fastify backend, PostgreSQL persistence, an OpenAPI contract, and isolated frontend/API/backend/database tests.
+HackShield is the IIT Patna Cybersecurity Club web application. The repository contains a Next.js 16 frontend, a Fastify backend, PostgreSQL persistence, an OpenAPI contract, and isolated frontend/API/backend/database tests.
 
 ## Current implementation
 
@@ -16,7 +16,7 @@ The OpenAPI file describes the intended complete platform. At present, only the 
 
 ## Prerequisites
 
-- Node.js 22 or newer. The current development machine uses Node 26.
+- Node.js 20.9 or newer. The current development machine uses Node 26.
 - npm.
 - PostgreSQL 16+, installed locally or run through Docker.
 

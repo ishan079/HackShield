@@ -2,7 +2,7 @@
 
 ## Stack
 
-Next.js 15 App Router, React 19, TypeScript, Framer Motion, Lucide, CSS variables/component-local styling, and Testing Library/Vitest.
+Next.js 16 App Router with Turbopack, React 19, TypeScript 7, Framer Motion, Lucide, CSS variables/component-local styling, and Testing Library/Vitest.
 
 ## Routes
 

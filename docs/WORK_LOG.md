@@ -40,3 +40,14 @@ This records current work so another developer can continue without reconstructi
 - pwn.college verification was investigated and explicitly deferred; do not imply usernames are verified.
 - Migration execution replays one idempotent SQL file; adopt version tracking before schema growth.
 - Pushes require repository-owner approval.
+
+## Dependency modernization
+
+- Upgraded Next.js 15.5.29 to 16.4.5 and adopted its default Turbopack build.
+- Upgraded React/React DOM to 19.3.1, TypeScript to 7.0.2, Framer Motion to
+  14.10.1, Lucide React to 1.70.0, React Intersection Observer to 11.0.1, and
+  matching current React/Node type packages.
+- Accepted Next 16's required `react-jsx` TypeScript runtime and generated type
+  include path. The migration passed every isolated suite and production build.
+- Retained Next 16's generated `AGENTS.md` compatibility notice so running the
+  development server does not repeatedly dirty the working tree.
