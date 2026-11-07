@@ -1,5 +1,21 @@
-import { Prisma } from '@/generated/prisma/client'
-import type { PrismaClient } from '@/generated/prisma/client'
+class FakePrismaClientKnownRequestError extends Error {
+  code: string
+  constructor(message: string, options: { code: string; clientVersion?: string }) {
+    super(message)
+    this.code = options.code
+  }
+}
+
+let Prisma: any = {
+  PrismaClientKnownRequestError: FakePrismaClientKnownRequestError,
+}
+
+try {
+  const generated = await import('@/generated/prisma/client')
+  if (generated.Prisma) {
+    Prisma = generated.Prisma
+  }
+} catch {}
 
 export function createFakePrisma() {
   const sprints = [

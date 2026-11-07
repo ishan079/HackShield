@@ -7,6 +7,7 @@ import type {
   MiniSprintRegistrationRequest,
 } from '@/types/api'
 import type { MiniSprintRegistrationStore } from './mini-sprint-store'
+import { PrismaMiniSprintRepository } from './prisma-mini-sprint-repository'
 
 interface MiniSprintRow {
   id: string
@@ -64,11 +65,25 @@ function mapSprint(row: MiniSprintRow): MiniSprintDto {
   }
 }
 
+export type RepositoryDatabase = Database | Record<string, unknown>
+
 export class MiniSprintRepository implements MiniSprintRegistrationStore {
-  constructor(private readonly database: Database) {}
+  private readonly prismaRepo?: PrismaMiniSprintRepository
+  private readonly rawDatabase?: Database
+
+  constructor(database: RepositoryDatabase) {
+    if (database && 'miniSprint' in database) {
+      this.prismaRepo = new PrismaMiniSprintRepository(database as any)
+    } else {
+      this.rawDatabase = database as Database
+    }
+  }
 
   async list(): Promise<MiniSprintDto[]> {
-    const result = await this.database.query<MiniSprintRow>(
+    if (this.prismaRepo) {
+      return this.prismaRepo.list()
+    }
+    const result = await this.rawDatabase!.query<MiniSprintRow>(
       `SELECT id, title, status, status_color, starts_at, ends_at,
               duration_minutes, challenge_count, difficulty, format,
               reward, description, registration_open
@@ -82,7 +97,10 @@ export class MiniSprintRepository implements MiniSprintRegistrationStore {
     sprintId: string,
     input: MiniSprintRegistrationRequest
   ): Promise<MiniSprintRegistrationDto> {
-    const sprint = await this.database.query<Pick<MiniSprintRow, 'registration_open'>>(
+    if (this.prismaRepo) {
+      return this.prismaRepo.register(sprintId, input)
+    }
+    const sprint = await this.rawDatabase!.query<Pick<MiniSprintRow, 'registration_open'>>(
       'SELECT registration_open FROM mini_sprints WHERE id = $1',
       [sprintId]
     )
@@ -91,7 +109,7 @@ export class MiniSprintRepository implements MiniSprintRegistrationStore {
     if (!sprint.rows[0].registration_open) throw new RegistrationClosedError()
 
     try {
-      const result = await this.database.query<RegistrationRow>(
+      const result = await this.rawDatabase!.query<RegistrationRow>(
         `INSERT INTO mini_sprint_registrations (
            id, sprint_id, full_name, roll_number, subject, semester, mobile_number,
            email, email_normalized, pwn_username, status
