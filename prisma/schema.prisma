@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model MiniSprint {
+  id               String                      @id
+  title            String
+  status           String
+  statusColor      String                      @map("status_color")
+  startsAt         DateTime                    @map("starts_at")
+  endsAt           DateTime                    @map("ends_at")
+  durationMinutes  Int                         @map("duration_minutes")
+  challengeCount   Int                         @map("challenge_count")
+  difficulty       String
+  format           String
+  reward           String
+  description      String
+  registrationOpen Boolean                     @default(false) @map("registration_open")
+  createdAt        DateTime                    @default(now()) @map("created_at")
+  updatedAt        DateTime                    @default(now()) @map("updated_at")
+  registrations    MiniSprintRegistration[]
+
+  @@index([startsAt])
+  @@map("mini_sprints")
+}
+
+model MiniSprintRegistration {
+  id              String     @id @db.Uuid
+  sprintId        String     @map("sprint_id")
+  fullName        String?    @map("full_name")
+  rollNumber      String?    @map("roll_number")
+  subject         String?
+  semester        Int?
+  mobileNumber    String?    @map("mobile_number")
+  email           String
+  emailNormalized String     @map("email_normalized")
+  pwnUsername     String     @map("pwn_username")
+  status          String
+  registeredAt    DateTime   @default(now()) @map("registered_at")
+  sprint          MiniSprint @relation(fields: [sprintId], references: [id], onDelete: Cascade)
+
+  @@unique([sprintId, emailNormalized])
+  @@unique([sprintId, pwnUsername])
+  @@map("mini_sprint_registrations")
+}
