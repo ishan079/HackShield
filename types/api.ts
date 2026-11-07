@@ -48,7 +48,25 @@ export interface MiniSprintDto {
   registrationOpen: boolean
 }
 
+export const MINI_CTF_SUBJECTS = [
+  'BSc CSDA',
+  'BS CSDA',
+  'BS-MS CSDA',
+  'BS AICS',
+  'BS-MS AICS',
+  'MCA',
+  'BBA',
+  'BBA-MBA',
+] as const
+
+export type MiniCtfSubject = (typeof MINI_CTF_SUBJECTS)[number]
+
 export interface MiniSprintRegistrationRequest {
+  fullName: string
+  rollNumber: string
+  subject: MiniCtfSubject
+  semester: number
+  mobileNumber: string
   email: string
   pwnUsername: string
 }
@@ -56,6 +74,11 @@ export interface MiniSprintRegistrationRequest {
 export interface MiniSprintRegistrationDto {
   registrationId: string
   sprintId: string
+  fullName: string
+  rollNumber: string
+  subject: MiniCtfSubject
+  semester: number
+  mobileNumber: string
   email: string
   pwnUsername: string
   status: 'CONFIRMED' | 'WAITLISTED'

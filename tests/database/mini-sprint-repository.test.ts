@@ -7,6 +7,14 @@ import {
   MiniSprintRepository,
 } from '@/server/repositories/mini-sprint-repository'
 
+const validParticipant = {
+  fullName: 'Ishan Kumar',
+  rollNumber: 'UA2504AIH103',
+  subject: 'BS AICS' as const,
+  semester: 3,
+  mobileNumber: '9876543210',
+}
+
 describe('MiniSprintRepository database boundary', () => {
   let pool: Pool
   let repository: MiniSprintRepository
@@ -40,23 +48,31 @@ describe('MiniSprintRepository database boundary', () => {
 
   it('normalizes and persists a registration without the HTTP layer', async () => {
     const registration = await repository.register('mini-14', {
+      ...validParticipant,
       email: '  Ishan_UA2504AIH103@IITP.AC.IN  ',
       pwnUsername: 'Ishan079',
     })
 
     expect(registration).toMatchObject({
       sprintId: 'mini-14',
+      ...validParticipant,
       email: 'Ishan_UA2504AIH103@IITP.AC.IN',
       pwnUsername: 'Ishan079',
       status: 'CONFIRMED',
     })
 
     const persisted = await pool.query(
-      `SELECT email_normalized, pwn_username, status
+      `SELECT full_name, roll_number, subject, semester, mobile_number,
+              email_normalized, pwn_username, status
          FROM mini_sprint_registrations`
     )
     expect(persisted.rows).toEqual([
       {
+        full_name: 'Ishan Kumar',
+        roll_number: 'UA2504AIH103',
+        subject: 'BS AICS',
+        semester: 3,
+        mobile_number: '9876543210',
         email_normalized: 'ishan_ua2504aih103@iitp.ac.in',
         pwn_username: 'Ishan079',
         status: 'CONFIRMED',
@@ -66,12 +82,14 @@ describe('MiniSprintRepository database boundary', () => {
 
   it('maps the database uniqueness constraint to a domain error', async () => {
     await repository.register('mini-14', {
+      ...validParticipant,
       email: 'ishan_ua2504aih103@iitp.ac.in',
       pwnUsername: 'Ishan079',
     })
 
     await expect(
       repository.register('mini-14', {
+        ...validParticipant,
         email: 'ISHAN_UA2504AIH103@IITP.AC.IN',
         pwnUsername: 'another-user',
       })

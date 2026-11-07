@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import type {
+  MiniCtfSubject,
   MiniSprintDto,
   MiniSprintRegistrationDto,
   MiniSprintRegistrationRequest,
@@ -30,6 +31,11 @@ interface PrismaMiniSprintRow {
 interface PrismaRegistrationRow {
   id: string
   sprintId: string
+  fullName: string | null
+  rollNumber: string | null
+  subject: string | null
+  semester: number | null
+  mobileNumber: string | null
   email: string
   pwnUsername: string
   status: string
@@ -89,6 +95,11 @@ export class PrismaMiniSprintRepository implements MiniSprintRegistrationStore {
         data: {
           id: randomUUID(),
           sprintId,
+          fullName: input.fullName.trim(),
+          rollNumber: input.rollNumber.trim(),
+          subject: input.subject,
+          semester: input.semester,
+          mobileNumber: input.mobileNumber.trim(),
           email: input.email.trim(),
           emailNormalized: input.email.trim().toLowerCase(),
           pwnUsername: input.pwnUsername.trim(),
@@ -96,9 +107,24 @@ export class PrismaMiniSprintRepository implements MiniSprintRegistrationStore {
         },
       })
 
+      if (
+        row.fullName === null ||
+        row.rollNumber === null ||
+        row.subject === null ||
+        row.semester === null ||
+        row.mobileNumber === null
+      ) {
+        throw new Error('Registration participant details were not persisted.')
+      }
+
       return {
         registrationId: row.id,
         sprintId: row.sprintId,
+        fullName: row.fullName,
+        rollNumber: row.rollNumber,
+        subject: row.subject as MiniCtfSubject,
+        semester: row.semester,
+        mobileNumber: row.mobileNumber,
         email: row.email,
         pwnUsername: row.pwnUsername,
         status: row.status as MiniSprintRegistrationDto['status'],

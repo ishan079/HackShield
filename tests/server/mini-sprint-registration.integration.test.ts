@@ -4,6 +4,14 @@ import type { Pool } from 'pg'
 import { createApp } from '@/server/app'
 import { runMigrations } from '@/server/database'
 
+const validParticipant = {
+  fullName: 'Test Student',
+  rollNumber: 'UA2504AIH103',
+  subject: 'BS CSDA',
+  semester: 3,
+  mobileNumber: '9876543210',
+}
+
 describe('Mini CTF registration backend', () => {
   let pool: Pool
   let app: ReturnType<typeof createApp>
@@ -53,6 +61,7 @@ describe('Mini CTF registration backend', () => {
       method: 'POST',
       url: '/api/v1/ctf/mini-sprints/mini-14/register',
       payload: {
+        ...validParticipant,
         email: '  Student@IITP.AC.IN  ',
         pwnUsername: 'student.pwn',
       },
@@ -63,6 +72,11 @@ describe('Mini CTF registration backend', () => {
       success: true,
       data: {
         sprintId: 'mini-14',
+        fullName: 'Test Student',
+        rollNumber: 'UA2504AIH103',
+        subject: 'BS CSDA',
+        semester: 3,
+        mobileNumber: '9876543210',
         email: 'Student@IITP.AC.IN',
         pwnUsername: 'student.pwn',
         status: 'CONFIRMED',
@@ -71,11 +85,17 @@ describe('Mini CTF registration backend', () => {
     })
 
     const persisted = await pool.query(
-      `SELECT email, email_normalized, pwn_username
+      `SELECT full_name, roll_number, subject, semester, mobile_number,
+              email, email_normalized, pwn_username
          FROM mini_sprint_registrations`
     )
     expect(persisted.rows).toEqual([
       {
+        full_name: 'Test Student',
+        roll_number: 'UA2504AIH103',
+        subject: 'BS CSDA',
+        semester: 3,
+        mobile_number: '9876543210',
         email: 'Student@IITP.AC.IN',
         email_normalized: 'student@iitp.ac.in',
         pwn_username: 'student.pwn',
@@ -85,6 +105,7 @@ describe('Mini CTF registration backend', () => {
 
   it('rejects duplicate email registrations case-insensitively', async () => {
     const first = {
+      ...validParticipant,
       email: 'student@iitp.ac.in',
       pwnUsername: 'first-user',
     }
@@ -97,7 +118,7 @@ describe('Mini CTF registration backend', () => {
     const response = await app.inject({
       method: 'POST',
       url: '/api/v1/ctf/mini-sprints/mini-14/register',
-      payload: { email: 'STUDENT@IITP.AC.IN', pwnUsername: 'second-user' },
+      payload: {...validParticipant, email: 'STUDENT@IITP.AC.IN', pwnUsername: 'second-user'},
     })
 
     expect(response.statusCode).toBe(409)
@@ -112,6 +133,7 @@ describe('Mini CTF registration backend', () => {
       method: 'POST',
       url: '/api/v1/ctf/mini-sprints/mini-14/register',
       payload: {
+        ...validParticipant,
         email: 'first@iitp.ac.in',
         pwnUsername: 'Ishan079',
       },
@@ -121,6 +143,7 @@ describe('Mini CTF registration backend', () => {
       method: 'POST',
       url: '/api/v1/ctf/mini-sprints/mini-14/register',
       payload: {
+        ...validParticipant,
         email: 'second@iitp.ac.in',
         pwnUsername: 'ishan079',
       },
@@ -149,9 +172,11 @@ describe('Mini CTF registration backend', () => {
   })
 
   it.each([
-    [{ email: 'student@example.com', pwnUsername: 'valid-user' }, 'email'],
-    [{ email: 'student@iitp.ac.in', pwnUsername: 'not valid!' }, 'pwnUsername'],
-    [{ email: 'student@iitp.ac.in' }, 'pwnUsername'],
+    [{...validParticipant, email: 'student@example.com', pwnUsername: 'valid-user'}, 'email'],
+    [{...validParticipant, email: 'student@iitp.ac.in', pwnUsername: 'not valid!'}, 'pwnUsername'],
+    [{...validParticipant, email: 'student@iitp.ac.in'}, 'pwnUsername'],
+    [{...validParticipant, semester: 8, email: 'student@iitp.ac.in', pwnUsername: 'valid-user'}, 'semester'],
+    [{...validParticipant, mobileNumber: '123', email: 'student@iitp.ac.in', pwnUsername: 'valid-user'}, 'mobileNumber'],
   ])('returns field validation errors for invalid payloads', async (payload, field) => {
     const response = await app.inject({
       method: 'POST',
@@ -173,7 +198,7 @@ describe('Mini CTF registration backend', () => {
     const response = await app.inject({
       method: 'POST',
       url: '/api/v1/ctf/mini-sprints/mini-999/register',
-      payload: { email: 'student@iitp.ac.in', pwnUsername: 'student' },
+      payload: {...validParticipant, email: 'student@iitp.ac.in', pwnUsername: 'student'},
     })
 
     expect(response.statusCode).toBe(404)
@@ -193,7 +218,7 @@ describe('Mini CTF registration backend', () => {
     const response = await app.inject({
       method: 'POST',
       url: '/api/v1/ctf/mini-sprints/mini-14/register',
-      payload: { email: 'student@iitp.ac.in', pwnUsername: 'student' },
+      payload: {...validParticipant, email: 'student@iitp.ac.in', pwnUsername: 'student'},
     })
 
     expect(response.statusCode).toBe(409)

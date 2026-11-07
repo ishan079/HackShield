@@ -79,6 +79,14 @@ async function acceptRulebook(user: ReturnType<typeof userEvent.setup>) {
   await user.type(screen.getByRole('textbox', { name: 'Declaration' }), MINI_CTF_DECLARATION)
 }
 
+async function fillParticipantDetails(user: ReturnType<typeof userEvent.setup>) {
+  await user.type(screen.getByPlaceholderText('Your full name'), 'Test Student')
+  await user.type(screen.getByPlaceholderText('Your institute roll number'), 'UA2504AIH103')
+  await user.selectOptions(screen.getByLabelText(/Subject/), 'BS CSDA')
+  await user.selectOptions(screen.getByLabelText(/Semester/), '3')
+  await user.type(screen.getByPlaceholderText('10-digit Indian mobile number'), '9876543210')
+}
+
 describe('Mini CTF frontend registration flow', () => {
   beforeEach(() => {
     push.mockReset()
@@ -98,6 +106,11 @@ describe('Mini CTF frontend registration flow', () => {
       data: {
         registrationId: 'reg_123',
         sprintId: 'mini-14',
+        fullName: 'Test Student',
+        rollNumber: 'UA2504AIH103',
+        subject: 'BS CSDA',
+        semester: 3,
+        mobileNumber: '9876543210',
         email: 'student@iitp.ac.in',
         pwnUsername: 'student.pwn',
         status: 'CONFIRMED',
@@ -113,6 +126,7 @@ describe('Mini CTF frontend registration flow', () => {
       await screen.findByRole('heading', { name: 'Mini CTF registration' })
     ).toBeVisible()
     await acceptRulebook(user)
+    await fillParticipantDetails(user)
     await user.type(
       screen.getByPlaceholderText('Your institute email address'),
       'student@iitp.ac.in'
@@ -126,6 +140,11 @@ describe('Mini CTF frontend registration flow', () => {
     )
 
     expect(registerMiniSprint).toHaveBeenCalledWith('mini-14', {
+      fullName: 'Test Student',
+      rollNumber: 'UA2504AIH103',
+      subject: 'BS CSDA',
+      semester: 3,
+      mobileNumber: '9876543210',
       email: 'student@iitp.ac.in',
       pwnUsername: 'student.pwn',
     })
@@ -152,6 +171,7 @@ describe('Mini CTF frontend registration flow', () => {
     )
     const username = screen.getByPlaceholderText('Your pwn.college username')
     await acceptRulebook(user)
+    await fillParticipantDetails(user)
     await user.type(email, 'student@iitp.ac.in')
     await user.type(username, 'student.pwn')
     await user.click(
@@ -194,7 +214,7 @@ describe('Mini CTF frontend registration flow', () => {
 
     expect(registerMiniSprint).not.toHaveBeenCalled()
     expect(
-      screen.getByText('Institute email and pwn.college username are required.')
+      screen.getByText('Complete all required participant details before registering.')
     ).toBeVisible()
   })
 
@@ -215,6 +235,7 @@ describe('Mini CTF frontend registration flow', () => {
       const user = userEvent.setup()
       render(<CTFPage />)
       await acceptRulebook(user)
+      await fillParticipantDetails(user)
 
       await user.type(
         await screen.findByPlaceholderText('Your institute email address'),
@@ -242,6 +263,7 @@ describe('Mini CTF frontend registration flow', () => {
     const user = userEvent.setup()
     render(<CTFPage />)
     await acceptRulebook(user)
+    await fillParticipantDetails(user)
 
     await user.type(
       await screen.findByPlaceholderText('Your institute email address'),
@@ -252,6 +274,11 @@ describe('Mini CTF frontend registration flow', () => {
     await user.type(username, '{Enter}')
 
     expect(registerMiniSprint).toHaveBeenCalledWith('mini-14', {
+      fullName: 'Test Student',
+      rollNumber: 'UA2504AIH103',
+      subject: 'BS CSDA',
+      semester: 3,
+      mobileNumber: '9876543210',
       email: 'student@iitp.ac.in',
       pwnUsername: 'student.pwn',
     })

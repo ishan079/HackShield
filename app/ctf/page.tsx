@@ -25,10 +25,13 @@ import {
 } from 'lucide-react'
 import {CTFCategory, MiniCTFSprint, MiniStatItem, PastCTFEvent,} from '@/types'
 import {api} from '@/lib/api'
+import {MINI_CTF_SUBJECTS, type MiniCtfSubject} from '@/types/api'
 import MiniCtfRulebookModal, {MINI_CTF_DECLARATION} from '@/components/MiniCtfRulebookModal'
 
 const IITP_EMAIL_PATTERN = /^[^\s@]+@iitp\.ac\.in$/i
 const PWN_USERNAME_PATTERN = /^[a-zA-Z0-9_.-]{2,64}$/
+const ROLL_NUMBER_PATTERN = /^[a-zA-Z0-9/_-]{3,40}$/
+const MOBILE_NUMBER_PATTERN = /^[6-9]\d{9}$/
 
 function CTFContent() {
     const router = useRouter()
@@ -37,7 +40,13 @@ function CTFContent() {
     const [activeTab, setActiveTab] = useState(initialType)
     const [flippedSprintId, setFlippedSprintId] = useState<string | null>(null)
     const [regForm, setRegForm] = useState({
-        email: '', pwnUsername: '',
+        fullName: '',
+        rollNumber: '',
+        subject: '' as '' | MiniCtfSubject,
+        semester: '',
+        mobileNumber: '',
+        email: '',
+        pwnUsername: '',
     })
     const [registrationState, setRegistrationState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
     const [registrationMessage, setRegistrationMessage] = useState('')
@@ -91,12 +100,16 @@ function CTFContent() {
     }
 
     const submitRegistration = async (sprintId: string) => {
+        const fullName = regForm.fullName.trim()
+        const rollNumber = regForm.rollNumber.trim()
+        const mobileNumber = regForm.mobileNumber.trim()
         const email = regForm.email.trim()
         const pwnUsername = regForm.pwnUsername.trim()
+        const semester = Number(regForm.semester)
 
-        if (!email || !pwnUsername) {
+        if (!fullName || !rollNumber || !regForm.subject || !regForm.semester || !mobileNumber || !email || !pwnUsername) {
             setRegistrationState('error')
-            setRegistrationMessage('Institute email and pwn.college username are required.')
+            setRegistrationMessage('Complete all required participant details before registering.')
             return
         }
 
@@ -124,10 +137,46 @@ function CTFContent() {
             return
         }
 
+        if (fullName.length < 2 || fullName.length > 120) {
+            setRegistrationState('error')
+            setRegistrationMessage('Enter your full name using 2–120 characters.')
+            return
+        }
+
+        if (!ROLL_NUMBER_PATTERN.test(rollNumber)) {
+            setRegistrationState('error')
+            setRegistrationMessage('Enter a valid roll number using letters, numbers, slashes, hyphens, or underscores.')
+            return
+        }
+
+        if (!MINI_CTF_SUBJECTS.includes(regForm.subject as MiniCtfSubject)) {
+            setRegistrationState('error')
+            setRegistrationMessage('Select your subject.')
+            return
+        }
+
+        if (!Number.isInteger(semester) || semester < 1 || semester > 7) {
+            setRegistrationState('error')
+            setRegistrationMessage('Select a semester from 1 to 7.')
+            return
+        }
+
+        if (!MOBILE_NUMBER_PATTERN.test(mobileNumber)) {
+            setRegistrationState('error')
+            setRegistrationMessage('Enter a valid 10-digit Indian mobile number.')
+            return
+        }
+
         setRegistrationState('submitting')
         setRegistrationMessage('')
         const result = await api.registerMiniSprint(sprintId, {
-            email, pwnUsername,
+            fullName,
+            rollNumber,
+            subject: regForm.subject as MiniCtfSubject,
+            semester,
+            mobileNumber,
+            email,
+            pwnUsername,
         })
 
         if (result.success) {
@@ -1612,6 +1661,126 @@ function CTFContent() {
                                             >
                                                 Participant details
                                             </h4>
+
+                                            <div className="mini-ctf-registration-grid">
+                                                <div className="mini-ctf-registration-field">
+                                                    <label htmlFor={`registration-full-name-${sprint.id}`}>
+                                                        Full name <span>Required</span>
+                                                    </label>
+                                                    <input
+                                                        id={`registration-full-name-${sprint.id}`}
+                                                        type="text"
+                                                        autoComplete="name"
+                                                        minLength={2}
+                                                        maxLength={120}
+                                                        required
+                                                        placeholder="Your full name"
+                                                        value={regForm.fullName}
+                                                        onChange={(e) => {
+                                                            setRegForm({...regForm, fullName: e.target.value})
+                                                            if (registrationState === 'error') {
+                                                                setRegistrationState('idle')
+                                                                setRegistrationMessage('')
+                                                            }
+                                                        }}
+                                                        className="mini-ctf-registration-input"
+                                                    />
+                                                </div>
+                                                <div className="mini-ctf-registration-field">
+                                                    <label htmlFor={`registration-roll-number-${sprint.id}`}>
+                                                        Roll no. <span>Required</span>
+                                                    </label>
+                                                    <input
+                                                        id={`registration-roll-number-${sprint.id}`}
+                                                        type="text"
+                                                        autoComplete="off"
+                                                        minLength={3}
+                                                        maxLength={40}
+                                                        pattern="[a-zA-Z0-9/_-]+"
+                                                        required
+                                                        placeholder="Your institute roll number"
+                                                        value={regForm.rollNumber}
+                                                        onChange={(e) => {
+                                                            setRegForm({...regForm, rollNumber: e.target.value})
+                                                            if (registrationState === 'error') {
+                                                                setRegistrationState('idle')
+                                                                setRegistrationMessage('')
+                                                            }
+                                                        }}
+                                                        className="mini-ctf-registration-input"
+                                                    />
+                                                </div>
+                                                <div className="mini-ctf-registration-field">
+                                                    <label htmlFor={`registration-subject-${sprint.id}`}>
+                                                        Subject <span>Required</span>
+                                                    </label>
+                                                    <select
+                                                        id={`registration-subject-${sprint.id}`}
+                                                        required
+                                                        value={regForm.subject}
+                                                        onChange={(e) => {
+                                                            setRegForm({...regForm, subject: e.target.value as '' | MiniCtfSubject})
+                                                            if (registrationState === 'error') {
+                                                                setRegistrationState('idle')
+                                                                setRegistrationMessage('')
+                                                            }
+                                                        }}
+                                                        className="mini-ctf-registration-input"
+                                                    >
+                                                        <option value="" disabled>Select your subject</option>
+                                                        {MINI_CTF_SUBJECTS.map((subject) => (
+                                                            <option key={subject} value={subject}>{subject}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div className="mini-ctf-registration-field">
+                                                    <label htmlFor={`registration-semester-${sprint.id}`}>
+                                                        Semester <span>Required</span>
+                                                    </label>
+                                                    <select
+                                                        id={`registration-semester-${sprint.id}`}
+                                                        required
+                                                        value={regForm.semester}
+                                                        onChange={(e) => {
+                                                            setRegForm({...regForm, semester: e.target.value})
+                                                            if (registrationState === 'error') {
+                                                                setRegistrationState('idle')
+                                                                setRegistrationMessage('')
+                                                            }
+                                                        }}
+                                                        className="mini-ctf-registration-input"
+                                                    >
+                                                        <option value="" disabled>Select your semester</option>
+                                                        {[1, 2, 3, 4, 5, 6, 7].map((semester) => (
+                                                            <option key={semester} value={semester}>Semester {semester}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div className="mini-ctf-registration-field mini-ctf-registration-field-wide">
+                                                    <label htmlFor={`registration-mobile-number-${sprint.id}`}>
+                                                        Mobile number <span>Required</span>
+                                                    </label>
+                                                    <input
+                                                        id={`registration-mobile-number-${sprint.id}`}
+                                                        type="tel"
+                                                        inputMode="numeric"
+                                                        autoComplete="tel"
+                                                        maxLength={10}
+                                                        pattern="[6-9][0-9]{9}"
+                                                        required
+                                                        placeholder="10-digit Indian mobile number"
+                                                        value={regForm.mobileNumber}
+                                                        onChange={(e) => {
+                                                            setRegForm({...regForm, mobileNumber: e.target.value.replace(/\D/g, '')})
+                                                            if (registrationState === 'error') {
+                                                                setRegistrationState('idle')
+                                                                setRegistrationMessage('')
+                                                            }
+                                                        }}
+                                                        className="mini-ctf-registration-input"
+                                                    />
+                                                </div>
+                                            </div>
 
                                             <div style={{marginBottom: '20px'}}>
                                                 <label

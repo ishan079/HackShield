@@ -6,6 +6,14 @@ import {
 } from '@/server/repositories/mini-sprint-repository'
 import { PrismaMiniSprintRepository } from '@/server/repositories/prisma-mini-sprint-repository'
 
+const validParticipant = {
+  fullName: 'Test Student',
+  rollNumber: 'UA2504AIH103',
+  subject: 'BS CSDA' as const,
+  semester: 3,
+  mobileNumber: '9876543210',
+}
+
 function createDatabase() {
   return {
     miniSprint: {
@@ -25,6 +33,7 @@ describe('PrismaMiniSprintRepository', () => {
     database.miniSprintRegistration.create.mockResolvedValue({
       id: 'e9a874fd-69f9-4bd8-aed7-e60ef1e966e0',
       sprintId: 'mini-14',
+      ...validParticipant,
       email: 'Student@IITP.AC.IN',
       pwnUsername: 'student.pwn',
       status: 'CONFIRMED',
@@ -34,6 +43,7 @@ describe('PrismaMiniSprintRepository', () => {
 
     await expect(
       repository.register('mini-14', {
+        ...validParticipant,
         email: '  Student@IITP.AC.IN  ',
         pwnUsername: ' student.pwn ',
       })
@@ -47,6 +57,7 @@ describe('PrismaMiniSprintRepository', () => {
     expect(database.miniSprintRegistration.create).toHaveBeenCalledWith({
       data: expect.objectContaining({
         sprintId: 'mini-14',
+        ...validParticipant,
         email: 'Student@IITP.AC.IN',
         emailNormalized: 'student@iitp.ac.in',
         pwnUsername: 'student.pwn',
@@ -62,7 +73,11 @@ describe('PrismaMiniSprintRepository', () => {
     const repository = new PrismaMiniSprintRepository(database)
 
     await expect(
-      repository.register('mini-14', { email: 'student@iitp.ac.in', pwnUsername: 'student' })
+      repository.register('mini-14', {
+        ...validParticipant,
+        email: 'student@iitp.ac.in',
+        pwnUsername: 'student',
+      })
     ).rejects.toBeInstanceOf(DuplicateRegistrationError)
   })
 
@@ -71,6 +86,7 @@ describe('PrismaMiniSprintRepository', () => {
     missing.miniSprint.findUnique.mockResolvedValue(null)
     await expect(
       new PrismaMiniSprintRepository(missing).register('mini-404', {
+        ...validParticipant,
         email: 'student@iitp.ac.in',
         pwnUsername: 'student',
       })
@@ -80,6 +96,7 @@ describe('PrismaMiniSprintRepository', () => {
     closed.miniSprint.findUnique.mockResolvedValue({ registrationOpen: false })
     await expect(
       new PrismaMiniSprintRepository(closed).register('mini-14', {
+        ...validParticipant,
         email: 'student@iitp.ac.in',
         pwnUsername: 'student',
       })

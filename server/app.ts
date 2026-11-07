@@ -8,7 +8,7 @@ import {
   SprintNotFoundError,
 } from '@/server/repositories/mini-sprint-repository'
 import type { MiniSprintRegistrationStore } from '@/server/repositories/mini-sprint-store'
-import type { ApiFailure, ApiSuccess } from '@/types/api'
+import { MINI_CTF_SUBJECTS, type ApiFailure, type ApiSuccess } from '@/types/api'
 
 const sprintParamsSchema = z
   .object({ sprintId: z.string().regex(/^mini-[a-zA-Z0-9-]+$/) })
@@ -16,6 +16,13 @@ const sprintParamsSchema = z
 
 const registrationSchema = z
   .object({
+    fullName: z.string().trim().min(2).max(120),
+    rollNumber: z.string().trim().min(3).max(40).regex(/^[a-zA-Z0-9/_-]+$/),
+    subject: z.enum(MINI_CTF_SUBJECTS),
+    semester: z.coerce.number().int().min(1).max(7),
+    mobileNumber: z.string().trim().regex(/^[6-9]\d{9}$/, {
+      message: 'Must be a valid 10-digit Indian mobile number.',
+    }),
     email: z
       .string()
       .trim()

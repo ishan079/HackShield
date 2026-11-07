@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import type { Database } from '@/server/database'
 import type {
+  MiniCtfSubject,
   MiniSprintDto,
   MiniSprintRegistrationDto,
   MiniSprintRegistrationRequest,
@@ -26,6 +27,11 @@ interface MiniSprintRow {
 interface RegistrationRow {
   id: string
   sprint_id: string
+  full_name: string
+  roll_number: string
+  subject: string
+  semester: number
+  mobile_number: string
   email: string
   pwn_username: string
   status: MiniSprintRegistrationDto['status']
@@ -87,12 +93,19 @@ export class MiniSprintRepository implements MiniSprintRegistrationStore {
     try {
       const result = await this.database.query<RegistrationRow>(
         `INSERT INTO mini_sprint_registrations (
-           id, sprint_id, email, email_normalized, pwn_username, status
-         ) VALUES ($1, $2, $3, $4, $5, 'CONFIRMED')
-         RETURNING id, sprint_id, email, pwn_username, status, registered_at`,
+           id, sprint_id, full_name, roll_number, subject, semester, mobile_number,
+           email, email_normalized, pwn_username, status
+         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'CONFIRMED')
+         RETURNING id, sprint_id, full_name, roll_number, subject, semester, mobile_number,
+                   email, pwn_username, status, registered_at`,
         [
           randomUUID(),
           sprintId,
+          input.fullName.trim(),
+          input.rollNumber.trim(),
+          input.subject,
+          input.semester,
+          input.mobileNumber.trim(),
           input.email.trim(),
           input.email.trim().toLowerCase(),
           input.pwnUsername.trim(),
@@ -102,6 +115,11 @@ export class MiniSprintRepository implements MiniSprintRegistrationStore {
       return {
         registrationId: row.id,
         sprintId: row.sprint_id,
+        fullName: row.full_name,
+        rollNumber: row.roll_number,
+        subject: row.subject as MiniCtfSubject,
+        semester: row.semester,
+        mobileNumber: row.mobile_number,
         email: row.email,
         pwnUsername: row.pwn_username,
         status: row.status,

@@ -26,6 +26,11 @@ CREATE TABLE IF NOT EXISTS mini_sprints (
 CREATE TABLE IF NOT EXISTS mini_sprint_registrations (
   id uuid PRIMARY KEY,
   sprint_id text NOT NULL REFERENCES mini_sprints(id) ON DELETE CASCADE,
+  full_name text,
+  roll_number text,
+  subject text,
+  semester smallint,
+  mobile_number text,
   email text NOT NULL,
   email_normalized text NOT NULL,
   pwn_username text NOT NULL,
