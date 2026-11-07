@@ -7,6 +7,7 @@ import {
   RegistrationClosedError,
   SprintNotFoundError,
 } from '@/server/repositories/mini-sprint-repository'
+import type { MiniSprintRegistrationStore } from '@/server/repositories/mini-sprint-store'
 import type { ApiFailure, ApiSuccess } from '@/types/api'
 
 const sprintParamsSchema = z
@@ -58,16 +59,19 @@ function validationFailure(error: z.ZodError): ApiFailure {
 }
 
 export interface CreateAppOptions {
-  database: Database
+  database?: Database
+  repository?: MiniSprintRegistrationStore
   logger?: boolean
 }
 
 export function createApp({
   database,
+  repository,
   logger = process.env.NODE_ENV !== 'test',
 }: CreateAppOptions): FastifyInstance {
   const app = Fastify({ logger })
-  const sprints = new MiniSprintRepository(database)
+  const sprints = repository ?? (database ? new MiniSprintRepository(database) : undefined)
+  if (!sprints) throw new Error('A registration repository or database is required.')
 
   app.get('/api/v1/ctf/mini-sprints', async (_request, reply) => {
     const data = await sprints.list()

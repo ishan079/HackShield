@@ -5,6 +5,7 @@ import type {
   MiniSprintRegistrationDto,
   MiniSprintRegistrationRequest,
 } from '@/types/api'
+import type { MiniSprintRegistrationStore } from './mini-sprint-store'
 
 interface MiniSprintRow {
   id: string
@@ -57,7 +58,7 @@ function mapSprint(row: MiniSprintRow): MiniSprintDto {
   }
 }
 
-export class MiniSprintRepository {
+export class MiniSprintRepository implements MiniSprintRegistrationStore {
   constructor(private readonly database: Database) {}
 
   async list(): Promise<MiniSprintDto[]> {
