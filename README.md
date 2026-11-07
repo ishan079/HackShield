@@ -1,18 +1,18 @@
 # HackShield
 
-HackShield is the IIT Patna Cybersecurity Club web application. The repository contains a Next.js 16 frontend, a Fastify backend, PostgreSQL persistence, an OpenAPI contract, and isolated frontend/API/backend/database tests.
+HackShield is the IIT Patna Cybersecurity Club web application. The repository contains a Next.js 16 frontend, native Next.js API routes for Vercel, an optional local Fastify runtime, Prisma/PostgreSQL persistence, an OpenAPI contract, and isolated frontend/API/backend/database tests.
 
 ## Current implementation
 
 - Next.js App Router frontend with local fonts and packaged assets.
 - Direct Mini CTF registration URL: `http://localhost:3000/ctf?type=mini&register=mini-14#registration-mini-14`.
-- Fastify registration API on port `5001`.
-- PostgreSQL 16 schema and seed data for Mini CTF sprints and registrations.
-- Next.js `/api/*` proxy, so browser code never connects to PostgreSQL or needs the backend origin.
+- Native Next.js registration API routes for local and Vercel deployment.
+- Optional Fastify registration API on port `5001` for independent backend testing.
+- Prisma ORM schema and versioned migrations for PostgreSQL.
 - Case-insensitive duplicate protection for institute email and pwn.college username.
 - Contract, frontend, backend integration, and database repository tests.
 
-The OpenAPI file describes the intended complete platform. At present, only the Mini CTF list and registration endpoints are implemented by Fastify. See [Backend and API](./docs/BACKEND.md#implementation-status).
+The OpenAPI file describes the intended complete platform. At present, only the Mini CTF list and registration endpoints are implemented. See [Backend and API](./docs/BACKEND.md#implementation-status).
 
 ## Prerequisites
 
@@ -41,12 +41,13 @@ Create the local `hackshield` role/database if using a fresh Homebrew server, th
 npm run db:migrate
 ```
 
-Start the application in separate terminals:
+Start the full-stack application:
 
 ```bash
-npm run dev:server
 npm run dev
 ```
+
+`npm run dev:server` remains available when testing Fastify independently.
 
 Open [http://localhost:3000](http://localhost:3000).
 
@@ -56,8 +57,8 @@ The backend uses `dotenv/config`, which reads `.env`. Next.js also reads `.env`.
 
 | Variable | Used by | Local value | Purpose |
 | --- | --- | --- | --- |
-| `BACKEND_URL` | Next.js server | `http://localhost:5001` | Target for `/api/*` rewrites |
-| `DATABASE_URL` | Fastify/pg | `postgres://hackshield:hackshield@localhost:5432/hackshield` | PostgreSQL connection |
+| `DATABASE_URL` | Prisma CLI/app | local direct URL | PostgreSQL migrations and fallback application connection |
+| `DATABASE_URL_POOLED` | Prisma app | empty locally | Preferred pooled connection for Vercel Functions |
 | `HOST` | Fastify | `0.0.0.0` | Listen address |
 | `PORT` | Fastify | `5001` | Backend port; avoids macOS AirPlay on `5000` |
 | `LOG_LEVEL` | Fastify | `info` | Runtime log level |

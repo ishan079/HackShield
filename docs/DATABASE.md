@@ -2,7 +2,7 @@
 
 ## Runtime and connection
 
-PostgreSQL 16+ is the system of record. Development uses Docker Compose or Homebrew. The application uses `pg` directly; no ORM is installed.
+PostgreSQL 16+ is the system of record. Development uses Docker Compose or Homebrew. Production uses Prisma Postgres connected through Vercel. Prisma ORM 7.10.1 owns the schema, migrations, and queries.
 
 ```text
 host: localhost
@@ -29,17 +29,20 @@ Stores display data and authoritative registration state. Constraints enforce va
 | `email text` | Trimmed display value |
 | `email_normalized text` | Lowercase uniqueness value |
 | `pwn_username text` | Trimmed submitted username |
+| `pwn_username_normalized text` | Lowercase uniqueness value |
 | `status text` | `CONFIRMED` or `WAITLISTED` |
 | `registered_at timestamptz` | Database timestamp |
 
-Integrity uses unique `(sprint_id, email_normalized)`, unique `(sprint_id, pwn_username)`, a unique `(sprint_id, lower(pwn_username))` expression index, a foreign key, and status checks.
+Integrity uses unique `(sprint_id, email_normalized)`, unique `(sprint_id, pwn_username_normalized)`, a foreign key, and status checks.
 
 ## Migrations
 
-`server/database.ts` executes `server/migrations/001_initial.sql` idempotently. The backend runs it at startup too. Before multiple production migrations, adopt a migration ledger/tool instead of expanding a single file.
+The schema is declared in `prisma/schema.prisma`; committed migrations live in `prisma/migrations`. Use `migrate dev` only for local development and `migrate deploy` for production.
 
 ```bash
 npm run db:migrate
+npm run db:migrate:deploy
+npm run db:studio
 ```
 
 ## pgAdmin

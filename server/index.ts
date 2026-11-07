@@ -1,16 +1,15 @@
 import { createApp } from '@/server/app'
+import { getPrisma } from '@/lib/prisma'
 import { loadConfig } from '@/server/config'
-import { getPrismaClient } from '@/server/prisma-client'
-import { PrismaMiniSprintRepository } from '@/server/repositories/prisma-mini-sprint-repository'
+import { MiniSprintRepository } from '@/server/repositories/mini-sprint-repository'
 
 async function start(): Promise<void> {
   const config = loadConfig()
-  const prisma = getPrismaClient(config.DATABASE_URL)
-
-  const app = createApp({ repository: new PrismaMiniSprintRepository(prisma) })
+  const database = getPrisma()
+  const app = createApp({ repository: new MiniSprintRepository(database) })
   const shutdown = async () => {
     await app.close()
-    await prisma.$disconnect()
+    await database.$disconnect()
   }
 
   process.on('SIGINT', shutdown)

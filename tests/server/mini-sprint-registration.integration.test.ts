@@ -1,30 +1,23 @@
-import { DataType, newDb } from 'pg-mem'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import type { Pool } from 'pg'
 import { createApp } from '@/server/app'
-import { runMigrations } from '@/server/database'
+import { MiniSprintRepository } from '@/server/repositories/mini-sprint-repository'
+import { createFakePrisma } from '@/tests/helpers/fake-prisma'
 
 describe('Mini CTF registration backend', () => {
-  let pool: Pool
   let app: ReturnType<typeof createApp>
+  let fake: ReturnType<typeof createFakePrisma>
 
   beforeEach(async () => {
-    const memory = newDb({ autoCreateForeignKeyIndices: true })
-    memory.public.registerFunction({
-      name: 'now',
-      returns: DataType.timestamptz,
-      implementation: () => new Date('2026-11-07T03:00:00.000Z'),
+    fake = createFakePrisma()
+    app = createApp({
+      repository: new MiniSprintRepository(fake.client),
+      logger: false,
     })
-    const adapter = memory.adapters.createPg()
-    pool = new adapter.Pool() as Pool
-    await runMigrations(pool)
-    app = createApp({ database: pool, logger: false })
     await app.ready()
   })
 
   afterEach(async () => {
     await app.close()
-    await pool.end()
   })
 
   it('lists the seeded sprint using the public DTO shape', async () => {
@@ -70,16 +63,12 @@ describe('Mini CTF registration backend', () => {
       },
     })
 
-    const persisted = await pool.query(
-      `SELECT email, email_normalized, pwn_username
-         FROM mini_sprint_registrations`
-    )
-    expect(persisted.rows).toEqual([
-      {
+    expect(fake.registrations).toEqual([
+      expect.objectContaining({
         email: 'Student@IITP.AC.IN',
-        email_normalized: 'student@iitp.ac.in',
-        pwn_username: 'student.pwn',
-      },
+        emailNormalized: 'student@iitp.ac.in',
+        pwnUsername: 'student.pwn',
+      }),
     ])
   })
 
@@ -184,11 +173,8 @@ describe('Mini CTF registration backend', () => {
   })
 
   it('enforces registration state from PostgreSQL', async () => {
-    await pool.query(
-      `UPDATE mini_sprints
-          SET registration_open = false, status = 'REGISTRATION_CLOSED'
-        WHERE id = 'mini-14'`
-    )
+    fake.sprints[0].registrationOpen = false
+    fake.sprints[0].status = 'REGISTRATION_CLOSED'
 
     const response = await app.inject({
       method: 'POST',
