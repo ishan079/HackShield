@@ -58,7 +58,7 @@ export interface PastCTFEvent {
   date: string
   type: string
   teams?: string
-
+  firstPlace?: string
 }
 
 export interface MiniCTFSprint {

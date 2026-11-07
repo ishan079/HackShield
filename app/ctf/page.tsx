@@ -25,7 +25,7 @@ import {
 } from 'lucide-react'
 import {CTFCategory, MiniCTFSprint, MiniStatItem, PastCTFEvent,} from '@/types'
 import {api} from '@/lib/api'
-import MiniCtfRulebookModal from '@/components/MiniCtfRulebookModal'
+import MiniCtfRulebookModal, {MINI_CTF_DECLARATION} from '@/components/MiniCtfRulebookModal'
 
 const IITP_EMAIL_PATTERN = /^[^\s@]+@iitp\.ac\.in$/i
 const PWN_USERNAME_PATTERN = /^[a-zA-Z0-9_.-]{2,64}$/
@@ -42,7 +42,10 @@ function CTFContent() {
     const [registrationState, setRegistrationState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
     const [registrationMessage, setRegistrationMessage] = useState('')
     const [isRulebookOpen, setIsRulebookOpen] = useState(false)
-    const [hasAcceptedRulebook, setHasAcceptedRulebook] = useState(false)
+    const [hasOpenedRulebook, setHasOpenedRulebook] = useState(false)
+    const [declaration, setDeclaration] = useState('')
+    const declarationMatches = declaration.trim() === MINI_CTF_DECLARATION
+    const canRegister = hasOpenedRulebook && declarationMatches
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -97,9 +100,15 @@ function CTFContent() {
             return
         }
 
-        if (!hasAcceptedRulebook) {
+        if (!hasOpenedRulebook) {
             setRegistrationState('error')
-            setRegistrationMessage('Read the rulebook and confirm the declaration before registering.')
+            setRegistrationMessage('Open the rulebook before registering.')
+            return
+        }
+
+        if (!declarationMatches) {
+            setRegistrationState('error')
+            setRegistrationMessage('Copy or type the declaration exactly before registering.')
             return
         }
 
@@ -885,7 +894,7 @@ function CTFContent() {
                                                 color: 'var(--text-primary)',
                                             }}
                                         >
-                                            {event.firstPlace}
+                                            {event.firstPlace ?? 'To be announced'}
                                         </div>
                                     </div>
                                     <div
@@ -1522,38 +1531,75 @@ function CTFContent() {
                                                             marginBottom: '2px',
                                                         }}
                                                     >
-                                                        Rulebook declaration required
+                                                        Rulebook required
                                                     </div>
                                                     <div
                                                         style={{
-                                                            color: hasAcceptedRulebook ? '#34d399' : 'var(--text-muted)',
+                                                            color: hasOpenedRulebook ? '#34d399' : 'var(--text-muted)',
                                                             fontSize: '0.8rem',
                                                         }}
                                                     >
-                                                        {hasAcceptedRulebook ? 'Declaration confirmed — you can register.' : 'Read the guide and complete its declaration.'}
+                                                        {hasOpenedRulebook
+                                                            ? 'Rulebook opened — complete the declaration below.'
+                                                            : 'Open the rulebook once before registering.'}
                                                     </div>
                                                 </div>
                                                 <button
                                                     type="button"
-                                                    onClick={() => setIsRulebookOpen(true)}
+                                                    onClick={() => {
+                                                        setHasOpenedRulebook(true)
+                                                        setIsRulebookOpen(true)
+                                                    }}
                                                     style={{
                                                         display: 'inline-flex',
                                                         alignItems: 'center',
                                                         gap: '7px',
                                                         padding: '9px 12px',
                                                         borderRadius: '9px',
-                                                        background: hasAcceptedRulebook ? 'rgba(16, 185, 129, 0.13)' : 'var(--accent-dim)',
-                                                        border: hasAcceptedRulebook ? '1px solid rgba(52, 211, 153, 0.42)' : '1px solid var(--accent)',
-                                                        color: hasAcceptedRulebook ? '#34d399' : 'var(--accent)',
+                                                        background: hasOpenedRulebook ? 'rgba(16, 185, 129, 0.13)' : 'var(--accent-dim)',
+                                                        border: hasOpenedRulebook ? '1px solid rgba(52, 211, 153, 0.42)' : '1px solid var(--accent)',
+                                                        color: hasOpenedRulebook ? '#34d399' : 'var(--accent)',
                                                         fontSize: '0.82rem',
                                                         fontWeight: 700,
                                                         cursor: 'pointer',
                                                     }}
                                                 >
                                                     <FileText size={15} aria-hidden="true"/>
-                                                    {hasAcceptedRulebook ? 'Review rulebook' : 'Read the Mini CTF Rulebook'}
+                                                    {hasOpenedRulebook ? 'Review rulebook' : 'Read the Mini CTF Rulebook'}
                                                 </button>
                                             </div>
+
+                                            <section className="mini-ctf-declaration-section">
+                                                <h4>Declaration required to register</h4>
+                                                <p>Copy or type the declaration below exactly.</p>
+                                                <blockquote>{MINI_CTF_DECLARATION}</blockquote>
+                                                <label htmlFor={`registration-declaration-${sprint.id}`}>
+                                                    Declaration
+                                                </label>
+                                                <textarea
+                                                    id={`registration-declaration-${sprint.id}`}
+                                                    value={declaration}
+                                                    onChange={(event) => {
+                                                        setDeclaration(event.target.value)
+                                                        if (registrationState === 'error') {
+                                                            setRegistrationState('idle')
+                                                            setRegistrationMessage('')
+                                                        }
+                                                    }}
+                                                    placeholder="Paste or type the declaration here"
+                                                    rows={4}
+                                                    autoComplete="off"
+                                                />
+                                                <p className="mini-ctf-declaration-status" aria-live="polite">
+                                                    {!hasOpenedRulebook
+                                                        ? 'Open the rulebook once, then complete this declaration.'
+                                                        : declaration && !declarationMatches
+                                                            ? 'The declaration must match exactly.'
+                                                            : declarationMatches
+                                                                ? 'Declaration complete — you can register.'
+                                                                : 'Paste or type the declaration to continue.'}
+                                                </p>
+                                            </section>
 
                                             <h4
                                                 style={{
@@ -1727,7 +1773,7 @@ function CTFContent() {
 
                                             <button
                                                 type="button"
-                                                disabled={registrationState === 'submitting' || registrationState === 'success' || !hasAcceptedRulebook}
+                                                disabled={registrationState === 'submitting' || registrationState === 'success' || !canRegister}
                                                 onClick={() => submitRegistration(sprint.id)}
                                                 style={{
                                                     width: '100%',
@@ -1738,10 +1784,10 @@ function CTFContent() {
                                                     color: '#ffffff',
                                                     fontSize: '0.98rem',
                                                     fontWeight: 700,
-                                                    cursor: registrationState === 'submitting' || registrationState === 'success' || !hasAcceptedRulebook ? 'not-allowed' : 'pointer',
+                                                    cursor: registrationState === 'submitting' || registrationState === 'success' || !canRegister ? 'not-allowed' : 'pointer',
                                                     textAlign: 'center',
                                                     marginBottom: '14px',
-                                                    opacity: hasAcceptedRulebook ? 0.88 : 0.48,
+                                                    opacity: canRegister ? 0.88 : 0.48,
                                                     transition: 'all 0.2s ease',
                                                 }}
                                             >
@@ -1757,7 +1803,9 @@ function CTFContent() {
                                                     lineHeight: 1.5,
                                                 }}
                                             >
-                                                {registrationMessage || (hasAcceptedRulebook ? 'Your username and institute email will be sent securely to the HackShield registration API.' : 'Read the rulebook and confirm its declaration to enable registration.')}
+                                                {registrationMessage || (canRegister
+                                                    ? 'Your username and institute email will be sent securely to the HackShield registration API.'
+                                                    : 'Open the rulebook once and complete the declaration to enable registration.')}
                                             </div>
                                         </motion.div>)}
                                     </AnimatePresence>
@@ -1971,13 +2019,6 @@ function CTFContent() {
         <MiniCtfRulebookModal
             isOpen={isRulebookOpen}
             onClose={() => setIsRulebookOpen(false)}
-            onAccepted={() => {
-                setHasAcceptedRulebook(true)
-                if (registrationState === 'error') {
-                    setRegistrationState('idle')
-                    setRegistrationMessage('')
-                }
-            }}
         />
     </div>)
 }

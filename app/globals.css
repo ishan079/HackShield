@@ -243,6 +243,10 @@ img {
   box-shadow: var(--shadow-card-hover);
 }
 
+[data-theme="dark"] .mini-ctf-rulebook-modal {
+  background: linear-gradient(145deg, rgba(22, 30, 40, 0.98), rgba(7, 12, 18, 0.98));
+}
+
 .mini-ctf-rulebook-header {
   display: flex;
   align-items: flex-start;
@@ -366,7 +370,7 @@ img {
 }
 
 .mini-ctf-declaration-section {
-  margin-top: 30px !important;
+  margin: 0 0 25px;
   padding: 20px;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
@@ -383,6 +387,21 @@ img {
   border-left: 2px solid var(--accent);
   border-radius: 0 10px 10px 0;
   font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+.mini-ctf-declaration-section h4 {
+  margin: 0 0 8px;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.mini-ctf-declaration-section p {
+  margin: 0 0 10px;
+  color: var(--text-secondary);
+  font-size: 0.91rem;
   line-height: 1.65;
 }
 
@@ -415,44 +434,10 @@ img {
   box-shadow: 0 0 0 3px var(--accent-dim);
 }
 
-.mini-ctf-declaration-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  margin-top: 14px;
-}
-
-.mini-ctf-declaration-actions > span {
-  color: var(--text-muted);
-  font-size: 0.78rem;
-}
-
-.mini-ctf-declaration-actions button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  flex: 0 0 auto;
-  padding: 11px 15px;
-  color: #ffffff;
-  background: var(--accent);
-  border: 1px solid transparent;
-  border-radius: 10px;
-  font-size: 0.86rem;
-  font-weight: 700;
-  transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
-}
-
-.mini-ctf-declaration-actions button:hover:not(:disabled),
-.mini-ctf-declaration-actions button:focus-visible:not(:disabled) {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
-}
-
-.mini-ctf-declaration-actions button:disabled {
-  cursor: not-allowed;
-  opacity: 0.48;
+.mini-ctf-declaration-status {
+  margin: 12px 0 0 !important;
+  color: var(--text-muted) !important;
+  font-size: 0.8rem !important;
 }
 
 @media (max-width: 600px) {
@@ -478,14 +463,6 @@ img {
     padding: 16px;
   }
 
-  .mini-ctf-declaration-actions {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .mini-ctf-declaration-actions button {
-    width: 100%;
-  }
 }
 
 @keyframes terminalBlink {
