@@ -1,7 +1,5 @@
-import { DataType, newDb } from 'pg-mem'
-import type { Pool } from 'pg'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { runMigrations } from '@/server/database'
+import { describe, expect, it } from 'vitest'
+import { createFakePrisma } from '@/tests/helpers/fake-prisma'
 import {
   DuplicateRegistrationError,
   MiniSprintRepository,
@@ -15,84 +13,47 @@ const validParticipant = {
   mobileNumber: '9876543210',
 }
 
-describe('MiniSprintRepository database boundary', () => {
-  let pool: Pool
-  let repository: MiniSprintRepository
-
-  beforeEach(async () => {
-    const memory = newDb({ autoCreateForeignKeyIndices: true })
-    memory.public.registerFunction({
-      name: 'now',
-      returns: DataType.timestamptz,
-      implementation: () => new Date('2026-11-07T03:00:00.000Z'),
-    })
-    const adapter = memory.adapters.createPg()
-    pool = new adapter.Pool() as Pool
-    await runMigrations(pool)
-    repository = new MiniSprintRepository(pool)
-  })
-
-  afterEach(async () => {
-    await pool.end()
-  })
-
-  it('loads the seeded sprint directly from the migrated database', async () => {
-    await expect(repository.list()).resolves.toEqual([
+describe('MiniSprintRepository Prisma boundary', () => {
+  it('loads the seeded sprint using Prisma DTO mapping', async () => {
+    const { client } = createFakePrisma()
+    await expect(new MiniSprintRepository(client).list()).resolves.toEqual([
       expect.objectContaining({
-        id: 'mini-14',
-        registrationOpen: true,
-        status: 'REGISTRATION_OPEN',
+        id: 'mini-14', registrationOpen: true, status: 'REGISTRATION_OPEN',
       }),
     ])
   })
 
-  it('normalizes and persists a registration without the HTTP layer', async () => {
+  it('normalizes and persists a registration', async () => {
+    const { client, registrations } = createFakePrisma()
+    const repository = new MiniSprintRepository(client)
     const registration = await repository.register('mini-14', {
       ...validParticipant,
-      email: '  Ishan_UA2504AIH103@IITP.AC.IN  ',
-      pwnUsername: 'Ishan079',
+      email: '  Ishan_UA2504AIH103@IITP.AC.IN  ', pwnUsername: 'Ishan079',
     })
-
     expect(registration).toMatchObject({
-      sprintId: 'mini-14',
+      sprintId: 'mini-14', email: 'Ishan_UA2504AIH103@IITP.AC.IN',
       ...validParticipant,
-      email: 'Ishan_UA2504AIH103@IITP.AC.IN',
-      pwnUsername: 'Ishan079',
-      status: 'CONFIRMED',
+      pwnUsername: 'Ishan079', status: 'CONFIRMED',
     })
-
-    const persisted = await pool.query(
-      `SELECT full_name, roll_number, subject, semester, mobile_number,
-              email_normalized, pwn_username, status
-         FROM mini_sprint_registrations`
-    )
-    expect(persisted.rows).toEqual([
-      {
-        full_name: 'Ishan Kumar',
-        roll_number: 'UA2504AIH103',
-        subject: 'BS AICS',
-        semester: 3,
-        mobile_number: '9876543210',
-        email_normalized: 'ishan_ua2504aih103@iitp.ac.in',
-        pwn_username: 'Ishan079',
-        status: 'CONFIRMED',
-      },
+    expect(registrations).toEqual([
+      expect.objectContaining({
+        ...validParticipant,
+        emailNormalized: 'ishan_ua2504aih103@iitp.ac.in',
+        pwnUsernameNormalized: 'ishan079',
+      }),
     ])
   })
 
-  it('maps the database uniqueness constraint to a domain error', async () => {
+  it('maps Prisma uniqueness failures to a domain error', async () => {
+    const { client } = createFakePrisma()
+    const repository = new MiniSprintRepository(client)
     await repository.register('mini-14', {
       ...validParticipant,
-      email: 'ishan_ua2504aih103@iitp.ac.in',
-      pwnUsername: 'Ishan079',
+      email: 'ishan_ua2504aih103@iitp.ac.in', pwnUsername: 'Ishan079',
     })
-
-    await expect(
-      repository.register('mini-14', {
-        ...validParticipant,
-        email: 'ISHAN_UA2504AIH103@IITP.AC.IN',
-        pwnUsername: 'another-user',
-      })
-    ).rejects.toBeInstanceOf(DuplicateRegistrationError)
+    await expect(repository.register('mini-14', {
+      ...validParticipant,
+      email: 'ISHAN_UA2504AIH103@IITP.AC.IN', pwnUsername: 'another-user',
+    })).rejects.toBeInstanceOf(DuplicateRegistrationError)
   })
 })

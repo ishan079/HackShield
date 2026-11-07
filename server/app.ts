@@ -1,20 +1,18 @@
 import Fastify, { type FastifyInstance } from 'fastify'
 import { z } from 'zod'
-import type { Database } from '@/server/database'
 import {
   DuplicateRegistrationError,
   MiniSprintRepository,
   RegistrationClosedError,
   SprintNotFoundError,
 } from '@/server/repositories/mini-sprint-repository'
-import type { MiniSprintRegistrationStore } from '@/server/repositories/mini-sprint-store'
 import { MINI_CTF_SUBJECTS, type ApiFailure, type ApiSuccess } from '@/types/api'
 
-const sprintParamsSchema = z
+export const sprintParamsSchema = z
   .object({ sprintId: z.string().regex(/^mini-[a-zA-Z0-9-]+$/) })
   .strict()
 
-const registrationSchema = z
+export const registrationSchema = z
   .object({
     fullName: z.string().trim().min(2).max(120),
     rollNumber: z.string().trim().min(3).max(40).regex(/^[a-zA-Z0-9/_-]+$/),
@@ -38,11 +36,11 @@ function timestamp(): string {
   return new Date().toISOString()
 }
 
-function success<T>(data: T): ApiSuccess<T> {
+export function success<T>(data: T): ApiSuccess<T> {
   return { success: true, data, timestamp: timestamp() }
 }
 
-function failure(
+export function failure(
   code: string,
   message: string,
   details?: { field: string; issue: string }[]
@@ -54,7 +52,7 @@ function failure(
   }
 }
 
-function validationFailure(error: z.ZodError): ApiFailure {
+export function validationFailure(error: z.ZodError): ApiFailure {
   return failure(
     'VALIDATION_ERROR',
     'One or more fields are invalid.',
@@ -66,22 +64,18 @@ function validationFailure(error: z.ZodError): ApiFailure {
 }
 
 export interface CreateAppOptions {
-  database?: Database
-  repository?: MiniSprintRegistrationStore
+  repository: MiniSprintRepository
   logger?: boolean
 }
 
 export function createApp({
-  database,
   repository,
   logger = process.env.NODE_ENV !== 'test',
 }: CreateAppOptions): FastifyInstance {
   const app = Fastify({ logger })
-  const sprints = repository ?? (database ? new MiniSprintRepository(database) : undefined)
-  if (!sprints) throw new Error('A registration repository or database is required.')
 
   app.get('/api/v1/ctf/mini-sprints', async (_request, reply) => {
-    const data = await sprints.list()
+    const data = await repository.list()
     return reply.code(200).send(success(data))
   })
 
@@ -97,7 +91,7 @@ export function createApp({
     }
 
     try {
-      const registration = await sprints.register(
+      const registration = await repository.register(
         parsedParams.data.sprintId,
         parsedBody.data
       )

@@ -103,6 +103,7 @@ export class PrismaMiniSprintRepository implements MiniSprintRegistrationStore {
           email: input.email.trim(),
           emailNormalized: input.email.trim().toLowerCase(),
           pwnUsername: input.pwnUsername.trim(),
+          pwnUsernameNormalized: input.pwnUsername.trim().toLowerCase(),
           status: 'CONFIRMED',
         },
       })

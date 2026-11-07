@@ -121,7 +121,7 @@ function CTFContent() {
 
         if (!declarationMatches) {
             setRegistrationState('error')
-            setRegistrationMessage('Copy or type the declaration exactly before registering.')
+            setRegistrationMessage('Enter the declaration exactly before registering.')
             return
         }
 
@@ -1604,7 +1604,7 @@ function CTFContent() {
 
                                             <section className="mini-ctf-declaration-section">
                                                 <h4>Declaration required to register</h4>
-                                                <p>Copy or type the declaration below exactly.</p>
+                                                <p>Enter the declaration below exactly.</p>
                                                 <blockquote>{MINI_CTF_DECLARATION}</blockquote>
                                                 <label htmlFor={`registration-declaration-${sprint.id}`}>
                                                     Declaration
@@ -1619,7 +1619,7 @@ function CTFContent() {
                                                             setRegistrationMessage('')
                                                         }
                                                     }}
-                                                    placeholder="Paste or type the declaration here"
+                                                    placeholder="Enter the declaration here"
                                                     rows={4}
                                                     autoComplete="off"
                                                 />
@@ -1630,7 +1630,7 @@ function CTFContent() {
                                                             ? 'The declaration must match exactly.'
                                                             : declarationMatches
                                                                 ? 'Declaration complete — you can register.'
-                                                                : 'Paste or type the declaration to continue.'}
+                                                                : 'Enter the declaration to continue.'}
                                                 </p>
                                             </section>
 

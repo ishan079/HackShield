@@ -61,6 +61,7 @@ describe('PrismaMiniSprintRepository', () => {
         email: 'Student@IITP.AC.IN',
         emailNormalized: 'student@iitp.ac.in',
         pwnUsername: 'student.pwn',
+        pwnUsernameNormalized: 'student.pwn',
         status: 'CONFIRMED',
       }),
     })
