@@ -2,12 +2,13 @@
 
 ## Stack and lifecycle
 
-The backend is TypeScript Fastify using `pg`, Zod, and SQL migrations. `server/index.ts` loads configuration, opens the pool, runs migrations, creates the app, listens on `HOST:PORT`, and closes HTTP/database resources on `SIGINT`/`SIGTERM`.
+Production API endpoints are Next.js Route Handlers using Zod, Prisma ORM, and PostgreSQL. An optional TypeScript Fastify runtime reuses the same Prisma repository for independent backend testing.
 
 ```bash
 npm run dev:server
 npm run start:server
 npm run db:migrate
+npm run db:migrate:deploy
 ```
 
 ## Implementation status

@@ -1,115 +1,79 @@
-import { randomUUID } from 'node:crypto'
-import type { Database } from '@/server/database'
+import { Prisma } from '@/generated/prisma/client'
+import type { PrismaClient } from '@/generated/prisma/client'
 import type {
   MiniSprintDto,
   MiniSprintRegistrationDto,
   MiniSprintRegistrationRequest,
 } from '@/types/api'
-import type { MiniSprintRegistrationStore } from './mini-sprint-store'
 
-interface MiniSprintRow {
-  id: string
-  title: string
-  status: MiniSprintDto['status']
-  status_color: string
-  starts_at: Date
-  ends_at: Date
-  duration_minutes: number
-  challenge_count: number
-  difficulty: MiniSprintDto['difficulty']
-  format: MiniSprintDto['format']
-  reward: string
-  description: string
-  registration_open: boolean
-}
-
-interface RegistrationRow {
-  id: string
-  sprint_id: string
-  email: string
-  pwn_username: string
-  status: MiniSprintRegistrationDto['status']
-  registered_at: Date
-}
+type RepositoryClient = Pick<PrismaClient, 'miniSprint' | 'miniSprintRegistration'>
 
 export class DuplicateRegistrationError extends Error {}
 export class SprintNotFoundError extends Error {}
 export class RegistrationClosedError extends Error {}
 
-function toIso(value: Date | string): string {
-  return value instanceof Date ? value.toISOString() : new Date(value).toISOString()
-}
-
-function mapSprint(row: MiniSprintRow): MiniSprintDto {
-  return {
-    id: row.id,
-    title: row.title,
-    status: row.status,
-    statusColor: row.status_color,
-    startsAt: toIso(row.starts_at),
-    endsAt: toIso(row.ends_at),
-    durationMinutes: row.duration_minutes,
-    challengeCount: row.challenge_count,
-    difficulty: row.difficulty,
-    format: row.format,
-    reward: row.reward,
-    description: row.description,
-    registrationOpen: row.registration_open,
-  }
-}
-
-export class MiniSprintRepository implements MiniSprintRegistrationStore {
-  constructor(private readonly database: Database) {}
+export class MiniSprintRepository {
+  constructor(private readonly database: RepositoryClient) {}
 
   async list(): Promise<MiniSprintDto[]> {
-    const result = await this.database.query<MiniSprintRow>(
-      `SELECT id, title, status, status_color, starts_at, ends_at,
-              duration_minutes, challenge_count, difficulty, format,
-              reward, description, registration_open
-         FROM mini_sprints
-        ORDER BY starts_at ASC`
-    )
-    return result.rows.map(mapSprint)
+    const rows = await this.database.miniSprint.findMany({
+      orderBy: { startsAt: 'asc' },
+    })
+    return rows.map((row) => ({
+      id: row.id,
+      title: row.title,
+      status: row.status,
+      statusColor: row.statusColor,
+      startsAt: row.startsAt.toISOString(),
+      endsAt: row.endsAt.toISOString(),
+      durationMinutes: row.durationMinutes,
+      challengeCount: row.challengeCount,
+      difficulty: row.difficulty as MiniSprintDto['difficulty'],
+      format: row.format as MiniSprintDto['format'],
+      reward: row.reward,
+      description: row.description,
+      registrationOpen: row.registrationOpen,
+    }))
   }
 
   async register(
     sprintId: string,
     input: MiniSprintRegistrationRequest
   ): Promise<MiniSprintRegistrationDto> {
-    const sprint = await this.database.query<Pick<MiniSprintRow, 'registration_open'>>(
-      'SELECT registration_open FROM mini_sprints WHERE id = $1',
-      [sprintId]
-    )
+    const sprint = await this.database.miniSprint.findUnique({
+      where: { id: sprintId },
+      select: { registrationOpen: true },
+    })
+    if (!sprint) throw new SprintNotFoundError()
+    if (!sprint.registrationOpen) throw new RegistrationClosedError()
 
-    if (!sprint.rowCount) throw new SprintNotFoundError()
-    if (!sprint.rows[0].registration_open) throw new RegistrationClosedError()
-
+    const email = input.email.trim()
+    const pwnUsername = input.pwnUsername.trim()
     try {
-      const result = await this.database.query<RegistrationRow>(
-        `INSERT INTO mini_sprint_registrations (
-           id, sprint_id, email, email_normalized, pwn_username, status
-         ) VALUES ($1, $2, $3, $4, $5, 'CONFIRMED')
-         RETURNING id, sprint_id, email, pwn_username, status, registered_at`,
-        [
-          randomUUID(),
+      const registration = await this.database.miniSprintRegistration.create({
+        data: {
           sprintId,
-          input.email.trim(),
-          input.email.trim().toLowerCase(),
-          input.pwnUsername.trim(),
-        ]
-      )
-      const row = result.rows[0]
+          email,
+          emailNormalized: email.toLowerCase(),
+          pwnUsername,
+          pwnUsernameNormalized: pwnUsername.toLowerCase(),
+          status: 'CONFIRMED',
+        },
+      })
       return {
-        registrationId: row.id,
-        sprintId: row.sprint_id,
-        email: row.email,
-        pwnUsername: row.pwn_username,
-        status: row.status,
+        registrationId: registration.id,
+        sprintId: registration.sprintId,
+        email: registration.email,
+        pwnUsername: registration.pwnUsername,
+        status: registration.status,
         arenaUrl: null,
-        registeredAt: toIso(row.registered_at),
+        registeredAt: registration.registeredAt.toISOString(),
       }
     } catch (error) {
-      if ((error as { code?: string }).code === '23505') {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
         throw new DuplicateRegistrationError()
       }
       throw error

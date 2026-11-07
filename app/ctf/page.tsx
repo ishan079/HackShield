@@ -877,7 +877,7 @@ function CTFContent() {
                                         display: 'flex', alignItems: 'center', gap: '24px',
                                     }}
                                 >
-                                    <div style={{textAlign: 'right'}}>
+                                    {event.firstPlace && <div style={{textAlign: 'right'}}>
                                         <div
                                             style={{
                                                 fontSize: '0.75rem',
@@ -896,7 +896,7 @@ function CTFContent() {
                                         >
                                             {event.firstPlace ?? 'To be announced'}
                                         </div>
-                                    </div>
+                                    </div>}
                                     <div
                                         style={{
                                             padding: '8px 16px',

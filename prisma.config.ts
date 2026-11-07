@@ -1,9 +1,8 @@
 import 'dotenv/config'
-import { defineConfig } from 'prisma/config'
-
-const localDatabaseUrl = 'postgresql://hackshield:hackshield@localhost:5432/hackshield'
+import { defineConfig, env } from 'prisma/config'
 
 export default defineConfig({
   schema: 'prisma/schema.prisma',
-  datasource: { url: process.env.DATABASE_URL ?? localDatabaseUrl },
+  migrations: { path: 'prisma/migrations' },
+  datasource: { url: env('DATABASE_URL') },
 })

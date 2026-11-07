@@ -3,10 +3,10 @@
 ## Request flow
 
 ```text
-Browser -> Next.js :3000 -> /api/v1/* rewrite -> Fastify :5001 -> pg Pool -> PostgreSQL :5432
+Browser -> Next.js :3000 -> Route Handler -> Prisma Client -> PostgreSQL
 ```
 
-The browser uses `/api/v1`. `next.config.mjs` rewrites `/api/*` to `BACKEND_URL`. This avoids local CORS configuration and keeps the database and backend origin out of client code.
+The browser uses same-origin `/api/v1` endpoints implemented as App Router Route Handlers. Vercel deploys them as Node.js functions. The optional Fastify runtime reuses the same Prisma repository for isolated backend development.
 
 ## Repository map
 
@@ -21,9 +21,9 @@ The browser uses `/api/v1`. `next.config.mjs` rewrites `/api/*` to `BACKEND_URL`
 | `server/app.ts` | Fastify routes, validation, and error mapping |
 | `server/index.ts` | Backend lifecycle |
 | `server/config.ts` | Environment validation/defaults |
-| `server/database.ts` | `pg` abstraction and migration execution |
-| `server/repositories/` | SQL persistence/domain errors |
-| `server/migrations/` | Idempotent SQL schema and seed data |
+| `lib/prisma.ts` | Pooled Prisma Client singleton |
+| `prisma/` | Prisma schema and versioned migrations |
+| `server/repositories/` | Prisma persistence and domain errors |
 | `contracts/openapi.yaml` | Intended public API contract |
 | `tests/frontend/` | React interaction tests |
 | `tests/server/` | HTTP plus database integration tests |
@@ -35,7 +35,7 @@ Keep these synchronized: `contracts/openapi.yaml`, `types/api.ts`, `lib/api.ts`,
 
 ## Runtime boundaries
 
-- React never imports PostgreSQL.
+- React never imports Prisma or PostgreSQL.
 - Repositories never handle HTTP responses.
 - Fastify maps validation/domain errors into stable envelopes.
 - PostgreSQL constraints are the final integrity boundary.
