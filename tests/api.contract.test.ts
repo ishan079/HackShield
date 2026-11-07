@@ -57,6 +57,11 @@ describe('HackShield API contract client', () => {
 
   it('POST /ctf/mini-sprints/:sprintId/register', async () => {
     const request = {
+      fullName: 'Test Student',
+      rollNumber: 'UA2504AIH103',
+      subject: 'BS CSDA' as const,
+      semester: 3,
+      mobileNumber: '9876543210',
       email: 'student@iitp.ac.in',
       pwnUsername: '0xstudent',
     }
@@ -234,6 +239,11 @@ describe('HackShield API contract client', () => {
 
     await expect(
       api.registerMiniSprint('mini-14', {
+        fullName: 'Test Student',
+        rollNumber: 'UA2504AIH103',
+        subject: 'BS CSDA',
+        semester: 3,
+        mobileNumber: '9876543210',
         email: 'student@example.com',
         pwnUsername: 'student',
       })
