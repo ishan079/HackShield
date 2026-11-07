@@ -46,7 +46,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS "mini_sprint_registrations_username_ci_idx"
 INSERT INTO "mini_sprints" (
   "id", "title", "status", "status_color", "starts_at", "ends_at",
   "duration_minutes", "challenge_count", "difficulty", "format", "reward",
-  "description", "registration_open"
+  "description", "registration_open", "updated_at"
 ) VALUES (
   'mini-14',
   'Mini CTF #14: OAuth & Web Infiltration',
@@ -60,6 +60,7 @@ INSERT INTO "mini_sprints" (
   'Solo or Duos',
   '500 Club XP + Web Infiltrator Digital Badge',
   'Fast-paced sprint targeting OAuth redirect leaks, SSRF escalation, and JWT signature forgery.',
-  true
+  true,
+  now()
 )
 ON CONFLICT ("id") DO NOTHING;
