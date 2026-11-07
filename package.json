@@ -9,7 +9,6 @@
     "start": "next start",
     "start:server": "tsx server/index.ts",
     "db:migrate": "tsx server/migrate.ts",
-    "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:contracts": "vitest run tests/openapi.contract.test.ts",
