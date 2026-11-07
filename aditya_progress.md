@@ -13,9 +13,10 @@ writes. A successful request to:
 POST /api/v1/ctf/mini-sprints/mini-14/register
 ```
 
-validates the IIT Patna email and pwn.college username, then writes the
-registration through `PrismaMiniSprintRepository` into the PostgreSQL database
-named by `DATABASE_URL`.
+validates the IIT Patna email, pwn.college username, full name, roll number,
+subject, semester, and mobile number, then writes the registration through
+`PrismaMiniSprintRepository` into the PostgreSQL database named by
+`DATABASE_URL`.
 
 `db.prisma.io` is a hosted PostgreSQL database. The old code could already
 connect to it via the `pg` driver when given its URL; this update makes Prisma
@@ -29,7 +30,9 @@ The relevant pieces are:
   Mini CTF reads and registration inserts through Prisma.
 - `prisma/schema.prisma` — Mini CTF and registration models.
 - `prisma/migrations/20261107010000_add_prisma_registration_storage/migration.sql`
-  — the deployment migration.
+  — the initial registration-storage migration.
+- `prisma/migrations/20261107162000_add_mini_sprint_participant_details/migration.sql`
+  — adds the participant-detail columns used by the current registration form.
 
 The older `pg` repository remains only to keep the fast isolated database tests
 working. It is not used by `server/index.ts` in the production path.
@@ -81,15 +84,21 @@ npm run prisma:deploy
 `npm run db:migrate` is kept as an alias for `prisma migrate deploy`, so the
 older migration command also applies the Prisma migration after this update.
 
-The migration is deliberately idempotent.
+The first migration is deliberately idempotent. The second migration is an
+additive, tracked Prisma migration; run it through `prisma migrate deploy`,
+not by copying its SQL manually.
 
 | Starting database state | Result of `npm run prisma:deploy` |
 | --- | --- |
-| Empty database | Creates `mini_sprints` and `mini_sprint_registrations`, indexes, constraints, and the `mini-14` registration row. |
-| Existing functional registration database with no Prisma migration history | Leaves existing tables and registrations intact, does not overwrite the existing `mini-14` row, and records the migration in `_prisma_migrations`. |
+| Empty database | Creates `mini_sprints` and `mini_sprint_registrations`, indexes, constraints, the `mini-14` registration row, and the participant-detail columns. |
+| Existing functional registration database | Adds nullable `full_name`, `roll_number`, `subject`, `semester`, and `mobile_number` columns without altering or deleting older registrations. New API registrations always populate all five fields. |
 
 The migration uses `CREATE ... IF NOT EXISTS` and `INSERT ... ON CONFLICT DO
 NOTHING`; it does not delete registrations or replace event configuration.
+
+The subject dropdown accepts only: `BSc CSDA`, `BS CSDA`, `BS-MS CSDA`, `BS
+AICS`, `BS-MS AICS`, `MCA`, `BBA`, and `BBA-MBA`. Semester is restricted to
+1–7, and mobile numbers are validated as 10-digit Indian mobile numbers.
 
 ## Run and verify locally
 
@@ -115,12 +124,11 @@ npm run build
 
 ## Verification completed for this update
 
-- The migration was applied to the configured Prisma-hosted PostgreSQL
+- Both migrations were applied to the configured Prisma-hosted PostgreSQL
   database, and Prisma reports the database schema as up to date.
-- A real Fastify registration request used the Prisma repository, returned HTTP
-  201, and the inserted record was read back through Prisma inside a database
-  transaction. That transaction was rolled back, so no verification participant
-  remains in the database.
+- A real Prisma repository registration wrote, read, and verified all five
+  participant-detail fields against the hosted database. The verification row
+  was deleted in the same transaction, so no test participant remains.
 - The Prisma repository tests, registration-flow tests, TypeScript check, and
   production build pass.
 
