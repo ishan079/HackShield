@@ -3,7 +3,7 @@
 import React, {useEffect} from 'react'
 import {motion} from 'framer-motion'
 import {useInView} from 'react-intersection-observer'
-import {Cpu, Lock, Shield, Sparkles, Terminal, Users} from 'lucide-react'
+import {Cpu, Lock, Sparkles, Terminal, Users} from 'lucide-react'
 import TeamSection from '@/components/TeamSection'
 
 export default function AboutPage() {
@@ -28,22 +28,22 @@ export default function AboutPage() {
         {
             icon: <Terminal size={24} color="var(--accent)"/>,
             title: 'Pragmatic Security First',
-            desc: 'Theory is important, but practical mastery breaks through the noise. We teach offensive and defensive skills by digging straight into memory buffers, network packets, and disassembled binaries.',
+            desc: 'Theory sets the stage. Practice steals the show. From memory buffers and network packets to reverse-engineering binaries, we dive straight into offensive and defensive security. Less slides, more bytes.',
         },
         {
             icon: <Users size={24} color="var(--accent)"/>,
             title: 'Fiercely Collaborative',
-            desc: 'Cybersecurity is never a solo pursuit. HackShield connects curious first-years, hardened CTF competitors, and IIT Patna alumni working in Tier-1 security firms and defense agencies.',
+            desc: 'No hacker works alone. From curious freshers to seasoned CTF warriors and alumni in top security firms and defense agencies, HackShield brings the entire crew together. Share knowledge, crack challenges, grow stronger.',
         },
         {
             icon: <Lock size={24} color="var(--accent)"/>,
             title: 'Responsible & Ethical',
-            desc: 'With deep technical capability comes absolute responsibility. Every workshop and lab operates strictly within sanctioned ethical boundaries, instilling white-hat principles from day one.',
+            desc: 'With great hacking power comes great responsibility. Every lab and workshop stays within ethical boundaries, because breaking rules isn\'t the goal breaking vulnerabilities is. White-hat mindset, from day one.',
         },
         {
             icon: <Cpu size={24} color="var(--accent)"/>,
             title: 'Systems-Level Thinking',
-            desc: 'From silicon logic gates to cloud container orchestrators, we encourage learners to understand the complete abstraction stack rather than blindly running scripts or automated scanners.',
+            desc: 'From logic gates to cloud orchestration, we explore every layer of the stack. No blindly running scripts or scanners —understand what\'s happening under the hood, then make your move.',
         },
     ]
 
@@ -92,25 +92,6 @@ export default function AboutPage() {
                     transition={{duration: 0.7}}
                     style={{textAlign: 'center', marginBottom: '70px'}}
                 >
-                    <div
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            background: 'var(--accent-dim)',
-                            border: '1px solid var(--accent)',
-                            borderRadius: '999px',
-                            padding: '6px 16px',
-                            marginBottom: '20px',
-                            fontSize: '0.85rem',
-                            letterSpacing: '1px',
-                            color: 'var(--accent)',
-                            textTransform: 'uppercase',
-                            fontWeight: 700,
-                        }}
-                    >
-                        <Shield size={14}/> IIT Patna Official Cybersecurity Club
-                    </div>
                     <h1
                         style={{
                             fontFamily: 'var(--font-display)',
@@ -122,7 +103,7 @@ export default function AboutPage() {
                             color: 'var(--text-primary)',
                         }}
                     >
-                        Protecting What Matters.
+                        Find the Pattern.
                         <br/>
                         <span
                             style={{
@@ -131,8 +112,8 @@ export default function AboutPage() {
                                 fontFamily: 'Georgia, serif',
                             }}
                         >
-              Exploring The Depths.
-            </span>
+                            Find the People.
+                        </span>
                     </h1>
                     <p
                         style={{
@@ -207,12 +188,11 @@ export default function AboutPage() {
                             margin: 0,
                         }}
                     >
-                        Modern cyber threats do not wait for conventional curriculums to catch
-                        up. At HackShield, we bridge the gap between academic computer
-                        science and battle-tested industry security. We provide IIT Patna
-                        undergraduates with the tools, sandboxed infrastructure, and
-                        collaborative mentorship required to turn raw curiosity into verified
-                        expertise.
+                        Cybersecurity doesn't play by the syllabus, and neither do we. At HackShield, we take learning
+                        beyond textbooks and into the trenches of real-world security. From breaking things (ethically,
+                        of course) to building things stronger, we equip IIT Patna undergraduates with hands-on tools,
+                        sandboxed labs, and a community that thrives on curiosity, collaboration, and a little bit of
+                        controlled chaos. Less theory, more hacking. More skills, fewer vulnerabilities.
                     </p>
                 </motion.div>
 
@@ -326,131 +306,6 @@ export default function AboutPage() {
                 </div>
 
                 <div ref={timelineRef} style={{marginBottom: '80px'}}>
-                    <div style={{textAlign: 'center', marginBottom: '50px'}}>
-            <span
-                style={{
-                    color: 'var(--accent)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '2px',
-                    fontSize: '0.8rem',
-                    fontWeight: 700,
-                }}
-            >
-              Evolution
-            </span>
-                        <h2
-                            style={{
-                                fontSize: '2.2rem',
-                                fontWeight: 800,
-                                marginTop: '8px',
-                                color: 'var(--text-primary)',
-                            }}
-                        >
-                            Our Journey
-                        </h2>
-                    </div>
-
-                    <div
-                        style={{
-                            position: 'relative',
-                            maxWidth: '800px',
-                            margin: '0 auto',
-                        }}
-                    >
-                        <div
-                            style={{
-                                position: 'absolute',
-                                top: '10px',
-                                bottom: '10px',
-                                left: '28px',
-                                width: '2px',
-                                background:
-                                    'linear-gradient(180deg, var(--accent) 0%, rgba(216,104,62,0.2) 100%)',
-                            }}
-                        />
-
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '36px',
-                            }}
-                        >
-                            {milestones.map((item, idx) => (
-                                <motion.div
-                                    key={idx}
-                                    initial={{opacity: 0, x: -20}}
-                                    animate={timelineInView ? {opacity: 1, x: 0} : {}}
-                                    transition={{duration: 0.5, delay: idx * 0.15}}
-                                    style={{
-                                        position: 'relative',
-                                        paddingLeft: '72px',
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            position: 'absolute',
-                                            left: '18px',
-                                            top: '4px',
-                                            width: '22px',
-                                            height: '22px',
-                                            borderRadius: '50%',
-                                            background: 'var(--bg-primary)',
-                                            border: '3px solid var(--accent)',
-                                            boxShadow: '0 0 12px var(--accent-glow)',
-                                        }}
-                                    />
-
-                                    <div
-                                        style={{
-                                            background: 'var(--bg-card)',
-                                            border: '1px solid var(--border-subtle)',
-                                            borderTop: '1.5px solid var(--border-specular)',
-                                            borderBottom: '1px solid var(--border-bottom)',
-                                            borderRadius: '24px',
-                                            padding: '24px 28px',
-                                            boxShadow: 'var(--shadow-card)',
-                                            backdropFilter: 'blur(14px)',
-                                            WebkitBackdropFilter: 'blur(14px)',
-                                        }}
-                                    >
-                    <span
-                        style={{
-                            display: 'inline-block',
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.9rem',
-                            fontWeight: 700,
-                            color: 'var(--accent)',
-                            marginBottom: '6px',
-                        }}
-                    >
-                      {item.year}
-                    </span>
-                                        <h3
-                                            style={{
-                                                fontSize: '1.25rem',
-                                                fontWeight: 700,
-                                                color: 'var(--text-primary)',
-                                                marginBottom: '8px',
-                                            }}
-                                        >
-                                            {item.title}
-                                        </h3>
-                                        <p
-                                            style={{
-                                                fontSize: '0.95rem',
-                                                lineHeight: 1.6,
-                                                color: 'var(--text-secondary)',
-                                                margin: 0,
-                                            }}
-                                        >
-                                            {item.desc}
-                                        </p>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
