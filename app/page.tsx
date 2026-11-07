@@ -8,7 +8,6 @@ import Pillars from '@/components/Pillars'
 import CTFBanner from '@/components/CTFBanner'
 import ProgramsSection from '@/components/ProgramsSection'
 import StatsSection from '@/components/StatsSection'
-import TeamSection from '@/components/TeamSection'
 import InteractiveTerminal from '@/components/InteractiveTerminal'
 import CTASection from '@/components/CTASection'
 
@@ -60,12 +59,6 @@ export default function HomePage() {
           style={{ maxWidth: 1280, margin: '40px auto', padding: '0 24px' }}
         >
           <InteractiveTerminal />
-        </div>
-
-        <div
-          style={{ maxWidth: 1280, margin: '60px auto', padding: '0 24px' }}
-        >
-          <TeamSection />
         </div>
 
         <div

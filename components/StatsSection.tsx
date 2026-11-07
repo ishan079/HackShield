@@ -6,10 +6,10 @@ import { useInView } from 'react-intersection-observer'
 import { StatItemType } from '@/types'
 
 const stats: StatItemType[] = [
-  { value: 100, suffix: '+', label: 'Active Members', sub: 'Across B.Tech, M.Tech & Ph.D' },
-  { value: 15, suffix: '+', label: 'CTF Competitions', sub: 'Organized & Participated' },
+  { value: 600, suffix: '+', label: 'Active Members', sub: 'Across BS, BS-MS, BSc, M.Tech & MCA' },
+  { value: 4, suffix: '+', label: 'CTF Competitions', sub: 'Organized & Participated' },
   { value: 50, suffix: '+', label: 'Hands-on Labs', sub: 'Offensive & Defensive Workshops' },
-  { value: 4, suffix: '+', label: 'Years of Excellence', sub: 'Founded at IIT Patna in 2021' },
+  { value: 2, suffix: '+', label: 'Years of Excellence', sub: 'Founded at IIT Patna in 2024' },
 ]
 
 function useCounter(target: number, isInView: boolean, duration = 1800): number {

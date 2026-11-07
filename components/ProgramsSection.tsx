@@ -12,13 +12,13 @@ const programs: ProgramCardItem[] = [
     duration: '6-week structured intensive',
     description:
       'From fundamentals to advanced binary exploitation. Weekly hands-on labs, hardware hacking teardowns, and personal mentorship.',
-    tag: 'ONGOING',
-    dotColor: '#34d399',
+    tag: 'Ended',
+    dotColor: '#d33434',
   },
   {
     index: '02',
-    title: 'Weekly CTF Practice',
-    duration: 'Every Saturday Evening',
+    title: 'CTF Practice',
+    duration: 'PWN College/Hack the Box',
     description:
       'Collaborative drills across web exploitation, cryptography, reverse engineering, and forensics with senior club members.',
     tag: 'EVERY WEEK',
@@ -29,7 +29,7 @@ const programs: ProgramCardItem[] = [
     title: 'Guest Speaker Series',
     duration: 'Monthly Industry Keynotes',
     description:
-      'Engineers from Google Project Zero, top Tier-1 security consultancies, and national defense agencies share unfiltered insights.',
+      'Experienced engineers and certified professionals share unfiltered insights.',
     tag: 'MONTHLY',
     dotColor: '#60a5fa',
   },
