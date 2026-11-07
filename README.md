@@ -104,3 +104,4 @@ npm audit
 4. Run the full quality check before opening a pull request.
 5. Keep database constraints authoritative for integrity; UI validation exists for feedback, not security.
 empty commit
+another empty commit
