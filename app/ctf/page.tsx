@@ -1908,42 +1908,92 @@ function CTFContent() {
                                                     }}
                                                 >
                                                     Enter your username, not your password.
-                                                    <h6>
-
-                                                    </h6>
                                                 </div>
-                                                <section className="mini-ctf-declaration-section">
-                                                    <h4>Declaration required to register</h4>
-                                                    <p>Copy or type the declaration below exactly.</p>
-                                                    <blockquote>{MINI_CTF_DECLARATION}</blockquote>
-                                                    <label htmlFor={`registration-declaration-${sprint.id}`}>
-                                                        Declaration
-                                                    </label>
-                                                    <textarea
-                                                        id={`registration-declaration-${sprint.id}`}
-                                                        value={declaration}
-                                                        onChange={(event) => {
-                                                            setDeclaration(event.target.value)
-                                                            if (registrationState === 'error') {
-                                                                setRegistrationState('idle')
-                                                                setRegistrationMessage('')
-                                                            }
-                                                        }}
-                                                        placeholder="Paste or type the declaration here"
-                                                        rows={4}
-                                                        autoComplete="off"
-                                                    />
-                                                    <p className="mini-ctf-declaration-status" aria-live="polite">
-                                                        {!hasOpenedRulebook
-                                                            ? 'Open the rulebook once, then complete this declaration.'
-                                                            : declaration && !declarationMatches
-                                                                ? 'The declaration must match exactly.'
-                                                                : declarationMatches
-                                                                    ? 'Declaration complete — you can register.'
-                                                                    : 'Paste or type the declaration to continue.'}
-                                                    </p>
-                                                </section>
                                             </div>
+
+                                            <div
+                                                style={{
+                                                    height: '1px',
+                                                    background: 'var(--border-subtle)',
+                                                    margin: '26px 0 22px',
+                                                }}
+                                            />
+
+                                            <section className="mini-ctf-declaration-section">
+                                                <div
+                                                    style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'space-between',
+                                                        flexWrap: 'wrap',
+                                                        gap: '10px',
+                                                        marginBottom: '10px',
+                                                    }}
+                                                >
+                                                    <h4
+                                                        style={{
+                                                            fontSize: '1.08rem',
+                                                            fontWeight: 700,
+                                                            color: 'var(--text-primary)',
+                                                            margin: 0,
+                                                            letterSpacing: '-0.01em',
+                                                        }}
+                                                    >
+                                                        Declaration required to register
+                                                    </h4>
+                                                    <span
+                                                        style={{
+                                                            fontSize: '0.74rem',
+                                                            fontWeight: 700,
+                                                            letterSpacing: '0.04em',
+                                                            textTransform: 'uppercase',
+                                                            color: declarationMatches ? 'var(--color-green, #34d399)' : 'var(--accent)',
+                                                            background: declarationMatches ? 'rgba(16, 185, 129, 0.12)' : 'var(--accent-dim)',
+                                                            padding: '3px 10px',
+                                                            borderRadius: '6px',
+                                                        }}
+                                                    >
+                                                        {declarationMatches ? 'Verified' : 'Required'}
+                                                    </span>
+                                                </div>
+                                                <p>Copy or type the declaration below exactly.</p>
+                                                <blockquote>{MINI_CTF_DECLARATION}</blockquote>
+                                                <label htmlFor={`registration-declaration-${sprint.id}`}>
+                                                    Declaration
+                                                </label>
+                                                <textarea
+                                                    id={`registration-declaration-${sprint.id}`}
+                                                    value={declaration}
+                                                    onChange={(event) => {
+                                                        setDeclaration(event.target.value)
+                                                        if (registrationState === 'error') {
+                                                            setRegistrationState('idle')
+                                                            setRegistrationMessage('')
+                                                        }
+                                                    }}
+                                                    placeholder="Paste or type the declaration here"
+                                                    rows={4}
+                                                    autoComplete="off"
+                                                />
+                                                <p
+                                                    className={`mini-ctf-declaration-status ${
+                                                        declarationMatches
+                                                            ? 'matched'
+                                                            : declaration && !declarationMatches
+                                                                ? 'mismatched'
+                                                                : ''
+                                                    }`}
+                                                    aria-live="polite"
+                                                >
+                                                    {!hasOpenedRulebook
+                                                        ? 'Open the rulebook once, then complete this declaration.'
+                                                        : declaration && !declarationMatches
+                                                            ? 'The declaration must match exactly.'
+                                                            : declarationMatches
+                                                                ? 'Declaration complete — you can register.'
+                                                                : 'Paste or type the declaration to continue.'}
+                                                </p>
+                                            </section>
 
                                             <button
                                                 type="button"

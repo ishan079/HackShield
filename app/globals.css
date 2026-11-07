@@ -449,30 +449,32 @@ input, textarea, select, button {
 
 .mini-ctf-declaration-section {
   margin: 0 0 25px;
-  padding: 20px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-top-color: var(--border-specular);
-  border-radius: 16px;
-  box-shadow: var(--shadow-sm);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .mini-ctf-declaration-section blockquote {
-  margin: 14px 0 16px;
-  padding: 13px 15px;
+  margin: 12px 0 16px;
+  padding: 13px 16px;
   color: var(--text-primary);
   background: var(--accent-subtle);
-  border-left: 2px solid var(--accent);
-  border-radius: 0 10px 10px 0;
+  border: 1px solid var(--accent-dim);
+  border-left: 3px solid var(--accent);
+  border-radius: 12px;
   font-size: 0.88rem;
   line-height: 1.65;
+  user-select: all;
 }
 
 .mini-ctf-declaration-section h4 {
   margin: 0 0 8px;
   color: var(--text-primary);
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 1.08rem;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 
@@ -485,37 +487,47 @@ input, textarea, select, button {
 
 .mini-ctf-declaration-section label {
   display: block;
-  margin-bottom: 7px;
+  margin-bottom: 8px;
   color: var(--text-primary);
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   font-weight: 700;
 }
 
 .mini-ctf-declaration-section textarea {
   display: block;
   width: 100%;
+  box-sizing: border-box;
   resize: vertical;
-  padding: 12px;
+  padding: 13px 16px;
   color: var(--text-primary);
-  background: var(--input-bg);
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 10px;
+  border-radius: 12px;
   outline: none;
-  font-family: var(--font-sans);
-  font-size: 0.88rem;
+  font-family: inherit;
+  font-size: 0.95rem;
   line-height: 1.5;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .mini-ctf-declaration-section textarea:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-dim);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 .mini-ctf-declaration-status {
-  margin: 12px 0 0 !important;
-  color: var(--text-muted) !important;
-  font-size: 0.8rem !important;
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.mini-ctf-declaration-status.matched {
+  color: var(--color-green, #34d399);
+}
+
+.mini-ctf-declaration-status.mismatched {
+  color: var(--color-red, #f87171);
 }
 
 .mini-ctf-registration-grid {
@@ -593,7 +605,7 @@ input, textarea, select, button {
   }
 
   .mini-ctf-declaration-section {
-    padding: 16px;
+    padding: 0;
   }
 
   .mini-ctf-registration-grid {
