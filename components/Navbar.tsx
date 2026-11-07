@@ -72,16 +72,85 @@ export default function Navbar() {
           zIndex: 999,
           display: 'flex',
           justifyContent: 'center',
+          alignItems: 'center',
           pointerEvents: 'none',
-          padding: scrolled ? '14px 16px 0' : '0',
-          transition: 'padding 0.42s cubic-bezier(0.16, 1, 0.3, 1)',
+          padding: scrolled ? '14px 16px 0' : '0 24px',
+          gap: scrolled ? '10px' : '16px',
+          transition: 'padding 0.42s cubic-bezier(0.16, 1, 0.3, 1), gap 0.42s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
+        <Link
+          href="/register"
+          className="hs-register-overlay-btn"
+          aria-label="Register for HackShield CTF"
+          style={{
+            pointerEvents: 'auto',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            height: scrolled ? '44px' : '48px',
+            padding: scrolled ? '0 16px' : '0 20px',
+            borderRadius: '9999px',
+            background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)',
+            color: '#ffffff',
+            fontSize: scrolled ? '0.84rem' : '0.88rem',
+            fontWeight: 700,
+            letterSpacing: '0.01em',
+            textDecoration: 'none',
+            border: isDark
+              ? '1px solid rgba(255, 255, 255, 0.28)'
+              : '1px solid rgba(255, 255, 255, 0.45)',
+            boxShadow: scrolled
+              ? '0 8px 24px -2px rgba(168, 85, 247, 0.55), 0 3px 10px -2px rgba(126, 34, 206, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.65)'
+              : '0 6px 20px -2px rgba(168, 85, 247, 0.45), inset 0 1px 1px 0 rgba(255, 255, 255, 0.55)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            transition: 'all 0.42s cubic-bezier(0.16, 1, 0.3, 1)',
+            cursor: 'pointer',
+            flexShrink: 0,
+            userSelect: 'none',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              lineHeight: 1,
+            }}
+          >
+            Register
+          </span>
+          <span
+            className="hs-register-arrow"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: scrolled ? '20px' : '22px',
+              height: scrolled ? '20px' : '22px',
+              borderRadius: '50%',
+              background: 'rgba(255, 255, 255, 0.25)',
+              boxShadow:
+                'inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.15)',
+              color: '#ffffff',
+              fontSize: '0.82rem',
+              fontWeight: 800,
+              lineHeight: 1,
+              transition:
+                'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), width 0.42s ease, height 0.42s ease',
+            }}
+          >
+            ↗
+          </span>
+        </Link>
+
         <header
           style={{
             pointerEvents: 'auto',
-            width: scrolled ? 'min(920px, calc(100% - 32px))' : '100%',
-            maxWidth: scrolled ? '920px' : '100%',
+            width: scrolled ? 'min(860px, calc(100% - 32px))' : '100%',
+            maxWidth: scrolled ? '860px' : '1280px',
             height: scrolled ? '54px' : '76px',
             borderRadius: scrolled ? '9999px' : '0px',
             overflow: 'hidden',
@@ -121,6 +190,7 @@ export default function Navbar() {
             alignItems: 'center',
             justifyContent: 'center',
             boxSizing: 'border-box',
+            flex: scrolled ? '0 1 auto' : '1 1 auto',
             transition: [
               'width 0.42s cubic-bezier(0.16, 1, 0.3, 1)',
               'max-width 0.42s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -671,8 +741,34 @@ export default function Navbar() {
                 style={{
                   borderTop: '1px solid var(--border-subtle)',
                   paddingTop: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px',
                 }}
               >
+                <Link
+                  href="/register"
+                  onClick={() => setMobileMenuOpen(false)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    width: '100%',
+                    padding: '12px',
+                    borderRadius: '9999px',
+                    background:
+                      'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                    fontSize: '0.95rem',
+                    boxShadow: '0 4px 16px rgba(168, 85, 247, 0.45)',
+                  }}
+                >
+                  <span>Register</span>
+                  <span>↗</span>
+                </Link>
                 <a
                   href="https://chat.whatsapp.com/Kk4EPaNeHkp8oNQZ8O0ZR7"
                   target="_blank"
@@ -704,6 +800,16 @@ export default function Navbar() {
       </AnimatePresence>
 
       <style>{`
+        .hs-register-overlay-btn:hover {
+          transform: scale(1.03);
+          box-shadow: 0 10px 28px -2px rgba(168, 85, 247, 0.7), inset 0 1px 1px 0 rgba(255, 255, 255, 0.75) !important;
+        }
+        .hs-register-overlay-btn:hover .hs-register-arrow {
+          transform: translate(2px, -2px);
+        }
+        .hs-register-overlay-btn:active {
+          transform: scale(0.97);
+        }
         .hs-join-btn:hover .hs-join-arrow {
           transform: translate(2px, -2px);
         }
@@ -718,8 +824,31 @@ export default function Navbar() {
             display: flex !important;
           }
         }
+        @media (max-width: 640px) {
+          .hs-register-overlay-btn {
+            height: 38px !important;
+            padding: 0 12px !important;
+            font-size: 0.80rem !important;
+            gap: 5px !important;
+          }
+          .hs-register-arrow {
+            width: 18px !important;
+            height: 18px !important;
+            font-size: 0.72rem !important;
+          }
+        }
         @media (max-width: 500px) {
           .hs-brand-sub {
+            display: none !important;
+          }
+        }
+        @media (max-width: 420px) {
+          .hs-register-overlay-btn {
+            height: 34px !important;
+            padding: 0 10px !important;
+            font-size: 0.76rem !important;
+          }
+          .hs-register-arrow {
             display: none !important;
           }
         }

@@ -10,6 +10,7 @@ import {
     Award,
     Binary,
     Calendar,
+    ChevronDown,
     ChevronRight,
     Clock,
     FileText,
@@ -33,11 +34,53 @@ const PWN_USERNAME_PATTERN = /^[a-zA-Z0-9_.-]{2,64}$/
 const ROLL_NUMBER_PATTERN = /^[a-zA-Z0-9/_-]{3,40}$/
 const MOBILE_NUMBER_PATTERN = /^[6-9]\d{9}$/
 
+export type CTFCategoryKey = 'flagship' | 'mini'
+
+export interface CTFCategoryData {
+    id: CTFCategoryKey
+    selectorLabel: string
+    selectorBadge: string
+    heroTag: string
+    heroIcon: 'flag' | 'zap'
+    headingPrefix: string
+    headingAccent: string
+    description: string
+}
+
+export const CTF_CATEGORIES: Record<CTFCategoryKey, CTFCategoryData> = {
+    flagship: {
+        id: 'flagship',
+        selectorLabel: 'Flagship CTF',
+        selectorBadge: 'BIANNUAL',
+        heroTag: 'Official Competitions Hub',
+        heroIcon: 'flag',
+        headingPrefix: 'Crack The Cipher.',
+        headingAccent: 'Capture The Flag.',
+        description: 'Choose between our high-stakes national annual championship and our regular, fast-paced intra-club skill sprints.',
+    },
+    mini: {
+        id: 'mini',
+        selectorLabel: 'Mini CTF',
+        selectorBadge: 'MONTHLY SPRINTS',
+        heroTag: 'Monthly Intra-Club Sprints',
+        heroIcon: 'zap',
+        headingPrefix: 'Sharpen Your Skills.',
+        headingAccent: 'Monthly Mini CTF.',
+        description: 'Fast-paced monthly intra-club CTF challenges designed to test technical agility, sharpen hands-on exploitation skills, and level up together.',
+    },
+}
+
+export const CTF_CATEGORIES_LIST: CTFCategoryData[] = [
+    CTF_CATEGORIES.flagship,
+    CTF_CATEGORIES.mini,
+]
+
 function CTFContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
-    const initialType = searchParams.get('type') === 'mini' ? 'mini' : 'flagship'
-    const [activeTab, setActiveTab] = useState(initialType)
+    const initialType = (searchParams.get('type') === 'mini' ? 'mini' : 'flagship') as CTFCategoryKey
+    const [activeTab, setActiveTab] = useState<CTFCategoryKey>(initialType)
+    const currentCategory = CTF_CATEGORIES[activeTab] || CTF_CATEGORIES.flagship
     const [flippedSprintId, setFlippedSprintId] = useState<string | null>(null)
     const [regForm, setRegForm] = useState({
         fullName: '',
@@ -67,6 +110,7 @@ function CTFContent() {
         } else if (type === 'flagship') {
             setActiveTab('flagship')
         }
+        window.scrollTo({top: 0, behavior: 'smooth'})
     }, [searchParams])
 
     useEffect(() => {
@@ -312,67 +356,89 @@ function CTFContent() {
                 transition={{duration: 0.7}}
                 style={{textAlign: 'center', marginBottom: '45px'}}
             >
-                <div
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        background: 'var(--accent-dim)',
-                        border: '1px solid var(--accent)',
-                        borderRadius: '999px',
-                        padding: '6px 18px',
-                        marginBottom: '20px',
-                        fontSize: '0.82rem',
-                        letterSpacing: '1px',
-                        color: 'var(--accent)',
-                        textTransform: 'uppercase',
-                        fontWeight: 700,
-                    }}
-                >
-                    <Flag size={14}/> Official Competitions Hub
-                </div>
-
-                <h1
-                    style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: 'clamp(2.5rem, 5vw, 4.2rem)',
-                        fontWeight: 800,
-                        lineHeight: 1.15,
-                        letterSpacing: '-0.02em',
-                        marginBottom: '18px',
-                        color: 'var(--text-primary)',
-                    }}
-                >
-                    Crack The Cipher.
-                    <br/>
-                    <span
-                        style={{
-                            color: 'var(--accent)', fontStyle: 'italic', fontFamily: 'Georgia, serif',
-                        }}
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={currentCategory.id}
+                        initial={{opacity: 0, y: 10}}
+                        animate={{opacity: 1, y: 0}}
+                        exit={{opacity: 0, y: -10}}
+                        transition={{duration: 0.25, ease: 'easeOut'}}
                     >
-              Capture The Flag.
-            </span>
-                </h1>
-                <p
-                    style={{
-                        maxWidth: 680,
-                        margin: '0 auto',
-                        fontSize: '1.12rem',
-                        lineHeight: 1.75,
-                        color: 'var(--text-secondary)',
-                    }}
-                >
-                    Choose between our high-stakes national annual championship and our
-                    regular, fast-paced intra-club skill sprints.
-                </p>
+                        <div
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                background: 'var(--accent-dim)',
+                                border: '1px solid var(--accent)',
+                                borderRadius: '999px',
+                                padding: '6px 18px',
+                                marginBottom: '20px',
+                                fontSize: '0.82rem',
+                                letterSpacing: '1px',
+                                color: 'var(--accent)',
+                                textTransform: 'uppercase',
+                                fontWeight: 700,
+                            }}
+                        >
+                            {currentCategory.heroIcon === 'flag' ? (
+                                <Flag size={14} aria-hidden="true"/>
+                            ) : (
+                                <Zap size={14} aria-hidden="true"/>
+                            )}
+                            <span>{currentCategory.heroTag}</span>
+                        </div>
+
+                        <h1
+                            style={{
+                                fontFamily: 'var(--font-display)',
+                                fontSize: 'clamp(2.5rem, 5vw, 4.2rem)',
+                                fontWeight: 800,
+                                lineHeight: 1.15,
+                                letterSpacing: '-0.02em',
+                                marginBottom: '18px',
+                                color: 'var(--text-primary)',
+                            }}
+                        >
+                            {currentCategory.headingPrefix}
+                            <br/>
+                            <span
+                                style={{
+                                    color: 'var(--accent)',
+                                    fontStyle: 'italic',
+                                    fontFamily: 'Georgia, serif',
+                                }}
+                            >
+                                {currentCategory.headingAccent}
+                            </span>
+                        </h1>
+                        <p
+                            style={{
+                                maxWidth: 680,
+                                margin: '0 auto',
+                                fontSize: '1.12rem',
+                                lineHeight: 1.75,
+                                color: 'var(--text-secondary)',
+                            }}
+                        >
+                            {currentCategory.description}
+                        </p>
+                    </motion.div>
+                </AnimatePresence>
             </motion.div>
 
             <div
                 style={{
-                    display: 'flex', justifyContent: 'center', marginBottom: '50px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginBottom: '50px',
+                    width: '100%',
                 }}
             >
                 <div
+                    role="tablist"
+                    aria-label="CTF category selection"
+                    className="ctf-selector-container"
                     style={{
                         display: 'inline-flex',
                         alignItems: 'center',
@@ -389,121 +455,94 @@ function CTFContent() {
                         maxWidth: '100%',
                     }}
                 >
-                    <button
-                        type="button"
-                        onClick={() => handleTabChange('flagship')}
-                        style={{
-                            position: 'relative',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            padding: '12px 28px',
-                            borderRadius: '9999px',
-                            border: 'none',
-                            background: 'transparent',
-                            color: activeTab === 'flagship' ? '#ffffff' : 'var(--text-secondary)',
-                            fontSize: '0.96rem',
-                            fontWeight: 700,
-                            cursor: 'pointer',
-                            transition: 'color 0.25s ease',
-                            outline: 'none',
-                            whiteSpace: 'nowrap',
-                            zIndex: 1,
-                        }}
-                    >
-                        {activeTab === 'flagship' && (<motion.div
-                            layoutId="ctf-active-pill"
-                            transition={{type: 'spring', stiffness: 450, damping: 35}}
-                            style={{
-                                position: 'absolute',
-                                inset: 0,
-                                borderRadius: '9999px',
-                                background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%)',
-                                boxShadow: '0 4px 18px var(--accent-glow)',
-                                zIndex: -1,
-                            }}
-                        />)}
-                        <Trophy
-                            size={18}
-                            color={activeTab === 'flagship' ? '#ffffff' : 'var(--accent)'}
-                        />
-                        <span>Flagship CTF</span>
-                        <span
-                            style={{
-                                fontSize: '0.68rem',
-                                padding: '2px 8px',
-                                borderRadius: '999px',
-                                background: activeTab === 'flagship' ? 'rgba(255, 255, 255, 0.25)' : 'var(--accent-dim)',
-                                color: activeTab === 'flagship' ? '#ffffff' : 'var(--accent)',
-                                fontWeight: 800,
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px',
-                            }}
-                        >
-                Biannual
-              </span>
-                    </button>
-
-                    <button
-                        type="button"
-                        onClick={() => handleTabChange('mini')}
-                        style={{
-                            position: 'relative',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            padding: '12px 28px',
-                            borderRadius: '9999px',
-                            border: 'none',
-                            background: 'transparent',
-                            color: activeTab === 'mini' ? '#ffffff' : 'var(--text-secondary)',
-                            fontSize: '0.96rem',
-                            fontWeight: 700,
-                            cursor: 'pointer',
-                            transition: 'color 0.25s ease',
-                            outline: 'none',
-                            whiteSpace: 'nowrap',
-                            zIndex: 1,
-                        }}
-                    >
-                        {activeTab === 'mini' && (<motion.div
-                            layoutId="ctf-active-pill"
-                            transition={{type: 'spring', stiffness: 450, damping: 35}}
-                            style={{
-                                position: 'absolute',
-                                inset: 0,
-                                borderRadius: '9999px',
-                                background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%)',
-                                boxShadow: '0 4px 18px var(--accent-glow)',
-                                zIndex: -1,
-                            }}
-                        />)}
-                        <Zap
-                            size={18}
-                            color={activeTab === 'mini' ? '#ffffff' : 'var(--accent)'}
-                        />
-                        <span>Mini CTF</span>
-                        <span
-                            style={{
-                                fontSize: '0.68rem',
-                                padding: '2px 8px',
-                                borderRadius: '999px',
-                                background: activeTab === 'mini' ? 'rgba(255, 255, 255, 0.25)' : 'var(--accent-dim)',
-                                color: activeTab === 'mini' ? '#ffffff' : 'var(--accent)',
-                                fontWeight: 800,
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px',
-                            }}
-                        >
-                Monthly Sprints
-              </span>
-                    </button>
+                    {CTF_CATEGORIES_LIST.map((category) => {
+                        const isActive = activeTab === category.id
+                        return (
+                            <button
+                                key={category.id}
+                                id={`ctf-tab-${category.id}`}
+                                role="tab"
+                                aria-selected={isActive}
+                                aria-controls={`ctf-${category.id}-panel`}
+                                tabIndex={0}
+                                type="button"
+                                onClick={() => handleTabChange(category.id)}
+                                className="ctf-selector-btn"
+                                style={{
+                                    position: 'relative',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '10px',
+                                    padding: '12px 28px',
+                                    borderRadius: '9999px',
+                                    border: 'none',
+                                    background: 'transparent',
+                                    color: isActive ? '#ffffff' : 'var(--text-secondary)',
+                                    fontSize: '0.96rem',
+                                    fontWeight: 700,
+                                    cursor: 'pointer',
+                                    transition: 'color 0.25s ease',
+                                    outline: 'none',
+                                    whiteSpace: 'nowrap',
+                                    zIndex: 1,
+                                }}
+                            >
+                                {isActive && (
+                                    <motion.div
+                                        layoutId="ctf-active-pill"
+                                        transition={{type: 'spring', stiffness: 450, damping: 35}}
+                                        style={{
+                                            position: 'absolute',
+                                            inset: 0,
+                                            borderRadius: '9999px',
+                                            background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%)',
+                                            boxShadow: '0 4px 18px var(--accent-glow)',
+                                            zIndex: -1,
+                                        }}
+                                    />
+                                )}
+                                {category.id === 'flagship' ? (
+                                    <Trophy
+                                        size={18}
+                                        color={isActive ? '#ffffff' : 'var(--accent)'}
+                                        aria-hidden="true"
+                                    />
+                                ) : (
+                                    <Zap
+                                        size={18}
+                                        color={isActive ? '#ffffff' : 'var(--accent)'}
+                                        aria-hidden="true"
+                                    />
+                                )}
+                                <span>{category.selectorLabel}</span>
+                                <span
+                                    style={{
+                                        fontSize: '0.68rem',
+                                        padding: '2px 8px',
+                                        borderRadius: '999px',
+                                        background: isActive
+                                            ? 'rgba(255, 255, 255, 0.25)'
+                                            : 'var(--accent-dim)',
+                                        color: isActive ? '#ffffff' : 'var(--accent)',
+                                        fontWeight: 800,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.5px',
+                                    }}
+                                >
+                                    {category.selectorBadge}
+                                </span>
+                            </button>
+                        )
+                    })}
                 </div>
             </div>
 
             <AnimatePresence mode="wait">
                 {activeTab === 'flagship' && (<motion.div
                     key="flagship-view"
+                    id="ctf-flagship-panel"
+                    role="tabpanel"
+                    aria-labelledby="ctf-tab-flagship"
                     initial={{opacity: 0, y: 15}}
                     animate={{opacity: 1, y: 0}}
                     exit={{opacity: 0, y: -15}}
@@ -703,7 +742,7 @@ function CTFContent() {
                                     onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
                                     onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
                                 >
-                                    Pre-Register Now <ArrowUpRight size={18}/>
+                                    Pre-Registeratiopn Soon
                                 </a>
                             </div>
                         </div>
@@ -1059,6 +1098,9 @@ function CTFContent() {
 
                 {activeTab === 'mini' && (<motion.div
                     key="mini-view"
+                    id="ctf-mini-panel"
+                    role="tabpanel"
+                    aria-labelledby="ctf-tab-mini"
                     initial={{opacity: 0, y: 15}}
                     animate={{opacity: 1, y: 0}}
                     exit={{opacity: 0, y: -15}}
@@ -1685,47 +1727,57 @@ function CTFContent() {
                                                     <label htmlFor={`registration-subject-${sprint.id}`}>
                                                         Subject <span>Required</span>
                                                     </label>
-                                                    <select
-                                                        id={`registration-subject-${sprint.id}`}
-                                                        required
-                                                        value={regForm.subject}
-                                                        onChange={(e) => {
-                                                            setRegForm({...regForm, subject: e.target.value as '' | MiniCtfSubject})
-                                                            if (registrationState === 'error') {
-                                                                setRegistrationState('idle')
-                                                                setRegistrationMessage('')
-                                                            }
-                                                        }}
-                                                        className="mini-ctf-registration-input"
-                                                    >
-                                                        <option value="" disabled>Select your subject</option>
-                                                        {MINI_CTF_SUBJECTS.map((subject) => (
-                                                            <option key={subject} value={subject}>{subject}</option>
-                                                        ))}
-                                                    </select>
+                                                    <div className="mini-ctf-dropdown-wrapper">
+                                                        <select
+                                                            id={`registration-subject-${sprint.id}`}
+                                                            required
+                                                            value={regForm.subject}
+                                                            onChange={(e) => {
+                                                                setRegForm({...regForm, subject: e.target.value as '' | MiniCtfSubject})
+                                                                if (registrationState === 'error') {
+                                                                    setRegistrationState('idle')
+                                                                    setRegistrationMessage('')
+                                                                }
+                                                            }}
+                                                            className="mini-ctf-registration-input mini-ctf-registration-select"
+                                                        >
+                                                            <option value="" disabled>Select your subject</option>
+                                                            {MINI_CTF_SUBJECTS.map((subject) => (
+                                                                <option key={subject} value={subject}>{subject}</option>
+                                                            ))}
+                                                        </select>
+                                                        <span className="mini-ctf-dropdown-arrow" aria-hidden="true">
+                                                            <ChevronDown size={17} />
+                                                        </span>
+                                                    </div>
                                                 </div>
                                                 <div className="mini-ctf-registration-field">
                                                     <label htmlFor={`registration-semester-${sprint.id}`}>
                                                         Semester <span>Required</span>
                                                     </label>
-                                                    <select
-                                                        id={`registration-semester-${sprint.id}`}
-                                                        required
-                                                        value={regForm.semester}
-                                                        onChange={(e) => {
-                                                            setRegForm({...regForm, semester: e.target.value})
-                                                            if (registrationState === 'error') {
-                                                                setRegistrationState('idle')
-                                                                setRegistrationMessage('')
-                                                            }
-                                                        }}
-                                                        className="mini-ctf-registration-input"
-                                                    >
-                                                        <option value="" disabled>Select your semester</option>
-                                                        {[1, 2, 3, 4, 5, 6, 7].map((semester) => (
-                                                            <option key={semester} value={semester}>Semester {semester}</option>
-                                                        ))}
-                                                    </select>
+                                                    <div className="mini-ctf-dropdown-wrapper">
+                                                        <select
+                                                            id={`registration-semester-${sprint.id}`}
+                                                            required
+                                                            value={regForm.semester}
+                                                            onChange={(e) => {
+                                                                setRegForm({...regForm, semester: e.target.value})
+                                                                if (registrationState === 'error') {
+                                                                    setRegistrationState('idle')
+                                                                    setRegistrationMessage('')
+                                                                }
+                                                            }}
+                                                            className="mini-ctf-registration-input mini-ctf-registration-select"
+                                                        >
+                                                            <option value="" disabled>Select your semester</option>
+                                                            {[1, 2, 3, 4, 5, 6, 7].map((semester) => (
+                                                                <option key={semester} value={semester}>Semester {semester}</option>
+                                                            ))}
+                                                        </select>
+                                                        <span className="mini-ctf-dropdown-arrow" aria-hidden="true">
+                                                            <ChevronDown size={17} />
+                                                        </span>
+                                                    </div>
                                                 </div>
                                                 <div className="mini-ctf-registration-field mini-ctf-registration-field-wide">
                                                     <label htmlFor={`registration-mobile-number-${sprint.id}`}>
@@ -1956,7 +2008,7 @@ function CTFContent() {
                                                         {declarationMatches ? 'Verified' : 'Required'}
                                                     </span>
                                                 </div>
-                                                <p>Copy or type the declaration below exactly.</p>
+                                                <p>Type the declaration below exactly.</p>
                                                 <blockquote>{MINI_CTF_DECLARATION}</blockquote>
                                                 <label htmlFor={`registration-declaration-${sprint.id}`}>
                                                     Declaration
@@ -1971,7 +2023,7 @@ function CTFContent() {
                                                             setRegistrationMessage('')
                                                         }
                                                     }}
-                                                    placeholder="Paste or type the declaration here"
+                                                    placeholder="Type the declaration here"
                                                     rows={4}
                                                     autoComplete="off"
                                                 />
@@ -1986,7 +2038,7 @@ function CTFContent() {
                                                     aria-live="polite"
                                                 >
                                                     {!hasOpenedRulebook
-                                                        ? 'Open the rulebook once, then complete this declaration.'
+                                                        ? ''
                                                         : declaration && !declarationMatches
                                                             ? 'The declaration must match exactly.'
                                                             : declarationMatches
