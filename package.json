@@ -9,6 +9,7 @@
     "dev": "next dev",
     "dev:server": "tsx watch server/index.ts",
     "build": "prisma generate && next build",
+    "vercel-build": "prisma migrate deploy && prisma generate && next build",
     "start": "next start",
     "start:server": "tsx server/index.ts",
     "db:generate": "prisma generate",
