@@ -25,13 +25,10 @@ import {
 } from 'lucide-react'
 import {CTFCategory, MiniCTFSprint, MiniStatItem, PastCTFEvent,} from '@/types'
 import {api} from '@/lib/api'
-import {MINI_CTF_SUBJECTS, type MiniCtfSubject} from '@/types/api'
 import MiniCtfRulebookModal, {MINI_CTF_DECLARATION} from '@/components/MiniCtfRulebookModal'
 
 const IITP_EMAIL_PATTERN = /^[^\s@]+@iitp\.ac\.in$/i
 const PWN_USERNAME_PATTERN = /^[a-zA-Z0-9_.-]{2,64}$/
-const ROLL_NUMBER_PATTERN = /^[a-zA-Z0-9/_-]{3,40}$/
-const MOBILE_NUMBER_PATTERN = /^[6-9]\d{9}$/
 
 function CTFContent() {
     const router = useRouter()
@@ -40,13 +37,7 @@ function CTFContent() {
     const [activeTab, setActiveTab] = useState(initialType)
     const [flippedSprintId, setFlippedSprintId] = useState<string | null>(null)
     const [regForm, setRegForm] = useState({
-        fullName: '',
-        rollNumber: '',
-        subject: '' as '' | MiniCtfSubject,
-        semester: '',
-        mobileNumber: '',
-        email: '',
-        pwnUsername: '',
+        email: '', pwnUsername: '',
     })
     const [registrationState, setRegistrationState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
     const [registrationMessage, setRegistrationMessage] = useState('')
@@ -100,16 +91,12 @@ function CTFContent() {
     }
 
     const submitRegistration = async (sprintId: string) => {
-        const fullName = regForm.fullName.trim()
-        const rollNumber = regForm.rollNumber.trim()
-        const mobileNumber = regForm.mobileNumber.trim()
         const email = regForm.email.trim()
         const pwnUsername = regForm.pwnUsername.trim()
-        const semester = Number(regForm.semester)
 
-        if (!fullName || !rollNumber || !regForm.subject || !regForm.semester || !mobileNumber || !email || !pwnUsername) {
+        if (!email || !pwnUsername) {
             setRegistrationState('error')
-            setRegistrationMessage('Complete all required participant details before registering.')
+            setRegistrationMessage('Institute email and pwn.college username are required.')
             return
         }
 
@@ -121,7 +108,7 @@ function CTFContent() {
 
         if (!declarationMatches) {
             setRegistrationState('error')
-            setRegistrationMessage('Enter the declaration exactly before registering.')
+            setRegistrationMessage('Copy or type the declaration exactly before registering.')
             return
         }
 
@@ -137,46 +124,10 @@ function CTFContent() {
             return
         }
 
-        if (fullName.length < 2 || fullName.length > 120) {
-            setRegistrationState('error')
-            setRegistrationMessage('Enter your full name using 2–120 characters.')
-            return
-        }
-
-        if (!ROLL_NUMBER_PATTERN.test(rollNumber)) {
-            setRegistrationState('error')
-            setRegistrationMessage('Enter a valid roll number using letters, numbers, slashes, hyphens, or underscores.')
-            return
-        }
-
-        if (!MINI_CTF_SUBJECTS.includes(regForm.subject as MiniCtfSubject)) {
-            setRegistrationState('error')
-            setRegistrationMessage('Select your subject.')
-            return
-        }
-
-        if (!Number.isInteger(semester) || semester < 1 || semester > 7) {
-            setRegistrationState('error')
-            setRegistrationMessage('Select a semester from 1 to 7.')
-            return
-        }
-
-        if (!MOBILE_NUMBER_PATTERN.test(mobileNumber)) {
-            setRegistrationState('error')
-            setRegistrationMessage('Enter a valid 10-digit Indian mobile number.')
-            return
-        }
-
         setRegistrationState('submitting')
         setRegistrationMessage('')
         const result = await api.registerMiniSprint(sprintId, {
-            fullName,
-            rollNumber,
-            subject: regForm.subject as MiniCtfSubject,
-            semester,
-            mobileNumber,
-            email,
-            pwnUsername,
+            email, pwnUsername,
         })
 
         if (result.success) {
@@ -266,13 +217,13 @@ function CTFContent() {
         type: 'Jeopardy Style',
         teams: '100+ Teams',
     }
-    ]
+       ]
 
     const miniSprints: MiniCTFSprint[] = [{
         id: 'mini-14',
-        title: 'Practice CTF',
+        title: 'The Mini CTF',
         status: 'REGISTRATION OPEN',
-        statusColor: 'var(--color-green)',
+        statusColor: '#10b981',
         date: 'November 10,2026|12:00 PM – November 13,2026|12:00 PM IST',
         duration: '72 Hours',
         challenges: 'Multiple Targets',
@@ -282,19 +233,15 @@ function CTFContent() {
         description: 'Paced marathon targeting practice towards upcoming fast paced Hackathon.',
     },]
 
-    const miniStats: MiniStatItem[] = [
-        {
-            label: 'Marathon Duration', val: '72 Hours', icon: <Clock size={18} color="var(--accent)"/>,
-        },
-        {
-            label: 'Frequency', val: 'Monthly', icon: <Calendar size={18} color="var(--accent)"/>,
-        },
-        {
-            label: 'Team Format', val: 'Solo or Duos', icon: <Users size={18} color="var(--accent)"/>,
-        },
-        {
-            label: 'Rewards', val: 'Club XP & Badges', icon: <Award size={18} color="var(--accent)"/>,
-        },]
+    const miniStats: MiniStatItem[] = [{
+        label: 'Marathon Duration', val: '72 Hours', icon: <Clock size={18} color="var(--accent)"/>,
+    }, {
+        label: 'Frequency', val: 'Monthly', icon: <Calendar size={18} color="var(--accent)"/>,
+    }, {
+        label: 'Team Format', val: 'Solo or Duos', icon: <Users size={18} color="var(--accent)"/>,
+    }, {
+        label: 'Rewards', val: 'Club XP & Badges', icon: <Award size={18} color="var(--accent)"/>,
+    },]
 
     return (<div
         style={{
@@ -316,6 +263,26 @@ function CTFContent() {
                 transition={{duration: 0.7}}
                 style={{textAlign: 'center', marginBottom: '45px'}}
             >
+                <div
+                    style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: 'var(--accent-dim)',
+                        border: '1px solid var(--accent)',
+                        borderRadius: '999px',
+                        padding: '6px 18px',
+                        marginBottom: '20px',
+                        fontSize: '0.82rem',
+                        letterSpacing: '1px',
+                        color: 'var(--accent)',
+                        textTransform: 'uppercase',
+                        fontWeight: 700,
+                    }}
+                >
+                    <Flag size={14}/> Official Competitions Hub
+                </div>
+
                 <h1
                     style={{
                         fontFamily: 'var(--font-display)',
@@ -687,7 +654,7 @@ function CTFContent() {
                                     onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
                                     onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
                                 >
-                                    Pre-Registeration Open soon
+                                    Pre-Register Now <ArrowUpRight size={18}/>
                                 </a>
                             </div>
                         </div>
@@ -977,15 +944,15 @@ function CTFContent() {
                                     width: '48px',
                                     height: '48px',
                                     borderRadius: '14px',
-                                    background: 'var(--color-green-dim)',
-                                    border: '1px solid var(--color-green-border)',
+                                    background: 'rgba(16, 185, 129, 0.15)',
+                                    border: '1px solid rgba(16, 185, 129, 0.3)',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     flexShrink: 0,
                                 }}
                             >
-                                <Zap size={24} color="var(--color-green)"/>
+                                <Zap size={24} color="#10b981"/>
                             </div>
                             <div>
                                 <h4
@@ -1017,22 +984,22 @@ function CTFContent() {
                                 gap: '8px',
                                 padding: '12px 24px',
                                 borderRadius: '9999px',
-                                background: 'var(--color-green-dim)',
-                                border: '1.5px solid var(--color-green)',
-                                color: 'var(--color-green)',
+                                background: 'rgba(16, 185, 129, 0.15)',
+                                border: '1.5px solid #10b981',
+                                color: '#10b981',
                                 fontSize: '0.92rem',
                                 fontWeight: 700,
                                 cursor: 'pointer',
                                 transition: 'all 0.2s ease',
-                                boxShadow: '0 4px 14px var(--color-green-glow)',
+                                boxShadow: '0 4px 14px rgba(16, 185, 129, 0.15)',
                             }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.background = 'var(--color-green)'
+                                e.currentTarget.style.background = '#10b981'
                                 e.currentTarget.style.color = '#ffffff'
                             }}
                             onMouseLeave={(e) => {
-                                e.currentTarget.style.background = 'var(--color-green-dim)'
-                                e.currentTarget.style.color = 'var(--color-green)'
+                                e.currentTarget.style.background = 'rgba(16, 185, 129, 0.15)'
+                                e.currentTarget.style.color = '#10b981'
                             }}
                         >
                             <span>Explore Mini CTF Track</span>
@@ -1078,9 +1045,9 @@ function CTFContent() {
                                         display: 'inline-flex',
                                         alignItems: 'center',
                                         gap: '6px',
-                                        background: 'var(--color-green-dim)',
-                                        border: '1px solid var(--color-green-border)',
-                                        color: 'var(--color-green)',
+                                        background: 'rgba(16, 185, 129, 0.15)',
+                                        border: '1px solid rgba(16, 185, 129, 0.4)',
+                                        color: '#10b981',
                                         fontSize: '0.75rem',
                                         fontWeight: 800,
                                         letterSpacing: '1.2px',
@@ -1291,8 +1258,8 @@ function CTFContent() {
                                             letterSpacing: '1px',
                                             padding: '3px 10px',
                                             borderRadius: '6px',
-                                            background: 'var(--color-green-dim)',
-                                            border: '1px solid var(--color-green-border)',
+                                            background: `${sprint.statusColor}22`,
+                                            border: `1px solid ${sprint.statusColor}66`,
                                             color: sprint.statusColor,
                                             textTransform: 'uppercase',
                                         }}
@@ -1481,7 +1448,7 @@ function CTFContent() {
                                       style={{
                                           fontSize: '0.94rem',
                                           fontWeight: 700,
-                                          color: 'var(--color-orange)',
+                                          color: '#ea580c',
                                           letterSpacing: '0.2px',
                                       }}
                                   >
@@ -1568,7 +1535,7 @@ function CTFContent() {
                                                     </div>
                                                     <div
                                                         style={{
-                                                            color: hasOpenedRulebook ? 'var(--color-green)' : 'var(--text-muted)',
+                                                            color: hasOpenedRulebook ? '#34d399' : 'var(--text-muted)',
                                                             fontSize: '0.8rem',
                                                         }}
                                                     >
@@ -1589,9 +1556,9 @@ function CTFContent() {
                                                         gap: '7px',
                                                         padding: '9px 12px',
                                                         borderRadius: '9px',
-                                                        background: hasOpenedRulebook ? 'var(--color-green-dim)' : 'var(--accent-dim)',
-                                                        border: hasOpenedRulebook ? '1px solid var(--color-green-border)' : '1px solid var(--accent)',
-                                                        color: hasOpenedRulebook ? 'var(--color-green)' : 'var(--accent)',
+                                                        background: hasOpenedRulebook ? 'rgba(16, 185, 129, 0.13)' : 'var(--accent-dim)',
+                                                        border: hasOpenedRulebook ? '1px solid rgba(52, 211, 153, 0.42)' : '1px solid var(--accent)',
+                                                        color: hasOpenedRulebook ? '#34d399' : 'var(--accent)',
                                                         fontSize: '0.82rem',
                                                         fontWeight: 700,
                                                         cursor: 'pointer',
@@ -1604,7 +1571,7 @@ function CTFContent() {
 
                                             <section className="mini-ctf-declaration-section">
                                                 <h4>Declaration required to register</h4>
-                                                <p>Enter the declaration below exactly.</p>
+                                                <p>Copy or type the declaration below exactly.</p>
                                                 <blockquote>{MINI_CTF_DECLARATION}</blockquote>
                                                 <label htmlFor={`registration-declaration-${sprint.id}`}>
                                                     Declaration
@@ -1619,7 +1586,7 @@ function CTFContent() {
                                                             setRegistrationMessage('')
                                                         }
                                                     }}
-                                                    placeholder="Enter the declaration here"
+                                                    placeholder="Paste or type the declaration here"
                                                     rows={4}
                                                     autoComplete="off"
                                                 />
@@ -1630,7 +1597,7 @@ function CTFContent() {
                                                             ? 'The declaration must match exactly.'
                                                             : declarationMatches
                                                                 ? 'Declaration complete — you can register.'
-                                                                : 'Enter the declaration to continue.'}
+                                                                : 'Paste or type the declaration to continue.'}
                                                 </p>
                                             </section>
 
@@ -1645,134 +1612,6 @@ function CTFContent() {
                                             >
                                                 Participant details
                                             </h4>
-
-                                            <div className="mini-ctf-registration-grid">
-                                                <div className="mini-ctf-registration-field">
-                                                    <label htmlFor={`registration-full-name-${sprint.id}`}>
-                                                        Full name <span>Required</span>
-                                                    </label>
-                                                    <input
-                                                        id={`registration-full-name-${sprint.id}`}
-                                                        type="text"
-                                                        autoComplete="name"
-                                                        minLength={2}
-                                                        maxLength={120}
-                                                        required
-                                                        placeholder="Your full name"
-                                                        value={regForm.fullName}
-                                                        onChange={(e) => {
-                                                            setRegForm({...regForm, fullName: e.target.value})
-                                                            if (registrationState === 'error') {
-                                                                setRegistrationState('idle')
-                                                                setRegistrationMessage('')
-                                                            }
-                                                        }}
-                                                        className="mini-ctf-registration-input"
-                                                    />
-                                                </div>
-                                                <div className="mini-ctf-registration-field">
-                                                    <label htmlFor={`registration-roll-number-${sprint.id}`}>
-                                                        Roll no. <span>Required</span>
-                                                    </label>
-                                                    <input
-                                                        id={`registration-roll-number-${sprint.id}`}
-                                                        type="text"
-                                                        autoComplete="off"
-                                                        minLength={3}
-                                                        maxLength={40}
-                                                        pattern="[a-zA-Z0-9/_-]+"
-                                                        required
-                                                        placeholder="Your institute roll number"
-                                                        value={regForm.rollNumber}
-                                                        onChange={(e) => {
-                                                            setRegForm({...regForm, rollNumber: e.target.value})
-                                                            if (registrationState === 'error') {
-                                                                setRegistrationState('idle')
-                                                                setRegistrationMessage('')
-                                                            }
-                                                        }}
-                                                        className="mini-ctf-registration-input"
-                                                    />
-                                                </div>
-                                                <div className="mini-ctf-registration-field">
-                                                    <label htmlFor={`registration-subject-${sprint.id}`}>
-                                                        Subject <span>Required</span>
-                                                    </label>
-                                                    <select
-                                                        id={`registration-subject-${sprint.id}`}
-                                                        required
-                                                        value={regForm.subject}
-                                                        onChange={(e) => {
-                                                            setRegForm({
-                                                                ...regForm,
-                                                                subject: e.target.value as '' | MiniCtfSubject
-                                                            })
-                                                            if (registrationState === 'error') {
-                                                                setRegistrationState('idle')
-                                                                setRegistrationMessage('')
-                                                            }
-                                                        }}
-                                                        className="mini-ctf-registration-input"
-                                                    >
-                                                        <option value="" disabled>Select your subject</option>
-                                                        {MINI_CTF_SUBJECTS.map((subject) => (
-                                                            <option key={subject} value={subject}>{subject}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                                <div className="mini-ctf-registration-field">
-                                                    <label htmlFor={`registration-semester-${sprint.id}`}>
-                                                        Semester <span>Required</span>
-                                                    </label>
-                                                    <select
-                                                        id={`registration-semester-${sprint.id}`}
-                                                        required
-                                                        value={regForm.semester}
-                                                        onChange={(e) => {
-                                                            setRegForm({...regForm, semester: e.target.value})
-                                                            if (registrationState === 'error') {
-                                                                setRegistrationState('idle')
-                                                                setRegistrationMessage('')
-                                                            }
-                                                        }}
-                                                        className="mini-ctf-registration-input"
-                                                    >
-                                                        <option value="" disabled>Select your semester</option>
-                                                        {[1, 2, 3, 4, 5, 6, 7].map((semester) => (
-                                                            <option key={semester}
-                                                                    value={semester}>Semester {semester}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                                <div
-                                                    className="mini-ctf-registration-field mini-ctf-registration-field-wide">
-                                                    <label htmlFor={`registration-mobile-number-${sprint.id}`}>
-                                                        Mobile number <span>Required</span>
-                                                    </label>
-                                                    <input
-                                                        id={`registration-mobile-number-${sprint.id}`}
-                                                        type="tel"
-                                                        inputMode="numeric"
-                                                        autoComplete="tel"
-                                                        maxLength={10}
-                                                        pattern="[6-9][0-9]{9}"
-                                                        required
-                                                        placeholder="10-digit Indian mobile number"
-                                                        value={regForm.mobileNumber}
-                                                        onChange={(e) => {
-                                                            setRegForm({
-                                                                ...regForm,
-                                                                mobileNumber: e.target.value.replace(/\D/g, '')
-                                                            })
-                                                            if (registrationState === 'error') {
-                                                                setRegistrationState('idle')
-                                                                setRegistrationMessage('')
-                                                            }
-                                                        }}
-                                                        className="mini-ctf-registration-input"
-                                                    />
-                                                </div>
-                                            </div>
 
                                             <div style={{marginBottom: '20px'}}>
                                                 <label
@@ -1940,7 +1779,7 @@ function CTFContent() {
                                                     width: '100%',
                                                     padding: '14px 20px',
                                                     borderRadius: '12px',
-                                                    background: registrationState === 'success' ? 'var(--color-green)' : 'var(--accent)',
+                                                    background: registrationState === 'success' ? '#059669' : 'var(--accent)',
                                                     border: '1px solid var(--border-subtle)',
                                                     color: '#ffffff',
                                                     fontSize: '0.98rem',
@@ -1960,7 +1799,7 @@ function CTFContent() {
                                                 aria-live="polite"
                                                 style={{
                                                     fontSize: '0.84rem',
-                                                    color: registrationState === 'error' ? 'var(--color-red)' : registrationState === 'success' ? 'var(--color-green)' : 'var(--text-muted)',
+                                                    color: registrationState === 'error' ? '#f87171' : registrationState === 'success' ? '#34d399' : 'var(--text-muted)',
                                                     lineHeight: 1.5,
                                                 }}
                                             >
@@ -2022,7 +1861,7 @@ function CTFContent() {
                         >
                             {[{
                                 step: '01',
-                                title: 'Practice',
+                                title: 'Speed Run Window',
                                 desc: 'Each sprint runs for strictly 2.5 to 3 hours on our self-hosted CTFd instance.',
                             }, {
                                 step: '02',
