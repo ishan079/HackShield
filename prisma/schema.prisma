@@ -39,8 +39,9 @@ model MiniSprintRegistration {
   semester        Int?
   mobileNumber    String?    @map("mobile_number")
   email           String
-  pwnUsername     String     @map("pwn_username")
-  status          String
+  pwnUsername           String     @map("pwn_username")
+  pwnUsernameNormalized String     @map("pwn_username_normalized")
+  status                String
   registeredAt    DateTime   @default(now()) @map("registered_at")
   sprint          MiniSprint @relation(fields: [sprintId], references: [id], onDelete: Cascade)
 

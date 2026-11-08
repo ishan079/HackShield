@@ -38,6 +38,7 @@ interface PrismaRegistrationRow {
   mobileNumber: string | null
   email: string
   pwnUsername: string
+  pwnUsernameNormalized: string
   status: string
   registeredAt: Date
 }
