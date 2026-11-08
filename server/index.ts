@@ -5,7 +5,7 @@ import { MiniSprintRepository } from '@/server/repositories/mini-sprint-reposito
 
 async function start(): Promise<void> {
   const config = loadConfig()
-  const database = getPrisma()
+  const database = getPrisma(config.DATABASE_URL)
   const app = createApp({ repository: new MiniSprintRepository(database) })
   const shutdown = async () => {
     await app.close()

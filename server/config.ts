@@ -14,5 +14,9 @@ const configSchema = z.object({
 export type ServerConfig = z.infer<typeof configSchema>
 
 export function loadConfig(environment = process.env): ServerConfig {
-  return configSchema.parse(environment)
+  const config = configSchema.parse(environment)
+  if (!process.env.DATABASE_URL) {
+    process.env.DATABASE_URL = config.DATABASE_URL
+  }
+  return config
 }

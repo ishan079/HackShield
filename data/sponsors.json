@@ -1,0 +1,16 @@
+[
+  {
+    "id": "nextute",
+    "name": "Nextute",
+    "logo": "/sponsors/Nextute.svg",
+    "tag": "previous",
+    "websiteUrl": "https://www.nextute.com"
+  },
+  {
+    "id": "xyz",
+    "name": "XYZ",
+    "logo": "/sponsors/xyz.svg",
+    "tag": "previous",
+    "websiteUrl": "https://gen.xyz/"
+  }
+]

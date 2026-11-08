@@ -157,3 +157,14 @@ export interface AmbientParticle {
   isHead: boolean
   isAmbient: boolean
 }
+
+export type SponsorTag = 'current' | 'previous'
+
+export interface SponsorItem {
+  id: string
+  name: string
+  logo: string
+  tag: SponsorTag | string
+  websiteUrl?: string
+}
+

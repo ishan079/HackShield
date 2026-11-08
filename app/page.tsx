@@ -7,6 +7,7 @@ import Hero from '@/components/Hero'
 import Pillars from '@/components/Pillars'
 import CTFBanner from '@/components/CTFBanner'
 import ProgramsSection from '@/components/ProgramsSection'
+import SponsorsSection from '@/components/SponsorsSection'
 import StatsSection from '@/components/StatsSection'
 import InteractiveTerminal from '@/components/InteractiveTerminal'
 import CTASection from '@/components/CTASection'
@@ -66,6 +67,12 @@ export default function HomePage() {
           style={{ maxWidth: 1280, margin: '40px auto', padding: '0 24px' }}
         >
           <ProgramsSection />
+        </div>
+
+        <div
+          style={{ maxWidth: 1280, margin: '50px auto', padding: '0 24px' }}
+        >
+          <SponsorsSection />
         </div>
 
         <div

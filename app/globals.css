@@ -932,4 +932,125 @@ select.mini-ctf-registration-input {
   }
 }
 
+/* Sponsors Section: One big section with logos and caption names in 3 columns,
+   equispaced in columns of 3, centered if 2 or 1 in a row. No individual small div for each sponsor. */
+.hs-sponsors-section-box {
+  width: 100%;
+  padding: 56px 40px;
+  border-radius: 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-top: 1.5px solid var(--border-specular);
+  border-bottom: 1px solid var(--border-bottom);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .hs-sponsors-section-box {
+    padding: 36px 18px;
+    border-radius: 20px;
+  }
+}
+
+.hs-sponsors-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 64px 80px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hs-sponsor-col {
+  flex: 0 0 calc((100% - 160px) / 3);
+  max-width: calc((100% - 160px) / 3);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+@media (max-width: 960px) and (min-width: 601px) {
+  .hs-sponsors-grid {
+    gap: 48px 48px;
+  }
+
+  .hs-sponsor-col {
+    flex: 0 0 calc((100% - 48px) / 2);
+    max-width: calc((100% - 48px) / 2);
+  }
+}
+
+@media (max-width: 600px) {
+  .hs-sponsors-grid {
+    gap: 40px 24px;
+  }
+
+  .hs-sponsor-col {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 12px 10px;
+  }
+}
+
+.hs-sponsor-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  width: 100%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.25s ease;
+  box-sizing: border-box;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hs-sponsor-link:hover .hs-sponsor-logo {
+    transform: scale(1.03);
+    opacity: 1 !important;
+  }
+
+  .hs-sponsor-link:hover .hs-sponsor-caption {
+    color: var(--text-primary);
+  }
+}
+
+.hs-sponsor-link:active {
+  transform: scale(0.97);
+}
+
+.hs-sponsor-logo-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 32px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.hs-sponsor-logo {
+  max-height: 500px;
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+
+
+
 
