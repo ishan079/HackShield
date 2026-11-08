@@ -13,14 +13,15 @@ export default function Hero() {
       style={{
         position: 'relative',
         width: '100%',
-        minHeight: '92vh',
+        minHeight: 'auto',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         background: 'transparent',
-        padding: '120px 24px 60px',
+        padding: '108px 24px 20px',
         boxSizing: 'border-box',
         overflow: 'hidden',
+        flex: 1,
       }}
     >
       <div
@@ -46,7 +47,7 @@ export default function Hero() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '12px',
-              marginBottom: '28px',
+              marginBottom: '20px',
             }}
           >
             <span
@@ -74,7 +75,7 @@ export default function Hero() {
 
           <h1
             style={{
-              margin: '0 0 24px 0',
+              margin: '0 0 16px 0',
               fontFamily: 'var(--font-sans)',
               fontSize: 'clamp(2.8rem, 5.5vw, 4.6rem)',
               fontWeight: 800,
@@ -101,7 +102,7 @@ export default function Hero() {
 
           <p
             style={{
-              margin: '0 0 36px 0',
+              margin: '0 0 28px 0',
               fontFamily: 'var(--font-sans)',
               fontSize: '1.12rem',
               lineHeight: 1.75,
@@ -203,7 +204,7 @@ export default function Hero() {
             position: 'relative',
             width: '100%',
             height: '100%',
-            minHeight: '480px',
+            minHeight: '440px',
             zIndex: 1,
           }}
         >
@@ -213,7 +214,7 @@ export default function Hero() {
               position: 'relative',
               width: '100%',
               height: '100%',
-              minHeight: '520px',
+              minHeight: '440px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',

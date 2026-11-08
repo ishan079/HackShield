@@ -64,6 +64,7 @@ export default function Navbar() {
   return (
     <>
       <div
+        className="hs-nav-wrapper"
         style={{
           position: 'fixed',
           top: 0,
@@ -76,6 +77,8 @@ export default function Navbar() {
           pointerEvents: 'none',
           padding: scrolled ? '14px 16px 0' : '0 24px',
           gap: scrolled ? '10px' : '16px',
+          maxWidth: '100vw',
+          boxSizing: 'border-box',
           transition: 'padding 0.42s cubic-bezier(0.16, 1, 0.3, 1), gap 0.42s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
@@ -825,6 +828,10 @@ export default function Navbar() {
           }
         }
         @media (max-width: 640px) {
+          .hs-nav-wrapper {
+            padding: 10px 12px 0 !important;
+            gap: 8px !important;
+          }
           .hs-register-overlay-btn {
             height: 38px !important;
             padding: 0 12px !important;

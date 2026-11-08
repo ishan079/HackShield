@@ -36,7 +36,11 @@ const programs: ProgramCardItem[] = [
 ]
 
 export default function ProgramsSection() {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.12 })
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.12,
+    rootMargin: '0px 0px -50px 0px',
+  })
 
   return (
     <section
@@ -50,8 +54,8 @@ export default function ProgramsSection() {
       }}
     >
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
+        initial={{ opacity: 0, y: 40 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
         transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
         style={{
           display: 'flex',
@@ -141,19 +145,20 @@ export default function ProgramsSection() {
       </motion.div>
 
       <div
+        className="hs-programs-grid"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
           gap: '24px',
         }}
       >
         {programs.map((p, idx) => (
           <motion.div
             key={p.index}
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            initial={{ opacity: 0, y: 45 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 45 }}
             transition={{
-              duration: 0.6,
+              duration: 0.65,
               delay: idx * 0.12,
               ease: [0.16, 1, 0.3, 1],
             }}
@@ -287,6 +292,14 @@ export default function ProgramsSection() {
           </motion.div>
         ))}
       </div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .hs-programs-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </section>
   )
 }

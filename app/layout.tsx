@@ -1,10 +1,16 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/context/ThemeContext'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import GrainOverlay from '@/components/GrainOverlay'
 import MouseSpotlight from '@/components/MouseSpotlight'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+}
 
 export const metadata: Metadata = {
   title: 'HackShield — IIT Patna | Cybersecurity Club & Community',

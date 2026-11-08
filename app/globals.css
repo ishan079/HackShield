@@ -137,6 +137,9 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
 }
 
 body {
@@ -145,6 +148,8 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
   transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -820,14 +825,23 @@ select.mini-ctf-registration-input {
 }
 
 /* ──────────────────────────────────────────────
-   CTF CATEGORY SELECTOR
+   CTF CATEGORY SELECTOR & MOBILE RESPONSIVENESS
    ────────────────────────────────────────────── */
+.ctf-selector-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .ctf-selector-container {
   box-sizing: border-box;
+  max-width: 100%;
 }
 
 .ctf-selector-btn {
   box-sizing: border-box;
+  white-space: nowrap;
 }
 
 .ctf-selector-btn:focus-visible {
@@ -835,19 +849,86 @@ select.mini-ctf-registration-input {
   outline-offset: 2px;
 }
 
-@media (max-width: 560px) {
+.ctf-desktop-badge {
+  display: inline-block;
+}
+
+.ctf-mobile-caption {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .ctf-selector-wrapper {
+    max-width: 360px;
+    margin: 0 auto;
+    gap: 10px;
+  }
+
   .ctf-selector-container {
     display: flex !important;
-    flex-direction: column;
-    width: 100%;
-    border-radius: 20px !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    padding: 4px !important;
+    border-radius: 9999px !important;
   }
 
   .ctf-selector-btn {
-    width: 100%;
+    flex: 1 1 50% !important;
+    width: 50% !important;
+    justify-content: center !important;
+    padding: 10px 14px !important;
+    font-size: 0.86rem !important;
+    gap: 6px !important;
+  }
+
+  .ctf-desktop-badge {
+    display: none !important;
+  }
+
+  .ctf-mobile-caption {
+    display: inline-flex !important;
+    align-items: center;
     justify-content: center;
-    padding: 10px 16px !important;
-    font-size: 0.88rem !important;
+    min-height: 26px;
+    font-size: 0.70rem;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 3px 12px;
+    border-radius: 999px;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-subtle);
+    box-shadow: 0 2px 8px var(--accent-glow);
+  }
+
+  .ctf-flagship-hero-card {
+    padding: 24px 18px !important;
+    border-radius: 20px !important;
+  }
+
+  .ctf-countdown-card {
+    min-width: 100% !important;
+    width: 100% !important;
+    padding: 20px 14px !important;
+  }
+
+  .ctf-countdown-box {
+    min-width: 44px !important;
+  }
+
+  .ctf-disciplines-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .mini-sprint-card {
+    padding: 22px 18px !important;
+    border-radius: 20px !important;
+  }
+
+  .mini-sprint-card-back {
+    padding: 22px 18px !important;
+    border-radius: 20px !important;
   }
 }
 

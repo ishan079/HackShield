@@ -31,14 +31,33 @@ export default function HomePage() {
       <BinaryRainTree />
 
       <div style={{ position: 'relative', zIndex: 2 }}>
-        <Hero />
+        <div
+          style={{
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            boxSizing: 'border-box',
+          }}
+          className="hs-hero-screen"
+        >
+          <Hero />
 
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
-          <Pillars />
+          <div
+            style={{
+              maxWidth: 1280,
+              margin: '0 auto',
+              padding: '0 24px 24px',
+              width: '100%',
+              boxSizing: 'border-box',
+            }}
+          >
+            <Pillars />
+          </div>
         </div>
 
         <div
-          style={{ maxWidth: 1280, margin: '60px auto', padding: '0 24px' }}
+          style={{ maxWidth: 1280, margin: '80px auto', padding: '0 24px' }}
         >
           <CTFBanner />
         </div>
@@ -71,6 +90,14 @@ export default function HomePage() {
           <CTASection />
         </div>
       </div>
+
+      <style jsx global>{`
+        @supports (min-height: 100dvh) {
+          .hs-hero-screen {
+            min-height: 100dvh !important;
+          }
+        }
+      `}</style>
     </motion.main>
   )
 }

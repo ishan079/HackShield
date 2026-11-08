@@ -128,14 +128,15 @@ export default function CTFBanner() {
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.15,
+    rootMargin: '0px 0px -60px 0px',
   })
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, y: 50 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
       style={{
         display: 'grid',
         gridTemplateColumns: 'minmax(260px, 340px) 1fr auto',

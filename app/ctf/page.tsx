@@ -16,6 +16,7 @@ import {
     FileText,
     Flag,
     Globe,
+    HelpCircle,
     Lock,
     Radio,
     Search,
@@ -291,16 +292,16 @@ function CTFContent() {
 
     const categories: CTFCategory[] = [
         {
-            name: 'Web Exploitation',
+            name: 'Web Security',
             icon: <Globe size={24} color="var(--accent)"/>,
             tag: 'WEB',
-            desc: 'SQL injections, XSS, SSRF, JWT forgery, OAuth bypasses, and Prototype Pollution in contemporary microservices.',
+            desc: 'Break and fix real web applications.',
         },
         {
-            name: 'Binary Exploitation (Pwn)',
+            name: 'PWN',
             icon: <Terminal size={24} color="var(--accent)"/>,
             tag: 'PWN',
-            desc: 'Buffer overflows, ROP chain crafting, heap spray vulnerabilities, format strings, and kernel space privilege escalation.',
+            desc: 'Binary Exploitation and memory bugs.',
         }, {
             name: 'Reverse Engineering',
             icon: <Binary size={24} color="var(--accent)"/>,
@@ -310,9 +311,9 @@ function CTFContent() {
             name: 'Cryptography',
             icon: <Lock size={24} color="var(--accent)"/>,
             tag: 'CRYPTO',
-            desc: 'Breaking weak RSA implementations, elliptic curve discrete log attacks, padding oracles, and zero-knowledge proof flaws.',
+            desc: 'Decode, break and learn modern crypto.',
         }, {
-            name: 'Digital Forensics & Stego',
+            name: 'Digital Forensics & Stegnography',
             icon: <Search size={24} color="var(--accent)"/>,
             tag: 'FORENSICS',
             desc: 'Memory dump analysis with Volatility, PCAP network traffic inspection, filesystem carving, and steganographic data extraction.',
@@ -321,7 +322,26 @@ function CTFContent() {
             icon: <Radio size={24} color="var(--accent)"/>,
             tag: 'OSINT',
             desc: 'Open source intelligence gathering, geolocation identification, metadata extraction, and footprint analysis across threat actors.',
-        },]
+        },
+        {
+            name: 'AI Security',
+            icon: <Radio size={24} color="var(--accent)"/>,
+            tag: 'AI',
+            desc: 'Security risks in the era of AI',
+        },
+        {
+            name: 'SOC & Defence',
+            icon: <Radio size={24} color="var(--accent)"/>,
+            tag: 'AI',
+            desc: 'Real-world defence and monitoring',
+        },
+        {
+            name: 'Misc.',
+            icon: <Radio size={24} color="var(--accent)"/>,
+            tag: 'AI',
+            desc: 'Everything that refuses to fit in a box.',
+        },
+    ]
 
     const pastEvents: PastCTFEvent[] = [{
         title: 'Rookie CTF 2026',
@@ -339,10 +359,11 @@ function CTFContent() {
         date: 'November 10,2026|12:00 PM – November 13,2026|12:00 PM IST',
         duration: '72 Hours',
         challenges: 'Multiple Targets',
-        difficulty: 'Beginner,Intermediate',
+        difficulty: 'Beginner, Intermediate',
         format: 'Solo or Duos',
         reward: "Digital Badge & Recognition",
         description: 'Paced marathon targeting practice towards upcoming fast paced Hackathon.',
+        questions: '100+',
     },]
 
     const miniStats: MiniStatItem[] = [{
@@ -454,105 +475,111 @@ function CTFContent() {
                     width: '100%',
                 }}
             >
-                <div
-                    role="tablist"
-                    aria-label="CTF category selection"
-                    className="ctf-selector-container"
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        padding: '6px',
-                        borderRadius: '9999px',
-                        background: 'var(--bg-card)',
-                        border: '1px solid var(--border-subtle)',
-                        borderTop: '1.5px solid var(--border-specular)',
-                        borderBottom: '1px solid var(--border-bottom)',
-                        boxShadow: 'var(--shadow-card)',
-                        backdropFilter: 'blur(14px)',
-                        WebkitBackdropFilter: 'blur(14px)',
-                        gap: '6px',
-                        maxWidth: '100%',
-                    }}
-                >
-                    {CTF_CATEGORIES_LIST.map((category) => {
-                        const isActive = activeTab === category.id
-                        return (
-                            <button
-                                key={category.id}
-                                id={`ctf-tab-${category.id}`}
-                                role="tab"
-                                aria-selected={isActive}
-                                aria-controls={`ctf-${category.id}-panel`}
-                                tabIndex={0}
-                                type="button"
-                                onClick={() => handleTabChange(category.id)}
-                                className="ctf-selector-btn"
-                                style={{
-                                    position: 'relative',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '10px',
-                                    padding: '12px 28px',
-                                    borderRadius: '9999px',
-                                    border: 'none',
-                                    background: 'transparent',
-                                    color: isActive ? '#ffffff' : 'var(--text-secondary)',
-                                    fontSize: '0.96rem',
-                                    fontWeight: 700,
-                                    cursor: 'pointer',
-                                    transition: 'color 0.25s ease',
-                                    outline: 'none',
-                                    whiteSpace: 'nowrap',
-                                    zIndex: 1,
-                                }}
-                            >
-                                {isActive && (
-                                    <motion.div
-                                        layoutId="ctf-active-pill"
-                                        transition={{type: 'spring', stiffness: 450, damping: 35}}
-                                        style={{
-                                            position: 'absolute',
-                                            inset: 0,
-                                            borderRadius: '9999px',
-                                            background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%)',
-                                            boxShadow: '0 4px 18px var(--accent-glow)',
-                                            zIndex: -1,
-                                        }}
-                                    />
-                                )}
-                                {category.id === 'flagship' ? (
-                                    <Trophy
-                                        size={18}
-                                        color={isActive ? '#ffffff' : 'var(--accent)'}
-                                        aria-hidden="true"
-                                    />
-                                ) : (
-                                    <Zap
-                                        size={18}
-                                        color={isActive ? '#ffffff' : 'var(--accent)'}
-                                        aria-hidden="true"
-                                    />
-                                )}
-                                <span>{category.selectorLabel}</span>
-                                <span
+                <div className="ctf-selector-wrapper">
+                    <div
+                        role="tablist"
+                        aria-label="CTF category selection"
+                        className="ctf-selector-container"
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            padding: '6px',
+                            borderRadius: '9999px',
+                            background: 'var(--bg-card)',
+                            border: '1px solid var(--border-subtle)',
+                            borderTop: '1.5px solid var(--border-specular)',
+                            borderBottom: '1px solid var(--border-bottom)',
+                            boxShadow: 'var(--shadow-card)',
+                            backdropFilter: 'blur(14px)',
+                            WebkitBackdropFilter: 'blur(14px)',
+                            gap: '6px',
+                            maxWidth: '100%',
+                        }}
+                    >
+                        {CTF_CATEGORIES_LIST.map((category) => {
+                            const isActive = activeTab === category.id
+                            return (
+                                <button
+                                    key={category.id}
+                                    id={`ctf-tab-${category.id}`}
+                                    role="tab"
+                                    aria-selected={isActive}
+                                    aria-controls={`ctf-${category.id}-panel`}
+                                    tabIndex={0}
+                                    type="button"
+                                    onClick={() => handleTabChange(category.id)}
+                                    className="ctf-selector-btn"
                                     style={{
-                                        fontSize: '0.68rem',
-                                        padding: '2px 8px',
-                                        borderRadius: '999px',
-                                        background: isActive
-                                            ? 'rgba(255, 255, 255, 0.25)'
-                                            : 'var(--accent-dim)',
-                                        color: isActive ? '#ffffff' : 'var(--accent)',
-                                        fontWeight: 800,
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '0.5px',
+                                        position: 'relative',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '10px',
+                                        padding: '12px 28px',
+                                        borderRadius: '9999px',
+                                        border: 'none',
+                                        background: 'transparent',
+                                        color: isActive ? '#ffffff' : 'var(--text-secondary)',
+                                        fontSize: '0.96rem',
+                                        fontWeight: 700,
+                                        cursor: 'pointer',
+                                        transition: 'color 0.25s ease',
+                                        outline: 'none',
+                                        whiteSpace: 'nowrap',
+                                        zIndex: 1,
                                     }}
                                 >
-                                    {category.selectorBadge}
-                                </span>
-                            </button>
-                        )
-                    })}
+                                    {isActive && (
+                                        <motion.div
+                                            layoutId="ctf-active-pill"
+                                            transition={{type: 'spring', stiffness: 450, damping: 35}}
+                                            style={{
+                                                position: 'absolute',
+                                                inset: 0,
+                                                borderRadius: '9999px',
+                                                background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%)',
+                                                boxShadow: '0 4px 18px var(--accent-glow)',
+                                                zIndex: -1,
+                                            }}
+                                        />
+                                    )}
+                                    {category.id === 'flagship' ? (
+                                        <Trophy
+                                            size={18}
+                                            color={isActive ? '#ffffff' : 'var(--accent)'}
+                                            aria-hidden="true"
+                                        />
+                                    ) : (
+                                        <Zap
+                                            size={18}
+                                            color={isActive ? '#ffffff' : 'var(--accent)'}
+                                            aria-hidden="true"
+                                        />
+                                    )}
+                                    <span>{category.selectorLabel}</span>
+                                    <span
+                                        className="ctf-desktop-badge"
+                                        style={{
+                                            fontSize: '0.68rem',
+                                            padding: '2px 8px',
+                                            borderRadius: '999px',
+                                            background: isActive
+                                                ? 'rgba(255, 255, 255, 0.25)'
+                                                : 'var(--accent-dim)',
+                                            color: isActive ? '#ffffff' : 'var(--accent)',
+                                            fontWeight: 800,
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.5px',
+                                        }}
+                                    >
+                                        {category.selectorBadge}
+                                    </span>
+                                </button>
+                            )
+                        })}
+                    </div>
+                    <div className="ctf-mobile-caption" aria-hidden="true">
+                        <span>{currentCategory.selectorBadge}</span>
+                    </div>
                 </div>
             </div>
 
@@ -568,6 +595,7 @@ function CTFContent() {
                     transition={{duration: 0.35}}
                 >
                     <div
+                        className="ctf-flagship-hero-card"
                         style={{
                             position: 'relative',
                             borderRadius: '28px',
@@ -652,7 +680,7 @@ function CTFContent() {
                                             display: 'flex', alignItems: 'center', gap: '8px',
                                         }}
                                     >
-                                        <Calendar size={18} color="var(--accent)"/> March 2025
+                                        <Calendar size={18} color="var(--accent)"/> December 2026
                                     </div>
                                     <div
                                         style={{
@@ -672,6 +700,7 @@ function CTFContent() {
                             </div>
 
                             <div
+                                className="ctf-countdown-card"
                                 style={{
                                     background: 'var(--bg-surface)',
                                     border: '1px solid var(--border-subtle)',
@@ -703,6 +732,7 @@ function CTFContent() {
                                         gap: '12px',
                                         justifyContent: 'center',
                                         margin: '18px 0',
+                                        flexWrap: 'wrap',
                                     }}
                                 >
                                     {[{label: 'DAYS', val: timeLeft.days}, {
@@ -711,7 +741,7 @@ function CTFContent() {
                                     }, {label: 'MINS', val: timeLeft.minutes}, {
                                         label: 'SECS',
                                         val: timeLeft.seconds
-                                    },].map((unit, i) => (<div key={i} style={{minWidth: '55px'}}>
+                                    },].map((unit, i) => (<div key={i} className="ctf-countdown-box" style={{minWidth: '55px'}}>
                                         <div
                                             style={{
                                                 fontFamily: 'var(--font-mono)',
@@ -788,14 +818,15 @@ function CTFContent() {
                                     color: 'var(--text-primary)',
                                 }}
                             >
-                                Six Flagship CTF Disciplines
+                                Multiple Flagship CTF Disciplines
                             </h2>
                         </div>
 
                         <div
+                            className="ctf-disciplines-grid"
                             style={{
                                 display: 'grid',
-                                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
                                 gap: '24px',
                             }}
                         >
@@ -1077,7 +1108,7 @@ function CTFContent() {
                                         margin: '4px 0 0', fontSize: '0.94rem', color: 'var(--text-secondary)',
                                     }}
                                 >
-                                    Jump into our bi-weekly 2–3 hour Mini CTF arena, rookie
+                                    Jump into our monthly Mini CTF arena, rookie
                                     freshers onboarding, and earn club badges.
                                 </p>
                             </div>
@@ -1190,8 +1221,7 @@ function CTFContent() {
                                 >
                                     Focused 72 hour non-competitive event designed to sharpen
                                     practical exploitation skills, give freshers an experience, test fresh boxes built
-                                    by
-                                    club members, and climb the internal club
+                                    by club members, and climb the internal club
                                     leaderboard.
                                 </p>
                             </div>
@@ -1331,6 +1361,7 @@ function CTFContent() {
                                                 WebkitBackdropFilter: 'blur(14px)',
                                                 transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
                                             }}
+                                            className="mini-sprint-card"
                                             onMouseEnter={(e) => {
                                                 e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.30)'
                                                 e.currentTarget.style.borderTopColor = 'rgba(255, 255, 255, 0.58)'
@@ -1479,6 +1510,16 @@ function CTFContent() {
                                                         gap: '6px',
                                                     }}
                                                 >
+                                                    <HelpCircle size={16} color="var(--accent)"/>{' '}
+                                                    {sprint.questions} Questions
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '6px',
+                                                    }}
+                                                >
                                                     <Award size={16} color="var(--accent)"/>{' '}
                                                     {sprint.reward}
                                                 </div>
@@ -1524,6 +1565,7 @@ function CTFContent() {
                                                 backdropFilter: 'blur(14px)',
                                                 WebkitBackdropFilter: 'blur(14px)',
                                             }}
+                                            className="mini-sprint-card-back"
                                         >
                                             <div
                                                 style={{

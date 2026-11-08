@@ -73,6 +73,7 @@ export interface MiniCTFSprint {
   format: string
   reward: string
   description: string
+  questions: string;
 }
 
 export interface MiniStatItem {

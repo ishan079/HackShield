@@ -153,9 +153,11 @@ export default function InteractiveTerminal() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '10px',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: '0' }}>
             <span
               style={{
                 width: '11px',
@@ -163,6 +165,7 @@ export default function InteractiveTerminal() {
                 borderRadius: '50%',
                 background: '#ff5f56',
                 display: 'inline-block',
+                flexShrink: 0,
               }}
             />
             <span
@@ -172,6 +175,7 @@ export default function InteractiveTerminal() {
                 borderRadius: '50%',
                 background: '#ffbd2e',
                 display: 'inline-block',
+                flexShrink: 0,
               }}
             />
             <span
@@ -181,6 +185,7 @@ export default function InteractiveTerminal() {
                 borderRadius: '50%',
                 background: '#27c93f',
                 display: 'inline-block',
+                flexShrink: 0,
               }}
             />
             <span
@@ -190,6 +195,9 @@ export default function InteractiveTerminal() {
                 color: 'var(--text-muted)',
                 marginLeft: '8px',
                 fontWeight: 600,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
               }}
             >
               guest@hackshield-iitp: ~/ctf-sandbox
@@ -242,13 +250,16 @@ export default function InteractiveTerminal() {
             minHeight: '220px',
             maxHeight: '340px',
             overflowY: 'auto',
+            overflowX: 'hidden',
             fontFamily: "'JetBrains Mono', monospace",
             fontSize: '0.86rem',
             lineHeight: 1.7,
+            wordBreak: 'break-word',
+            overflowWrap: 'anywhere',
           }}
         >
           {history.map((line, idx) => (
-            <div key={idx} style={{ marginBottom: '6px' }}>
+            <div key={idx} style={{ marginBottom: '6px', wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
               {line.type === 'system' && (
                 <span style={{ color: 'var(--text-muted)' }}>{line.text}</span>
               )}
@@ -267,6 +278,8 @@ export default function InteractiveTerminal() {
                   style={{
                     color: 'var(--text-secondary)',
                     paddingLeft: '14px',
+                    wordBreak: 'break-word',
+                    overflowWrap: 'anywhere',
                   }}
                 >
                   {line.text}
@@ -279,13 +292,15 @@ export default function InteractiveTerminal() {
                     fontWeight: 700,
                     paddingLeft: '14px',
                     textShadow: '0 0 10px var(--color-green-glow)',
+                    wordBreak: 'break-word',
+                    overflowWrap: 'anywhere',
                   }}
                 >
                   {line.text}
                 </div>
               )}
               {line.type === 'error' && (
-                <div style={{ color: 'var(--color-red)', paddingLeft: '14px' }}>
+                <div style={{ color: 'var(--color-red)', paddingLeft: '14px', wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
                   {line.text}
                 </div>
               )}

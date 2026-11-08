@@ -98,7 +98,7 @@ export default function Pillars() {
       ref={ref}
       style={{
         width: '100%',
-        padding: '20px 0 60px',
+        padding: '0',
       }}
     >
       <div
@@ -122,7 +122,7 @@ export default function Pillars() {
               ease: [0.16, 1, 0.3, 1],
             }}
             style={{
-              padding: '24px 36px',
+              padding: '16px 28px',
               borderRight:
                 idx < pillars.length - 1
                   ? '1px solid var(--border-subtle)'
@@ -135,14 +135,14 @@ export default function Pillars() {
             }}
             className="hs-pillar-col"
           >
-            <div style={{ marginBottom: '18px' }}>{item.icon}</div>
+            <div style={{ marginBottom: '12px' }}>{item.icon}</div>
             <h3
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: '1.25rem',
+                fontSize: '1.2rem',
                 fontWeight: 700,
                 color: 'var(--text-primary)',
-                marginBottom: '10px',
+                marginBottom: '8px',
                 letterSpacing: '-0.01em',
               }}
             >
@@ -151,8 +151,8 @@ export default function Pillars() {
             <p
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '0.92rem',
-                lineHeight: 1.65,
+                fontSize: '0.9rem',
+                lineHeight: 1.6,
                 color: 'var(--text-secondary)',
                 margin: 0,
                 maxWidth: '220px',
@@ -172,7 +172,7 @@ export default function Pillars() {
           .hs-pillar-col {
             border-right: none !important;
             border-bottom: 1px solid var(--border-subtle);
-            padding: 24px 16px !important;
+            padding: 16px 14px !important;
           }
         }
         @media (max-width: 500px) {
