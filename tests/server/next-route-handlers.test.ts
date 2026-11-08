@@ -10,6 +10,8 @@ vi.mock('@/lib/prisma', () => ({
 
 import { GET } from '@/app/api/v1/ctf/mini-sprints/route'
 import { POST } from '@/app/api/v1/ctf/mini-sprints/[sprintId]/register/route'
+import { GET as getPwnCollegeScoreboard } from '@/app/api/v1/ctf/pwn-college/scoreboard/route'
+import { POST as syncPwnCollege } from '@/app/api/v1/internal/pwn-college/sync/route'
 
 function registrationRequest(body: string): Request {
   return new Request('http://localhost/api/v1/ctf/mini-sprints/mini-14/register', {
@@ -128,5 +130,36 @@ describe('Next.js Vercel route handlers', () => {
         message: expect.stringContaining('mobile number is already registered'),
       },
     })
+  })
+
+  it('serves only cached 30-day pwn.college scoreboard data to the public route', async () => {
+    const response = await getPwnCollegeScoreboard()
+
+    expect(response.status).toBe(200)
+    await expect(response.json()).resolves.toMatchObject({
+      success: true,
+      data: {
+        windowDays: 30,
+        entries: [{ userId: '101', username: 'cached-hacker', rank: 1, solves: 9 }],
+      },
+    })
+  })
+
+  it('rejects an unauthenticated synchronization request before it can contact pwn.college', async () => {
+    const previous = process.env.PWN_COLLEGE_SYNC_TOKEN
+    process.env.PWN_COLLEGE_SYNC_TOKEN = 'test-sync-token'
+    try {
+      const response = await syncPwnCollege(new Request('http://localhost/api/v1/internal/pwn-college/sync', {
+        method: 'POST',
+      }))
+      expect(response.status).toBe(401)
+      await expect(response.json()).resolves.toMatchObject({
+        success: false,
+        error: { code: 'UNAUTHORIZED' },
+      })
+    } finally {
+      if (previous === undefined) delete process.env.PWN_COLLEGE_SYNC_TOKEN
+      else process.env.PWN_COLLEGE_SYNC_TOKEN = previous
+    }
   })
 })

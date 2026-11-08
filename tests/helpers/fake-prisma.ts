@@ -31,6 +31,16 @@ export function createFakePrisma() {
     },
   ]
   const registrations: Array<Record<string, unknown>> = []
+  const pwnCollegeScoreboardEntries = [
+    {
+      windowDays: 30,
+      userId: '101',
+      rank: 1,
+      solves: 9,
+      fetchedAt: new Date('2026-11-08T09:00:00.000Z'),
+      hacker: { username: 'cached-hacker' },
+    },
+  ]
   const client = {
     miniSprint: {
       findMany: async () => sprints,
@@ -91,6 +101,9 @@ export function createFakePrisma() {
         registrations.push(row)
         return row
       },
+    },
+    pwnCollegeScoreboardEntry: {
+      findMany: async () => pwnCollegeScoreboardEntries,
     },
   } as unknown as PrismaClient
   return { client, sprints, registrations }

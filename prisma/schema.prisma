@@ -48,3 +48,54 @@ model MiniSprintRegistration {
   @@unique([sprintId, mobileNumber])
   @@map("mini_sprint_registrations")
 }
+
+model PwnCollegeHacker {
+  userId            String                       @id @map("user_id")
+  username          String?
+  firstSeenAt       DateTime                     @default(now()) @map("first_seen_at")
+  lastSeenAt        DateTime                     @default(now()) @map("last_seen_at")
+  scoreboardEntries PwnCollegeScoreboardEntry[]
+  solves            PwnCollegeSolve[]
+
+  @@map("pwn_college_hackers")
+}
+
+model PwnCollegeScoreboardEntry {
+  windowDays Int              @map("window_days")
+  userId     String           @map("user_id")
+  rank       Int
+  solves     Int
+  fetchedAt  DateTime         @map("fetched_at")
+  hacker     PwnCollegeHacker @relation(fields: [userId], references: [userId], onDelete: Restrict)
+
+  @@id([windowDays, userId])
+  @@index([windowDays, rank])
+  @@map("pwn_college_scoreboard_entries")
+}
+
+model PwnCollegeSolve {
+  userId      String           @map("user_id")
+  module      String
+  challenge   String
+  solvedAt    DateTime         @map("solved_at")
+  firstSeenAt DateTime         @default(now()) @map("first_seen_at")
+  hacker      PwnCollegeHacker @relation(fields: [userId], references: [userId], onDelete: Restrict)
+
+  @@id([userId, module, challenge, solvedAt])
+  @@index([solvedAt])
+  @@map("pwn_college_solves")
+}
+
+model PwnCollegeSyncJob {
+  id           String    @id
+  source       String
+  status       String
+  startedAt    DateTime  @default(now()) @map("started_at")
+  finishedAt   DateTime? @map("finished_at")
+  receivedRows Int?      @map("received_rows")
+  retainedRows Int?      @map("retained_rows")
+  errorCode    String?   @map("error_code")
+
+  @@index([source, startedAt])
+  @@map("pwn_college_sync_jobs")
+}
