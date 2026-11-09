@@ -64,7 +64,7 @@ Send `Authorization: Bearer <PWN_COLLEGE_SYNC_TOKEN>`. A request using `CRON_SEC
 
 `GET /api/v1/internal/pwn-college/sync`
 
-Reserved for the Vercel Cron configured in `vercel.json`. Vercel sends `Authorization: Bearer <CRON_SECRET>` automatically. The schedule is every ten minutes in UTC and production only. An overlapping invocation returns `409 SYNC_IN_PROGRESS`; no cache is cleared.
+Reserved for the Vercel Cron configured in `vercel.json`. Vercel sends `Authorization: Bearer <CRON_SECRET>` automatically. The Hobby-plan schedule is once daily at midnight UTC and production only. An overlapping invocation returns `409 SYNC_IN_PROGRESS`; no cache is cleared. Manual authenticated `POST` sync can be used whenever an immediate refresh is needed.
 
 The admin solves data intentionally has **no public API endpoint**. It is admin-only at the source, so any future UI that needs it must be behind the project’s real organizer authentication and should use a dedicated, authorized server route or repository method.
 
