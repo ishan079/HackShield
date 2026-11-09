@@ -39,10 +39,10 @@ export default async function LeaderboardPage() {
         <div className="hs-glass-card" style={{ padding: 'clamp(24px, 5vw, 46px)' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '18px', marginBottom: '30px' }}>
             <div>
-              <p style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontWeight: 800, fontSize: '0.78rem', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '8px' }}>
+              <p style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontWeight: 800, fontSize: '0.78rem', letterSpacing: '0.75px', textTransform: 'uppercase', marginBottom: '8px' }}>
                 HackShield Mini CTF
               </p>
-              <h1 style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)', lineHeight: 1, letterSpacing: '-0.05em', margin: 0 }}>
+              <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 6vw, 3.5rem)', fontWeight: 800, lineHeight: 1, letterSpacing: '-0.035em', margin: 0 }}>
                 Leaderboard
               </h1>
               <p style={{ marginTop: '14px', maxWidth: '590px' }}>

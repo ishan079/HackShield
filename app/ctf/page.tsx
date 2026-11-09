@@ -1418,7 +1418,7 @@ function CTFContent() {
                                                     </h3>
                                                 </div>
 
-                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '9px' }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px' }}>
                                                 <button
                                                     type="button"
                                                     onClick={() => openRegistration(sprint.id)}
