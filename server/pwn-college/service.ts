@@ -26,6 +26,16 @@ async function syncSource(
     return { source, status: 'SUCCEEDED', ...result, errorCode: null }
   } catch (error) {
     const sourceError = error instanceof PwnCollegeSourceError ? error : null
+    if (!sourceError) {
+      // Preserve operational evidence without logging a source payload, session,
+      // CSV capability URL, or database connection details.
+      const operationalError = error as { name?: unknown; code?: unknown }
+      console.error('pwn.college cache synchronization failed unexpectedly', {
+        source,
+        errorName: typeof operationalError?.name === 'string' ? operationalError.name : 'Error',
+        errorCode: typeof operationalError?.code === 'string' ? operationalError.code : null,
+      })
+    }
     const status = rejected(error) ? 'REJECTED' : 'FAILED'
     await repository.failJob(jobId, status, sourceError?.code ?? 'UNEXPECTED_ERROR', now())
     return {
