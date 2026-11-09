@@ -134,19 +134,24 @@ export class PwnCollegeRepository {
         'Refusing a solves export with fewer records than the existing cache.'
       )
     }
+    const userIds = [...new Set(records.map((record) => record.userId))]
     return this.database.$transaction(async (transaction) => {
-      for (const record of records) {
-        await transaction.pwnCollegeHacker.upsert({
-          where: { userId: record.userId },
-          create: {
-            userId: record.userId,
-            username: null,
-            firstSeenAt: fetchedAt,
-            lastSeenAt: fetchedAt,
-          },
-          update: { lastSeenAt: fetchedAt },
-        })
-      }
+      // The CSV can contain many solves for one hacker. Batch the identity
+      // bookkeeping rather than opening one database round-trip per row; this
+      // keeps the import comfortably inside Prisma's transaction timeout.
+      await transaction.pwnCollegeHacker.createMany({
+        data: userIds.map((userId) => ({
+          userId,
+          username: null,
+          firstSeenAt: fetchedAt,
+          lastSeenAt: fetchedAt,
+        })),
+        skipDuplicates: true,
+      })
+      await transaction.pwnCollegeHacker.updateMany({
+        where: { userId: { in: userIds } },
+        data: { lastSeenAt: fetchedAt },
+      })
       await transaction.pwnCollegeSolve.createMany({
         data: records.map((record) => ({
           userId: record.userId,
