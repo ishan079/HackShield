@@ -50,7 +50,7 @@ Contract-only routes currently return the standard `404 NOT_FOUND` envelope.
 - Sprint ID matches `mini-[a-zA-Z0-9-]+`.
 - Bodies are strict; unknown keys are rejected.
 - Email is trimmed, valid, and ends in `@iitp.ac.in`.
-- Username is trimmed, 2–64 characters, `[A-Za-z0-9_.-]`.
+- Username is trimmed and must be non-empty but not email-shaped, matching pwn.college registration validation. Spaces and punctuation are accepted.
 - Sprint existence and `registration_open` are checked server-side.
 - Duplicate email/username maps to `409 ALREADY_REGISTERED`.
 - Malformed JSON maps to `400 INVALID_REQUEST`.

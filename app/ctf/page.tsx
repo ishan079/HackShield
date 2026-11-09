@@ -31,7 +31,7 @@ import {MINI_CTF_SUBJECTS, type MiniCtfSubject} from '@/types/api'
 import MiniCtfRulebookModal, {MINI_CTF_DECLARATION} from '@/components/MiniCtfRulebookModal'
 
 const IITP_EMAIL_PATTERN = /^[^\s@]+@iitp\.ac\.in$/i
-const PWN_USERNAME_PATTERN = /^[a-zA-Z0-9_.-]{2,64}$/
+const PWN_COLLEGE_EMAIL_PATTERN = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
 const ROLL_NUMBER_PATTERN = /^[a-zA-Z0-9/_-]{3,40}$/
 const MOBILE_NUMBER_PATTERN = /^[6-9]\d{9}$/
 
@@ -176,28 +176,9 @@ function CTFContent() {
             return
         }
 
-        if (!PWN_USERNAME_PATTERN.test(pwnUsername)) {
+        if (PWN_COLLEGE_EMAIL_PATTERN.test(pwnUsername)) {
             setRegistrationState('error')
-            setRegistrationMessage('Username must be 2–64 characters using letters, numbers, dots, hyphens, or underscores.')
-            return
-        }
-
-        // Check username entry on form to confirm no dual/conflicting details
-        if (pwnUsername.toLowerCase() === email.toLowerCase() || pwnUsername.includes('@')) {
-            setRegistrationState('error')
-            setRegistrationMessage('pwn.college username cannot be an email address. Provide your unique platform username.')
-            return
-        }
-
-        if (pwnUsername === mobileNumber) {
-            setRegistrationState('error')
-            setRegistrationMessage('pwn.college username cannot be your mobile number. Provide your unique platform username.')
-            return
-        }
-
-        if (pwnUsername.toLowerCase() === rollNumber.toLowerCase()) {
-            setRegistrationState('error')
-            setRegistrationMessage('pwn.college username cannot be your roll number. Dual details are not allowed.')
+            setRegistrationMessage('pwn.college username cannot be an email address.')
             return
         }
 
@@ -1972,9 +1953,6 @@ function CTFContent() {
                                                     id={`registration-pwn-${sprint.id}`}
                                                     type="text"
                                                     autoComplete="username"
-                                                    minLength={2}
-                                                    maxLength={64}
-                                                    pattern="[a-zA-Z0-9_.-]+"
                                                     aria-required="true"
                                                     placeholder="Your pwn.college username"
                                                     value={regForm.pwnUsername}

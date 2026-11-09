@@ -226,8 +226,8 @@ describe('Mini CTF frontend registration flow', () => {
     ],
     [
       'student@iitp.ac.in',
-      'not valid!',
-      'Username must be 2–64 characters using letters, numbers, dots, hyphens, or underscores.',
+      'student@example.com',
+      'pwn.college username cannot be an email address.',
     ],
   ])(
     'blocks invalid participant details before calling the API',
@@ -284,32 +284,34 @@ describe('Mini CTF frontend registration flow', () => {
     })
   })
 
-  it('checks username entry on form to prevent dual or conflicting details', async () => {
+  it.each([
+    ['aditya adep', 'aditya adep'],
+    ['not valid!', 'not valid!'],
+    ['x', 'x'],
+    ['name@localhost', 'name@localhost'],
+    ['  aditya adep  ', 'aditya adep'],
+    ['9876543210', '9876543210'],
+    ['UA2504AIH103', 'UA2504AIH103'],
+  ])('submits a pwn.college-compatible username: %s', async (username, expectedUsername) => {
+    registerMiniSprint.mockResolvedValue({
+      success: false,
+      error: { code: 'TEST', message: 'Handled response.' },
+      timestamp: '2026-11-07T03:00:00.000Z',
+    })
     const user = userEvent.setup()
     render(<CTFPage />)
     await acceptRulebook(user)
     await fillParticipantDetails(user)
 
     const email = await screen.findByPlaceholderText('Your institute email address')
-    const username = screen.getByPlaceholderText('Your pwn.college username')
-
     await user.type(email, 'student@iitp.ac.in')
-    await user.type(username, '9876543210')
+    await user.type(screen.getByPlaceholderText('Your pwn.college username'), username)
     await user.click(screen.getByRole('button', { name: 'Register for this sprint' }))
 
-    expect(registerMiniSprint).not.toHaveBeenCalled()
-    expect(
-      screen.getByText('pwn.college username cannot be your mobile number. Provide your unique platform username.')
-    ).toBeVisible()
-
-    await user.clear(username)
-    await user.type(username, 'UA2504AIH103')
-    await user.click(screen.getByRole('button', { name: 'Register for this sprint' }))
-
-    expect(registerMiniSprint).not.toHaveBeenCalled()
-    expect(
-      screen.getByText('pwn.college username cannot be your roll number. Dual details are not allowed.')
-    ).toBeVisible()
+    expect(registerMiniSprint).toHaveBeenCalledWith(
+      'mini-14',
+      expect.objectContaining({ pwnUsername: expectedUsername })
+    )
   })
 
   it('renders dual entry error when backend rejects duplicate username or mobile number', async () => {

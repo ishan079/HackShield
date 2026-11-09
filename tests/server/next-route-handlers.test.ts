@@ -57,6 +57,23 @@ describe('Next.js Vercel route handlers', () => {
     })
   })
 
+  it('accepts a pwn.college username with spaces through the native API route', async () => {
+    const response = await POST(
+      registrationRequest(JSON.stringify({
+        ...validParticipant,
+        email: 'space.user@iitp.ac.in',
+        pwnUsername: 'aditya adep',
+      })),
+      context
+    )
+
+    expect(response.status).toBe(201)
+    await expect(response.json()).resolves.toMatchObject({
+      success: true,
+      data: { pwnUsername: 'aditya adep' },
+    })
+  })
+
   it('rejects malformed JSON through the native API route', async () => {
     const response = await POST(registrationRequest('{"email":'), context)
     expect(response.status).toBe(400)

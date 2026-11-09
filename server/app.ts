@@ -10,6 +10,10 @@ import {
 import type { MiniSprintRegistrationStore } from '@/server/repositories/mini-sprint-store'
 import { MINI_CTF_SUBJECTS, type ApiFailure, type ApiSuccess } from '@/types/api'
 
+// Mirrors pwn.college's validate_email() check, which is used to reject an
+// account name only when it is an email address.
+const PWN_COLLEGE_EMAIL_PATTERN = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+
 export const sprintParamsSchema = z
   .object({ sprintId: z.string().regex(/^mini-[a-zA-Z0-9-]+$/) })
   .strict()
@@ -30,7 +34,13 @@ export const registrationSchema = z
       .refine((email) => email.toLowerCase().endsWith('@iitp.ac.in'), {
         message: 'Must be a valid IIT Patna email address.',
       }),
-    pwnUsername: z.string().trim().min(2).max(64).regex(/^[a-zA-Z0-9_.-]+$/),
+    pwnUsername: z
+      .string()
+      .trim()
+      .min(1)
+      .refine((username) => !PWN_COLLEGE_EMAIL_PATTERN.test(username), {
+        message: 'pwn.college username cannot be an email address.',
+      }),
   })
   .strict()
 
