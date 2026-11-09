@@ -24,7 +24,7 @@ http://localhost:3000/ctf?type=mini&register=mini-14#registration-mini-14
 
 ## Form behavior
 
-The form validates a trimmed `@iitp.ac.in` email and a 2–64 character username limited to ASCII letters, numbers, `.`, `_`, and `-`. It submits by button or Enter, disables repeated submission while pending/after success, retains values after server errors, clears stale errors on edit, and shows the returned reference. The server repeats all validation.
+The form validates a trimmed `@iitp.ac.in` email and uses pwn.college-compatible username validation: any non-empty trimmed value is accepted unless it is shaped as an email address. This includes spaces and punctuation in usernames. It submits by button or Enter, disables repeated submission while pending/after success, retains values after server errors, clears stale errors on edit, and shows the returned reference. The server repeats all validation.
 
 ## API client
 

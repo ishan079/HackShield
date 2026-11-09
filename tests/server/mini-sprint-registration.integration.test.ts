@@ -173,9 +173,28 @@ describe.skipIf(!pgMem)('Mini CTF registration backend', () => {
     })
   })
 
+  it.each(['aditya adep', 'not valid!', 'x', 'name@localhost'])
+    ('accepts pwn.college-compatible usernames: %s', async (pwnUsername) => {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/api/v1/ctf/mini-sprints/mini-14/register',
+        payload: {
+          ...validParticipant,
+          email: 'student@iitp.ac.in',
+          pwnUsername,
+        },
+      })
+
+      expect(response.statusCode).toBe(201)
+      expect(response.json()).toMatchObject({
+        success: true,
+        data: { pwnUsername },
+      })
+    })
+
   it.each([
     [{...validParticipant, email: 'student@example.com', pwnUsername: 'valid-user'}, 'email'],
-    [{...validParticipant, email: 'student@iitp.ac.in', pwnUsername: 'not valid!'}, 'pwnUsername'],
+    [{...validParticipant, email: 'student@iitp.ac.in', pwnUsername: 'student@example.com'}, 'pwnUsername'],
     [{...validParticipant, email: 'student@iitp.ac.in'}, 'pwnUsername'],
     [{...validParticipant, semester: 8, email: 'student@iitp.ac.in', pwnUsername: 'valid-user'}, 'semester'],
     [{...validParticipant, mobileNumber: '123', email: 'student@iitp.ac.in', pwnUsername: 'valid-user'}, 'mobileNumber'],

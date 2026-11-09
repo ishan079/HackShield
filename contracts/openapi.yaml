@@ -343,7 +343,12 @@ components:
       required: [email, pwnUsername]
       properties:
         email: { type: string, format: email, pattern: '@iitp\.ac\.in$' }
-        pwnUsername: { type: string, minLength: 2, maxLength: 64, pattern: '^[a-zA-Z0-9_.-]+$' }
+        pwnUsername:
+          type: string
+          minLength: 1
+          description: >-
+            Trimmed pwn.college username. Matches pwn.college registration
+            validation: any non-empty value except an email-shaped value.
 
     MiniSprintRegistration:
       type: object
