@@ -46,7 +46,7 @@ export default async function LeaderboardPage() {
                 Leaderboard
               </h1>
               <p style={{ marginTop: '14px', maxWidth: '590px' }}>
-                Top 10 participants over the last 30 days. Equal solve counts are ordered by who reached that count first.
+                Top 10 participants.
               </p>
             </div>
             <div style={{ width: '48px', height: '48px', display: 'grid', placeItems: 'center', borderRadius: '14px', background: 'var(--accent-dim)', border: '1px solid var(--accent-glow)', color: 'var(--accent)', flexShrink: 0 }}>
@@ -62,7 +62,6 @@ export default async function LeaderboardPage() {
             <div style={{ padding: '28px', borderRadius: '14px', background: 'var(--accent-subtle)', border: '1px solid var(--accent-dim)', textAlign: 'center' }}>
               <Trophy size={26} aria-hidden="true" style={{ color: 'var(--accent)', marginBottom: '10px' }} />
               <p style={{ color: 'var(--text-primary)', fontWeight: 700 }}>No leaderboard results yet.</p>
-              <p style={{ marginTop: '5px', fontSize: '0.9rem' }}>Results will appear after the next successful scoreboard sync.</p>
             </div>
           ) : (
             <ol aria-label="Mini CTF leaderboard" style={{ listStyle: 'none', display: 'grid', gap: '10px', margin: 0, padding: 0 }}>
