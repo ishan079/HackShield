@@ -52,7 +52,7 @@ export const teamMembers: TeamMember[] = [
     },
     {
         name: 'Ishan Mishra',
-        role: 'Core Member and Lead Researcher',
+        role: 'Core Member',
         email: 'ishan_ua2504aih103@iitp.ac.in',
         linkedin: 'www.linkedin.com/in/ishanmishra079',
         badge: 'Member',

@@ -1,0 +1,9 @@
+[
+  {
+    "id": "id",
+    "name": "Name",
+    "logo": "/sponsors/logo.svg",
+    "tag": "current / previous",
+    "websiteUrl": "https://example.com"
+  }
+]
