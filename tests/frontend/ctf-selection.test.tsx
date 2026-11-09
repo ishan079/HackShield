@@ -176,6 +176,15 @@ describe('Dynamic CTF category selection', () => {
     ).toBeInTheDocument()
   })
 
+  it('links the Mini CTF card to the leaderboard', async () => {
+    mockSearchParams = new URLSearchParams('type=mini')
+    const user = userEvent.setup()
+    render(<CTFPage />)
+
+    await user.click(screen.getByRole('button', { name: 'View Leaderboard' }))
+    expect(push).toHaveBeenCalledWith('/leaderboard')
+  })
+
   it('provides respective and non-redundant icons and corresponding tags for each CTF discipline', () => {
     expect(CTF_DISCIPLINES).toBeDefined()
     expect(CTF_DISCIPLINES.length).toBeGreaterThanOrEqual(8)

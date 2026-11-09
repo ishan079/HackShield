@@ -56,6 +56,16 @@ This is the frontend-safe, cached 30-day scoreboard. It returns the usual succes
 
 An empty `entries` list with `lastFetchedAt: null` means no successful scoreboard synchronization has completed yet.
 
+### Read public leaderboard
+
+`GET /api/v1/ctf/pwn-college/leaderboard`
+
+Returns at most ten public entries for Mini CTF `mini-14`: calculated rank,
+optional registered `realName`, pwn.college `username`, and `solves`. Entries
+are sorted by solve count descending. Equal totals are resolved by the time the
+participant completed their latest counted solve, so the participant who reached
+that total first ranks first. The public page is `/leaderboard`.
+
 ### Run a synchronization
 
 `POST /api/v1/internal/pwn-college/sync`

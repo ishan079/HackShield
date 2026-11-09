@@ -62,4 +62,35 @@ describe('pwn.college sync safeguards', () => {
     expect(results[0].status).toBe('SUCCEEDED')
     expect(results[1]).toMatchObject({ status: 'REJECTED', errorCode: 'INCOMPLETE_SOLVES_EXPORT' })
   })
+
+  it('does not append solves for a named test account identified on the scoreboard', async () => {
+    const repository = repositoryMock()
+    const client = {
+      fetchScoreboard: vi.fn().mockResolvedValue([
+        { userId: 'test-id', username: 'ThisThingExists', rank: 1, solves: 99 },
+        { userId: 'real-id', username: 'real participant', rank: 2, solves: 1 },
+      ]),
+      fetchSolves: vi.fn().mockResolvedValue([
+        { userId: 'test-id', module: 'm', challenge: 'test', solvedAt: new Date('2026-11-10T07:00:00.000Z') },
+        { userId: 'real-id', module: 'm', challenge: 'real', solvedAt: new Date('2026-11-10T07:00:00.000Z') },
+      ]),
+    }
+
+    await syncPwnCollege(
+      repository as unknown as PwnCollegeRepository,
+      client as unknown as Pick<PwnCollegeClient, 'fetchScoreboard' | 'fetchSolves'>,
+      () => new Date('2026-11-10T07:05:00.000Z')
+    )
+
+    expect(repository.replaceScoreboard).toHaveBeenCalledWith(
+      'scoreboard-job',
+      [{ userId: 'real-id', username: 'real participant', rank: 2, solves: 1 }],
+      expect.any(Date)
+    )
+    expect(repository.appendSolves).toHaveBeenCalledWith(
+      'solves-job',
+      [{ userId: 'real-id', module: 'm', challenge: 'real', solvedAt: new Date('2026-11-10T07:00:00.000Z') }],
+      expect.any(Date)
+    )
+  })
 })

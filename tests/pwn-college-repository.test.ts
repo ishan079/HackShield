@@ -42,4 +42,28 @@ describe('pwn.college cache repository', () => {
       data: { lastSeenAt: fetchedAt },
     })
   })
+
+  it('orders equal solve totals by the time each participant completed them and exposes only the top ten', async () => {
+    const database = {
+      pwnCollegeScoreboardEntry: {
+        findMany: vi.fn().mockResolvedValue([
+          { userId: '1', rank: 2, solves: 100, hacker: { username: 'later', solves: [{ solvedAt: new Date('2026-11-10T08:00:00.000Z') }] } },
+          { userId: '2', rank: 3, solves: 100, hacker: { username: 'first', solves: [{ solvedAt: new Date('2026-11-10T07:00:00.000Z') }] } },
+          { userId: '3', rank: 1, solves: 99, hacker: { username: 'third', solves: [{ solvedAt: new Date('2026-11-10T06:45:00.000Z') }] } },
+        ]),
+      },
+      miniSprintRegistration: {
+        findMany: vi.fn().mockResolvedValue([
+          { pwnUsernameNormalized: 'first', fullName: 'First Student' },
+        ]),
+      },
+    }
+    const repository = new PwnCollegeRepository(database as unknown as PrismaClient)
+
+    await expect(repository.getLeaderboard('mini-14')).resolves.toEqual([
+      { rank: 1, realName: 'First Student', username: 'first', solves: 100, completedAt: new Date('2026-11-10T07:00:00.000Z') },
+      { rank: 2, realName: null, username: 'later', solves: 100, completedAt: new Date('2026-11-10T08:00:00.000Z') },
+      { rank: 3, realName: null, username: 'third', solves: 99, completedAt: new Date('2026-11-10T06:45:00.000Z') },
+    ])
+  })
 })

@@ -1,6 +1,7 @@
 import type { PwnCollegeClient } from './client'
 import type { PwnCollegeSourceResult, PwnCollegeSyncSource } from './contracts'
 import { PwnCollegeSourceError } from './contracts'
+import { filterScoreboardRecords, filterSolveRecords } from './policy'
 import type { PwnCollegeRepository } from './repository'
 
 function rejected(error: unknown): boolean {
@@ -53,14 +54,21 @@ export async function syncPwnCollege(
   client: Pick<PwnCollegeClient, 'fetchScoreboard' | 'fetchSolves'>,
   now: () => Date = () => new Date()
 ): Promise<PwnCollegeSourceResult[]> {
+  const excludedUserIds = new Set<string>()
   const scoreboard = await syncSource('scoreboard', repository, async (jobId, fetchedAt) => {
     const records = await client.fetchScoreboard(30)
-    const retainedRows = await repository.replaceScoreboard(jobId, records, fetchedAt)
+    const retainedRecords = filterScoreboardRecords(records)
+    for (const record of records) {
+      if (!retainedRecords.some((retained) => retained.userId === record.userId)) {
+        excludedUserIds.add(record.userId)
+      }
+    }
+    const retainedRows = await repository.replaceScoreboard(jobId, retainedRecords, fetchedAt)
     return { receivedRows: records.length, retainedRows }
   }, now)
   const solves = await syncSource('solves', repository, async (jobId, fetchedAt) => {
     const records = await client.fetchSolves()
-    const retainedRows = await repository.appendSolves(jobId, records, fetchedAt)
+    const retainedRows = await repository.appendSolves(jobId, filterSolveRecords(records, excludedUserIds), fetchedAt)
     return { receivedRows: records.length, retainedRows }
   }, now)
   return [scoreboard, solves]

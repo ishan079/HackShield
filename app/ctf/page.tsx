@@ -1418,6 +1418,7 @@ function CTFContent() {
                                                     </h3>
                                                 </div>
 
+                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '9px' }}>
                                                 <button
                                                     type="button"
                                                     onClick={() => openRegistration(sprint.id)}
@@ -1448,6 +1449,23 @@ function CTFContent() {
                                   </span>
                                                     <ArrowUpRight size={16}/>
                                                 </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => router.push('/leaderboard')}
+                                                    style={{
+                                                        display: 'inline-flex', alignItems: 'center', gap: '6px',
+                                                        color: 'var(--accent)', border: '1px solid var(--accent-dim)',
+                                                        background: 'var(--accent-subtle)', padding: '8px 16px',
+                                                        borderRadius: '9999px', fontSize: '0.82rem', fontWeight: 800,
+                                                        cursor: 'pointer', transition: 'all 0.2s ease',
+                                                    }}
+                                                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent)' }}
+                                                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--accent-dim)' }}
+                                                >
+                                                    <Trophy size={15} aria-hidden="true" />
+                                                    <span>View Leaderboard</span>
+                                                </button>
+                                                </div>
                                             </div>
 
                                             <p

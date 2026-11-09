@@ -21,6 +21,14 @@ export interface PwnCollegeScoreboardCacheEntry extends PwnCollegeScoreboardReco
   fetchedAt: Date
 }
 
+export interface PwnCollegeLeaderboardEntry {
+  rank: number
+  realName: string | null
+  username: string
+  solves: number
+  completedAt: Date | null
+}
+
 export type PwnCollegeSyncSource = 'scoreboard' | 'solves'
 export type PwnCollegeSyncStatus = 'SUCCEEDED' | 'FAILED' | 'REJECTED'
 
