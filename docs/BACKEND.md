@@ -17,6 +17,9 @@ npm run db:migrate:deploy
 | --- | --- | --- |
 | `GET /api/v1/ctf/mini-sprints` | Implemented | `mini_sprints` |
 | `POST /api/v1/ctf/mini-sprints/:sprintId/register` | Implemented | `mini_sprint_registrations` |
+| `GET /api/v1/ctf/pwn-college/scoreboard` | Implemented | Cached 30-day pwn.college scoreboard |
+| `POST /api/v1/internal/pwn-college/sync` | Implemented, internal bearer auth | pwn.college cache tables |
+| `GET /api/v1/internal/pwn-college/sync` | Implemented, Vercel Cron bearer auth | pwn.college cache tables |
 | `GET /api/v1/ctf/flagship/status` | Contract only | Not implemented |
 | `POST /api/v1/ctf/flagship/register` | Contract only | Not implemented |
 | `GET /api/v1/terminal/challenges` | Contract only | Not implemented |
@@ -26,6 +29,8 @@ npm run db:migrate:deploy
 | `GET /api/v1/resources` | Contract only | Not implemented |
 
 Contract-only routes currently return the standard `404 NOT_FOUND` envelope.
+
+For the pwn.college data model, access boundary, environment variables, and cache safeguards, see [backend feature.md](../backend%20feature.md).
 
 ## Standard envelope
 

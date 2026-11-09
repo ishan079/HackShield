@@ -61,3 +61,6 @@ Thumbs.db
 *~
 *.bak
 *.tmp
+
+# Replaced by versioned backend feature documentation.
+aditya_progress.md
