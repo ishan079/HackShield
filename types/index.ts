@@ -111,6 +111,7 @@ export interface TeamMember {
   linkedin?: string
   website?: string
   badge: string
+  image?: string
 }
 
 export interface StatItemType {

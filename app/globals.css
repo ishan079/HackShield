@@ -1050,6 +1050,32 @@ select.mini-ctf-registration-input {
   margin: 0 auto;
 }
 
+/* ──────────────────────────────────────────────
+   About Page Team Grid (3 Columns)
+   ────────────────────────────────────────────── */
+.hs-team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 232px);
+  gap: 24px;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+@media (max-width: 820px) and (min-width: 541px) {
+  .hs-team-grid {
+    grid-template-columns: repeat(2, 232px);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 540px) {
+  .hs-team-grid {
+    grid-template-columns: 232px;
+    gap: 20px;
+  }
+}
+
+
 
 
 
