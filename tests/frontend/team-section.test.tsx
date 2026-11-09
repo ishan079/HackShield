@@ -3,7 +3,7 @@
 import React from 'react'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import TeamSection from '@/components/TeamSection'
+import TeamSection, { teamMembers } from '@/components/TeamSection'
 
 vi.mock('react-intersection-observer', () => ({
   useInView: () => ({ ref: vi.fn(), inView: true }),
@@ -71,7 +71,19 @@ describe('TeamSection Component', () => {
   })
 
   it('renders 4:5 portrait placeholders when image parameters are blank', () => {
-    render(<TeamSection />)
+    render(
+      <TeamSection
+        members={[
+          {
+            name: 'Placeholder Member',
+            role: 'Core Member',
+            email: 'placeholder@iitp.ac.in',
+            badge: 'Member',
+            image: '',
+          },
+        ]}
+      />
+    )
 
     const placeholders = screen.getAllByText(/200 × 250|4:5/i)
     expect(placeholders.length).toBeGreaterThan(0)
@@ -87,5 +99,13 @@ describe('TeamSection Component', () => {
     const aayushEmail = screen.getByText('aayush_25s12res03@iitp.ac.in')
     expect(aayushEmail).toBeTruthy()
     expect(aayushEmail.getAttribute('href')).toBe('mailto:aayush_25s12res03@iitp.ac.in')
+  })
+
+  it('references WebP images for all team members', () => {
+    expect(teamMembers.length).toBeGreaterThan(0)
+    for (const member of teamMembers) {
+      expect(member.image).toBeDefined()
+      expect(member.image.toLowerCase()).toMatch(/\.webp$/)
+    }
   })
 })

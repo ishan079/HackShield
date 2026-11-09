@@ -67,7 +67,7 @@ vi.mock('framer-motion', async () => {
   }
 })
 
-import CTFPage, { CTF_CATEGORIES, CTF_CATEGORIES_LIST } from '@/app/ctf/page'
+import CTFPage, { CTF_CATEGORIES, CTF_CATEGORIES_LIST, CTF_DISCIPLINES } from '@/app/ctf/page'
 
 describe('Dynamic CTF category selection', () => {
   beforeEach(() => {
@@ -174,5 +174,46 @@ describe('Dynamic CTF category selection', () => {
     expect(
       screen.getByText(/Fast-paced monthly intra-club CTF challenges/i)
     ).toBeInTheDocument()
+  })
+
+  it('provides respective and non-redundant icons and corresponding tags for each CTF discipline', () => {
+    expect(CTF_DISCIPLINES).toBeDefined()
+    expect(CTF_DISCIPLINES.length).toBeGreaterThanOrEqual(8)
+
+    // Check corresponding tags
+    const disciplineTags = CTF_DISCIPLINES.map((d) => d.tag)
+    const uniqueTags = new Set(disciplineTags)
+    expect(uniqueTags.size).toBe(CTF_DISCIPLINES.length)
+
+    const soc = CTF_DISCIPLINES.find((d) => d.name === 'SOC & Defence')
+    expect(soc).toBeDefined()
+    expect(soc?.tag).toBe('SOC')
+
+    const misc = CTF_DISCIPLINES.find((d) => d.name === 'Misc.')
+    expect(misc).toBeDefined()
+    expect(misc?.tag).toBe('MISC')
+
+    const ai = CTF_DISCIPLINES.find((d) => d.name === 'AI Security')
+    expect(ai).toBeDefined()
+    expect(ai?.tag).toBe('AI')
+
+    // Check non-redundant icon components
+    const iconTypes = CTF_DISCIPLINES.map((d) => {
+      const el = d.icon as React.ReactElement
+      return el.type
+    })
+    const uniqueIconTypes = new Set(iconTypes)
+    expect(uniqueIconTypes.size).toBe(CTF_DISCIPLINES.length)
+  })
+
+  it('renders all discipline cards with their names and respective tags in the UI', () => {
+    render(<CTFPage />)
+
+    for (const discipline of CTF_DISCIPLINES) {
+      expect(
+        screen.getByRole('heading', { level: 3, name: discipline.name })
+      ).toBeInTheDocument()
+      expect(screen.getAllByText(discipline.tag).length).toBeGreaterThanOrEqual(1)
+    }
   })
 })

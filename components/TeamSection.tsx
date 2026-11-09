@@ -13,7 +13,7 @@ export const teamMembers: TeamMember[] = [
         email: 'shiwangini_pa2508mch214@iitp.ac.in',
         linkedin: 'https://www.linkedin.com/in/shiwangini-shreya',
         badge: 'Advisory',
-        image: '',
+        image: '/people/Shiwangini.webp',
     },
     {
         name: 'Aayush Babu',
@@ -22,7 +22,7 @@ export const teamMembers: TeamMember[] = [
         linkedin: 'https://linkedin.com/in/aayushrambo8',
         website: 'https://www.aayushbabu.live',
         badge: 'LEAD COORDINATOR',
-        image: '/people/Aayush.jpg',
+        image: '/people/Aayush.webp',
     },
     {
         name: 'Yash Bhople',
@@ -31,7 +31,7 @@ export const teamMembers: TeamMember[] = [
         linkedin: 'https://linkedin.com/in/yashbhople',
         website: 'https://yashbhople.xyz',
         badge: 'SUB COORDINATOR',
-        image: '/people/Yash Bhople.jpeg',
+        image: '/people/Yash Bhople.webp',
     },
     {
         name: 'Himanshu Kundal',
@@ -40,7 +40,7 @@ export const teamMembers: TeamMember[] = [
         linkedin: 'https://linkedin.com/in/himanshukundal',
         website: 'https://himanshuiitp.github.io/portfolio/',
         badge: 'Member',
-        image: '/people/Himanshu.png',
+        image: '/people/Himanshu.webp',
     },
     {
         name: 'Antra Priyadarshini',
@@ -48,15 +48,15 @@ export const teamMembers: TeamMember[] = [
         email: 'antra_ua2503cdh63@iitp.ac.in',
         linkedin: 'https://www.linkedin.com/in/antra-priyadarshini-79a5a0399/',
         badge: 'Member',
-        image: '/people/Antara priyadarshini.png',
+        image: '/people/Antara priyadarshini.webp',
     },
     {
         name: 'Ishan Mishra',
         role: 'Core Member and Lead Researcher',
-        email: 'ishanmishra079@gmail.com',
+        email: 'ishan_ua2504aih103@iitp.ac.in',
         linkedin: 'www.linkedin.com/in/ishanmishra079',
         badge: 'Member',
-        image: '',
+        image: '/people/Ishan.webp',
     },
     {
         name: 'Aditya Adep',
@@ -64,7 +64,7 @@ export const teamMembers: TeamMember[] = [
         email: 'aditya_ua2504aih22@iitp.ac.in',
         linkedin: 'https://www.linkedin.com/in/aditya-adep-a08248366/',
         badge: 'Member',
-        image: '/people/Aditya Adep.png',
+        image: '/people/Aditya Adep.webp',
     },
 
     {
@@ -73,7 +73,7 @@ export const teamMembers: TeamMember[] = [
         email: 'anurag_ua2604aih15@iitp.ac.in',
         linkedin: 'https://www.linkedin.com/in/anurag-kumar-473736349',
         badge: 'Member',
-        image: '/people/Anurag.jpeg',
+        image: '/people/Anurag.webp',
     },
     {
         name: 'Ansh Kumar',
@@ -81,7 +81,7 @@ export const teamMembers: TeamMember[] = [
         email: 'ansh_ua2602bbh09@iitp.ac.in',
         linkedin: 'https://www.linkedin.com/in/Ansh-kumar',
         badge: 'Member',
-        image: '/people/Ansh.png',
+        image: '/people/Ansh.webp',
     }
 ]
 
@@ -101,7 +101,7 @@ function normalizeImagePath(path?: string): string {
     return trimmed
 }
 
-function MemberAvatar({member}: {member: TeamMember}) {
+function MemberAvatar({member}: { member: TeamMember }) {
     const [hasError, setHasError] = useState(false)
     const normalizedSrc = normalizeImagePath(member.image)
     const showImage = Boolean(normalizedSrc && !hasError)
@@ -177,7 +177,7 @@ function MemberAvatar({member}: {member: TeamMember}) {
                             zIndex: 1,
                         }}
                     >
-                        <User size={24} strokeWidth={1.5} />
+                        <User size={24} strokeWidth={1.5}/>
                     </div>
                     <span
                         style={{
@@ -223,14 +223,14 @@ function MemberAvatar({member}: {member: TeamMember}) {
     )
 }
 
-export default function TeamSection() {
+export default function TeamSection({members = teamMembers}: {members?: TeamMember[]} = {}) {
     const {ref, inView} = useInView({triggerOnce: true, threshold: 0.12})
 
-    const advisor = teamMembers.find((m) => m.role.toLowerCase().includes('advisor'))
-    const coordinators = teamMembers.filter((m) =>
+    const advisor = members.find((m) => m.role.toLowerCase().includes('advisor'))
+    const coordinators = members.filter((m) =>
         m.role.toLowerCase().includes('coordinator')
     )
-    const otherMembers = teamMembers.filter((m) =>
+    const otherMembers = members.filter((m) =>
         m !== advisor && !coordinators.includes(m)
     )
 
@@ -277,7 +277,7 @@ export default function TeamSection() {
         >
             <div>
                 {/* 200 × 230 Image / Placeholder Container */}
-                <MemberAvatar member={member} />
+                <MemberAvatar member={member}/>
 
                 {/* Name & Role on the bottom */}
                 <h3
@@ -372,16 +372,18 @@ export default function TeamSection() {
                             href={member.website.startsWith('http') ? member.website : `https://${member.website.trim()}`}
                             target="_blank"
                             rel="noreferrer"
-                            style={{
-                                fontFamily: 'var(--font-sans)',
-                                fontSize: '0.74rem',
-                                color: 'var(--text-secondary)',
-                                textDecoration: 'none',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '3px',
-                                transition: 'color 0.2s',
-                            }}
+                            style={
+                                {
+                                    fontFamily: 'var(--font-sans)',
+                                    fontSize: '0.74rem',
+                                    color: 'var(--text-secondary)',
+                                    textDecoration: 'none',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '3px',
+                                    transition: 'color 0.2s',
+                                }
+                            }
                             onMouseEnter={(e) =>
                                 (e.currentTarget.style.color = 'var(--accent)')
                             }
@@ -401,12 +403,14 @@ export default function TeamSection() {
     return (
         <section
             ref={ref}
-            style={{
-                width: '100%',
-                padding: '50px 0 80px',
-                maxWidth: '1280px',
-                margin: '0 auto',
-            }}
+            style={
+                {
+                    width: '100%',
+                    padding: '50px 0 80px',
+                    maxWidth: '1280px',
+                    margin: '0 auto',
+                }
+            }
         >
             <motion.div
                 initial={{opacity: 0, y: 24}}
@@ -497,5 +501,3 @@ export default function TeamSection() {
         </section>
     )
 }
-
-

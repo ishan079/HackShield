@@ -9,6 +9,7 @@ import {
     ArrowUpRight,
     Award,
     Binary,
+    Bot,
     Calendar,
     ChevronDown,
     ChevronRight,
@@ -20,6 +21,7 @@ import {
     Lock,
     Radio,
     Search,
+    Shield,
     Terminal,
     Trophy,
     Users,
@@ -70,6 +72,63 @@ export const CTF_CATEGORIES: Record<CTFCategoryKey, CTFCategoryData> = {
         description: 'Fast-paced monthly intra-club CTF challenges designed to test technical agility, sharpen hands-on exploitation skills, and level up together.',
     },
 }
+
+export const CTF_DISCIPLINES: CTFCategory[] = [
+    {
+        name: 'Web Security',
+        icon: <Globe size={24} color="var(--accent)"/>,
+        tag: 'WEB',
+        desc: 'Break and fix real web applications.',
+    },
+    {
+        name: 'PWN',
+        icon: <Terminal size={24} color="var(--accent)"/>,
+        tag: 'PWN',
+        desc: 'Binary Exploitation and memory bugs.',
+    },
+    {
+        name: 'Reverse Engineering',
+        icon: <Binary size={24} color="var(--accent)"/>,
+        tag: 'REV',
+        desc: 'Dissecting compiled ELF/PE executables, x86/ARM assembly analysis with Ghidra & IDA Pro, anti-debugging defeat, and packing unraveling.',
+    },
+    {
+        name: 'Cryptography',
+        icon: <Lock size={24} color="var(--accent)"/>,
+        tag: 'CRYPTO',
+        desc: 'Decode, break and learn modern crypto.',
+    },
+    {
+        name: 'Digital Forensics & Stegnography',
+        icon: <Search size={24} color="var(--accent)"/>,
+        tag: 'FORENSICS',
+        desc: 'Memory dump analysis with Volatility, PCAP network traffic inspection, filesystem carving, and steganographic data extraction.',
+    },
+    {
+        name: 'OSINT & Recon',
+        icon: <Radio size={24} color="var(--accent)"/>,
+        tag: 'OSINT',
+        desc: 'Open source intelligence gathering, geolocation identification, metadata extraction, and footprint analysis across threat actors.',
+    },
+    {
+        name: 'AI Security',
+        icon: <Bot size={24} color="var(--accent)"/>,
+        tag: 'AI',
+        desc: 'Security risks in the era of AI',
+    },
+    {
+        name: 'SOC & Defence',
+        icon: <Shield size={24} color="var(--accent)"/>,
+        tag: 'SOC',
+        desc: 'Real-world defence and monitoring',
+    },
+    {
+        name: 'Misc.',
+        icon: <HelpCircle size={24} color="var(--accent)"/>,
+        tag: 'MISC',
+        desc: 'Everything that refuses to fit in a box.',
+    },
+]
 
 export const CTF_CATEGORIES_LIST: CTFCategoryData[] = [
     CTF_CATEGORIES.flagship,
@@ -290,58 +349,7 @@ function CTFContent() {
         return () => clearInterval(timer)
     }, [])
 
-    const categories: CTFCategory[] = [
-        {
-            name: 'Web Security',
-            icon: <Globe size={24} color="var(--accent)"/>,
-            tag: 'WEB',
-            desc: 'Break and fix real web applications.',
-        },
-        {
-            name: 'PWN',
-            icon: <Terminal size={24} color="var(--accent)"/>,
-            tag: 'PWN',
-            desc: 'Binary Exploitation and memory bugs.',
-        }, {
-            name: 'Reverse Engineering',
-            icon: <Binary size={24} color="var(--accent)"/>,
-            tag: 'REV',
-            desc: 'Dissecting compiled ELF/PE executables, x86/ARM assembly analysis with Ghidra & IDA Pro, anti-debugging defeat, and packing unraveling.',
-        }, {
-            name: 'Cryptography',
-            icon: <Lock size={24} color="var(--accent)"/>,
-            tag: 'CRYPTO',
-            desc: 'Decode, break and learn modern crypto.',
-        }, {
-            name: 'Digital Forensics & Stegnography',
-            icon: <Search size={24} color="var(--accent)"/>,
-            tag: 'FORENSICS',
-            desc: 'Memory dump analysis with Volatility, PCAP network traffic inspection, filesystem carving, and steganographic data extraction.',
-        }, {
-            name: 'OSINT & Recon',
-            icon: <Radio size={24} color="var(--accent)"/>,
-            tag: 'OSINT',
-            desc: 'Open source intelligence gathering, geolocation identification, metadata extraction, and footprint analysis across threat actors.',
-        },
-        {
-            name: 'AI Security',
-            icon: <Radio size={24} color="var(--accent)"/>,
-            tag: 'AI',
-            desc: 'Security risks in the era of AI',
-        },
-        {
-            name: 'SOC & Defence',
-            icon: <Radio size={24} color="var(--accent)"/>,
-            tag: 'AI',
-            desc: 'Real-world defence and monitoring',
-        },
-        {
-            name: 'Misc.',
-            icon: <Radio size={24} color="var(--accent)"/>,
-            tag: 'AI',
-            desc: 'Everything that refuses to fit in a box.',
-        },
-    ]
+    const categories = CTF_DISCIPLINES
 
     const pastEvents: PastCTFEvent[] = [{
         title: 'Rookie CTF 2026',
