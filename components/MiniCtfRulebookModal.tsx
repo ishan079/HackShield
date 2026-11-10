@@ -135,7 +135,7 @@ export default function MiniCtfRulebookModal({
 
           <section>
             <h3>Rules of participation</h3>
-            <ol>
+            <ul>
               <li>Work only on HackShield challenges and authorised environments.</li>
               <li>Follow the pwn.college ground rules as well as these event rules.</li>
               <li>
@@ -144,7 +144,8 @@ export default function MiniCtfRulebookModal({
               </li>
               <li>Use your own account and do not share accounts or credentials.</li>
               <li>If you have not registered in the Mini CTF, please do so before attempting any challenges as we cannot record your participation officially even if you have most scores.</li>
-            </ol>
+              <li>We "Hackshield" reserve the right to any alteration in this rulebook and all the decisions and judgement will be final. </li>
+            </ul>
           </section>
         </div>
       </section>
