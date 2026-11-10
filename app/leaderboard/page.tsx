@@ -80,8 +80,8 @@ export default async function LeaderboardPage() {
                     {entry.rank === 1 ? <Crown size={22} aria-hidden="true" /> : `#${entry.rank}`}
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    {entry.realName ? <div style={{ color: 'var(--text-primary)', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{entry.realName}</div> : null}
-                    <div style={{ color: entry.realName ? 'var(--text-secondary)' : 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>@{entry.username}</div>
+                    <div style={{ color: 'var(--text-primary)', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{entry.realName}</div>
+                    <div style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>@{entry.username}</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <div style={{ color: 'var(--text-primary)', fontWeight: 900, fontSize: '1.15rem' }}>{entry.solves}</div>

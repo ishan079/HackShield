@@ -224,9 +224,11 @@ export class PwnCollegeRepository {
     const ranked = rows.flatMap((row) => {
       const username = row.hacker.username?.trim()
       if (!username) return []
+      const realName = realNames.get(username.toLocaleLowerCase('en-US'))
+      if (!realName) return []
       return [{
         sourceRank: row.rank,
-        realName: realNames.get(username.toLocaleLowerCase('en-US')) ?? null,
+        realName,
         username,
         solves: row.solves,
         completedAt: row.hacker.solves[0]?.solvedAt ?? null,
