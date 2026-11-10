@@ -269,7 +269,7 @@ export default function Navbar() {
                     }}
                     className="hs-brand-sub"
                   >
-                    IIT PATNA · CYBERSECURITY CLUB
+                    IIT PATNA CET·CYBERSECURITY CLUB
                   </span>
                 )}
               </div>

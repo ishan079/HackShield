@@ -98,6 +98,7 @@ export default function MiniCtfRulebookModal({
                 Confirm that HackShield appears in your joined dojos, then open
                 it and begin the assigned challenges.
               </li>
+              <li>Make sure you have completed the registration process.</li>
             </ol>
             <p className="mini-ctf-rulebook-note">
               Keep the invitation link within the intended participant group.
@@ -132,6 +133,7 @@ export default function MiniCtfRulebookModal({
                 answers while the Mini CTF is active.
               </li>
               <li>Use your own account and do not share accounts or credentials.</li>
+              <li>If you have not registered in the Mini CTF, please do so before attempting any challenges as we cannot record your participation officially even if you have most scores.</li>
             </ol>
           </section>
         </div>

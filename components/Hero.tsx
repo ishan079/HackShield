@@ -69,7 +69,7 @@ export default function Hero() {
                 color: 'var(--text-muted)',
               }}
             >
-              IIT PATNA CYBERSECURITY CLUB
+              IIT PATNA CET CYBERSECURITY CLUB
             </span>
           </div>
 

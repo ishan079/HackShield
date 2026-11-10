@@ -395,31 +395,6 @@ function CTFContent() {
                         exit={{opacity: 0, y: -10}}
                         transition={{duration: 0.25, ease: 'easeOut'}}
                     >
-                        <div
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                background: 'var(--accent-dim)',
-                                border: '1px solid var(--accent)',
-                                borderRadius: '999px',
-                                padding: '6px 18px',
-                                marginBottom: '20px',
-                                fontSize: '0.82rem',
-                                letterSpacing: '1px',
-                                color: 'var(--accent)',
-                                textTransform: 'uppercase',
-                                fontWeight: 700,
-                            }}
-                        >
-                            {currentCategory.heroIcon === 'flag' ? (
-                                <Flag size={14} aria-hidden="true"/>
-                            ) : (
-                                <Zap size={14} aria-hidden="true"/>
-                            )}
-                            <span>{currentCategory.heroTag}</span>
-                        </div>
-
                         <h1
                             style={{
                                 fontFamily: 'var(--font-display)',
