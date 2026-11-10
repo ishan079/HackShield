@@ -93,7 +93,17 @@ export default function MiniCtfRulebookModal({
             <h3>Join the HackShield dojo</h3>
             <ol>
               <li>Sign in to your pwn.college account.</li>
-              <li>Open the HackShield dojo invitation (will be mailed to you).</li>
+              <li>
+                Open the{' '}
+                <a
+                  href="https://pwn.college/dojo/hackshield-iitp~13f8a31b/join/WeAreThePeople"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  HackShield dojo invitation <ExternalLink size={13} aria-hidden="true" />
+                </a>
+                .
+              </li>
               <li>
                 Confirm that HackShield appears in your joined dojos, then open
                 it and begin the assigned challenges.

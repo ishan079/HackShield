@@ -75,6 +75,10 @@ async function acceptRulebook(user: ReturnType<typeof userEvent.setup>) {
   expect(
     await screen.findByRole('dialog', { name: 'pwn.college Rulebook' })
   ).toBeVisible()
+  expect(screen.getByRole('link', { name: 'HackShield dojo invitation' })).toHaveAttribute(
+    'href',
+    'https://pwn.college/dojo/hackshield-iitp~13f8a31b/join/WeAreThePeople'
+  )
   await user.click(screen.getByRole('button', { name: 'Close rulebook' }))
   await user.type(screen.getByRole('textbox', { name: 'Declaration' }), MINI_CTF_DECLARATION)
 }
