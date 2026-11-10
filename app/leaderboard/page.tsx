@@ -1,10 +1,19 @@
 import Link from 'next/link'
+import { unstable_cache } from 'next/cache'
 import { ArrowLeft, Crown, Trophy } from 'lucide-react'
 import { getPrisma } from '@/lib/prisma'
 import type { PwnCollegeLeaderboardEntry } from '@/server/pwn-college/contracts'
 import { PwnCollegeRepository } from '@/server/pwn-college/repository'
 
 export const dynamic = 'force-dynamic'
+
+// The source is refreshed periodically; a short shared cache keeps navigation
+// fast without making the leaderboard meaningfully stale.
+const getCachedLeaderboard = unstable_cache(
+  async () => new PwnCollegeRepository(getPrisma()).getLeaderboard('mini-14'),
+  ['pwn-college-leaderboard-mini-14'],
+  { revalidate: 60 }
+)
 
 function rankColor(rank: number): string {
   if (rank === 1) return '#fbbf24'
@@ -17,7 +26,7 @@ export default async function LeaderboardPage() {
   let entries: PwnCollegeLeaderboardEntry[] = []
   let unavailable = false
   try {
-    entries = await new PwnCollegeRepository(getPrisma()).getLeaderboard('mini-14')
+    entries = await getCachedLeaderboard()
   } catch (error) {
     console.error('Unable to load cached pwn.college leaderboard', error)
     unavailable = true

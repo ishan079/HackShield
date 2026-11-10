@@ -183,6 +183,7 @@ describe('Dynamic CTF category selection', () => {
 
     await user.click(screen.getByRole('button', { name: 'View Leaderboard' }))
     expect(push).toHaveBeenCalledWith('/leaderboard')
+    expect(screen.getByRole('button', { name: 'Opening leaderboard…' })).toBeDisabled()
   })
 
   it('provides respective and non-redundant icons and corresponding tags for each CTF discipline', () => {

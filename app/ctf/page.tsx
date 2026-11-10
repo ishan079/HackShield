@@ -18,6 +18,7 @@ import {
     Flag,
     Globe,
     HelpCircle,
+    LoaderCircle,
     Lock,
     Radio,
     Search,
@@ -142,6 +143,7 @@ function CTFContent() {
     const [activeTab, setActiveTab] = useState<CTFCategoryKey>(initialType)
     const currentCategory = CTF_CATEGORIES[activeTab] || CTF_CATEGORIES.flagship
     const [flippedSprintId, setFlippedSprintId] = useState<string | null>(null)
+    const [isOpeningLeaderboard, setIsOpeningLeaderboard] = useState(false)
     const [regForm, setRegForm] = useState({
         fullName: '',
         rollNumber: '',
@@ -1451,19 +1453,33 @@ function CTFContent() {
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    onClick={() => router.push('/leaderboard')}
+                                                    onClick={() => {
+                                                        setIsOpeningLeaderboard(true)
+                                                        router.push('/leaderboard')
+                                                    }}
+                                                    disabled={isOpeningLeaderboard}
                                                     style={{
                                                         display: 'inline-flex', alignItems: 'center', gap: '6px',
                                                         color: 'var(--accent)', border: '1px solid var(--accent-dim)',
                                                         background: 'var(--accent-subtle)', padding: '8px 16px',
                                                         borderRadius: '9999px', fontSize: '0.82rem', fontWeight: 800,
-                                                        cursor: 'pointer', transition: 'all 0.2s ease',
+                                                        cursor: isOpeningLeaderboard ? 'wait' : 'pointer', transition: 'all 0.2s ease',
+                                                        opacity: isOpeningLeaderboard ? 0.78 : 1,
                                                     }}
                                                     onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent)' }}
                                                     onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--accent-dim)' }}
                                                 >
-                                                    <Trophy size={15} aria-hidden="true" />
-                                                    <span>View Leaderboard</span>
+                                                    {isOpeningLeaderboard ? (
+                                                        <motion.span
+                                                            aria-hidden="true"
+                                                            animate={{rotate: 360}}
+                                                            transition={{duration: 0.8, ease: 'linear', repeat: Infinity}}
+                                                            style={{display: 'inline-flex'}}
+                                                        >
+                                                            <LoaderCircle size={15}/>
+                                                        </motion.span>
+                                                    ) : <Trophy size={15} aria-hidden="true" />}
+                                                    <span aria-live="polite">{isOpeningLeaderboard ? 'Opening leaderboard…' : 'View Leaderboard'}</span>
                                                 </button>
                                                 </div>
                                             </div>
