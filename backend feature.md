@@ -61,10 +61,12 @@ An empty `entries` list with `lastFetchedAt: null` means no successful scoreboar
 `GET /api/v1/ctf/pwn-college/leaderboard`
 
 Returns at most ten public entries for Mini CTF `mini-14`: calculated rank,
-optional registered `realName`, pwn.college `username`, and `solves`. Entries
-are sorted by solve count descending. Equal totals are resolved by the time the
-participant completed their latest counted solve, so the participant who reached
-that total first ranks first. The public page is `/leaderboard`.
+registered `realName`, pwn.college `username`, and `solves`. Only people with a
+matching completed Mini CTF registration and a non-empty real name are eligible
+for this public leaderboard. Entries are sorted by solve count descending.
+Equal totals are resolved by the time the participant completed their latest
+counted solve, so the participant who reached that total first ranks first. The
+public page is `/leaderboard`.
 
 ### Run a synchronization
 

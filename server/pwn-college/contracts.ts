@@ -23,7 +23,7 @@ export interface PwnCollegeScoreboardCacheEntry extends PwnCollegeScoreboardReco
 
 export interface PwnCollegeLeaderboardEntry {
   rank: number
-  realName: string | null
+  realName: string
   username: string
   solves: number
   completedAt: Date | null
