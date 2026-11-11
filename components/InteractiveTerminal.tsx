@@ -70,7 +70,7 @@ export default function InteractiveTerminal() {
             { type: 'system', text: '[*] Bypassing padding oracles... OK' },
             {
               type: 'success',
-              text: '[✓] SUCCESS! FLAG{H4CK_L34RN_D3F3ND_T0G3TH3R_IITP_2025}',
+              text: '[✓] SUCCESS! FLAG{H4CK_L34RN_D3F3ND_T0G3TH3R_IITP_2026}',
             },
             {
               type: 'output',
