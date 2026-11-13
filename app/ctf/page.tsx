@@ -345,10 +345,10 @@ function CTFContent() {
     const miniSprints: MiniCTFSprint[] = [{
         id: 'mini-14',
         title: 'The Mini CTF',
-        status: 'REGISTRATION OPEN',
-        statusColor: '#10b981',
-        date: 'November 10,2026|12:00 PM – November 13,2026|12:00 PM IST',
-        duration: '72 Hours',
+        status: 'REGISTRATION CLOSED',
+        statusColor: '#ef4444',
+        date: 'November 10,2026|12:00 PM – November 14,2026|12:00 PM IST',
+        duration: '96 Hours',
         challenges: 'Multiple Targets',
         difficulty: 'Beginner, Intermediate',
         format: 'Solo or Duos',
@@ -1396,22 +1396,22 @@ function CTFContent() {
                                                 </div>
 
                                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px' }}>
-                                                <button
+                                                {sprint.status === 'REGISTRATION OPEN' ? <button
                                                     type="button"
                                                     onClick={() => openRegistration(sprint.id)}
                                                     style={{
                                                         display: 'inline-flex',
                                                         alignItems: 'center',
                                                         gap: '6px',
-                                                        background: sprint.status === 'REGISTRATION OPEN' ? 'var(--accent)' : 'var(--bg-surface)',
-                                                        color: sprint.status === 'REGISTRATION OPEN' ? '#ffffff' : 'var(--text-primary)',
+                                                        background: 'var(--accent)',
+                                                        color: '#ffffff',
                                                         border: '1px solid var(--border-strong)',
                                                         padding: '10px 22px',
                                                         borderRadius: '9999px',
                                                         fontSize: '0.90rem',
                                                         fontWeight: 700,
                                                         cursor: 'pointer',
-                                                        boxShadow: sprint.status === 'REGISTRATION OPEN' ? '0 4px 14px var(--accent-glow)' : 'none',
+                                                        boxShadow: '0 4px 14px var(--accent-glow)',
                                                         transition: 'all 0.2s ease',
                                                     }}
                                                     onMouseEnter={(e) => {
@@ -1421,11 +1421,10 @@ function CTFContent() {
                                                         e.currentTarget.style.transform = 'scale(1)'
                                                     }}
                                                 >
-                                  <span>
-                                    {sprint.status === 'REGISTRATION OPEN' ? 'Join Sprint' : 'View Arena'}
-                                  </span>
+                                                    <span>Join Sprint</span>
                                                     <ArrowUpRight size={16}/>
                                                 </button>
+                                                : null}
                                                 <button
                                                     type="button"
                                                     onClick={() => {

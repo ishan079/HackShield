@@ -181,6 +181,10 @@ describe('Dynamic CTF category selection', () => {
     const user = userEvent.setup()
     render(<CTFPage />)
 
+    expect(screen.queryByRole('button', { name: 'Join Sprint' })).not.toBeInTheDocument()
+    expect(screen.getByText(/REGISTRATION CLOSED/)).toBeInTheDocument()
+    expect(screen.getByText(/November 14,2026\|12:00 PM IST/)).toBeInTheDocument()
+    expect(screen.getByText('96 Hours')).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'View Leaderboard' }))
     expect(push).toHaveBeenCalledWith('/leaderboard')
     expect(screen.getByRole('button', { name: 'Opening leaderboard…' })).toBeDisabled()
