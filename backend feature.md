@@ -67,10 +67,9 @@ HackShield registration. The public page is `/leaderboard`.
 
 After the Mini CTF, the public leaderboard is intentionally frozen as a local
 final-standings snapshot in `server/pwn-college/frozen-mini-ctf-leaderboard.ts`.
-It includes organizer-approved name overrides and one name-less participant.
-The public page and leaderboard API use this snapshot rather than the database
-cache. The collector remains available for internal archival purposes, but its
-server cron is paused.
+It includes organizer-approved name overrides only. The public page and
+leaderboard API use this snapshot rather than the database cache. The collector
+remains available for internal archival purposes, but its server cron is paused.
 
 ### Run a synchronization
 
