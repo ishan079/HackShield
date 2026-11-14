@@ -1,19 +1,7 @@
 import Link from 'next/link'
-import { unstable_cache } from 'next/cache'
 import { ArrowLeft, Crown, Trophy } from 'lucide-react'
-import { getPrisma } from '@/lib/prisma'
 import type { PwnCollegeLeaderboardEntry } from '@/server/pwn-college/contracts'
-import { PwnCollegeRepository } from '@/server/pwn-college/repository'
-
-export const dynamic = 'force-dynamic'
-
-// The source is refreshed periodically; a short shared cache keeps navigation
-// fast without making the leaderboard meaningfully stale.
-const getCachedLeaderboard = unstable_cache(
-  async () => new PwnCollegeRepository(getPrisma()).getLeaderboard('mini-14'),
-  ['pwn-college-leaderboard-mini-14'],
-  { revalidate: 60 }
-)
+import { FROZEN_MINI_CTF_LEADERBOARD } from '@/server/pwn-college/frozen-mini-ctf-leaderboard'
 
 function rankColor(rank: number): string {
   if (rank === 1) return '#fbbf24'
@@ -23,14 +11,7 @@ function rankColor(rank: number): string {
 }
 
 export default async function LeaderboardPage() {
-  let entries: PwnCollegeLeaderboardEntry[] = []
-  let unavailable = false
-  try {
-    entries = await getCachedLeaderboard()
-  } catch (error) {
-    console.error('Unable to load cached pwn.college leaderboard', error)
-    unavailable = true
-  }
+  const entries: readonly PwnCollegeLeaderboardEntry[] = FROZEN_MINI_CTF_LEADERBOARD
 
   return (
     <main style={{ minHeight: '100vh', padding: '150px 24px 90px' }}>
@@ -63,11 +44,7 @@ export default async function LeaderboardPage() {
             </div>
           </div>
 
-          {unavailable ? (
-            <div role="alert" style={{ padding: '22px', borderRadius: '14px', background: 'rgba(248, 113, 113, 0.1)', border: '1px solid rgba(248, 113, 113, 0.35)' }}>
-              The leaderboard is temporarily unavailable. Please try again shortly.
-            </div>
-          ) : entries.length === 0 ? (
+          {entries.length === 0 ? (
             <div style={{ padding: '28px', borderRadius: '14px', background: 'var(--accent-subtle)', border: '1px solid var(--accent-dim)', textAlign: 'center' }}>
               <Trophy size={26} aria-hidden="true" style={{ color: 'var(--accent)', marginBottom: '10px' }} />
               <p style={{ color: 'var(--text-primary)', fontWeight: 700 }}>No leaderboard results yet.</p>
@@ -80,8 +57,8 @@ export default async function LeaderboardPage() {
                     {entry.rank === 1 ? <Crown size={22} aria-hidden="true" /> : `#${entry.rank}`}
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ color: 'var(--text-primary)', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{entry.realName}</div>
-                    <div style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>@{entry.username}</div>
+                    {entry.realName ? <div style={{ color: 'var(--text-primary)', fontWeight: 800, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{entry.realName}</div> : null}
+                    <div style={{ color: entry.realName ? 'var(--text-secondary)' : 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>@{entry.username}</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <div style={{ color: 'var(--text-primary)', fontWeight: 900, fontSize: '1.15rem' }}>{entry.solves}</div>

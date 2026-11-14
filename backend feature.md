@@ -60,13 +60,17 @@ An empty `entries` list with `lastFetchedAt: null` means no successful scoreboar
 
 `GET /api/v1/ctf/pwn-college/leaderboard`
 
-Returns at most ten public entries for Mini CTF `mini-14`: calculated rank,
-registered `realName`, pwn.college `username`, and `solves`. Only people with a
-matching completed Mini CTF registration and a non-empty real name are eligible
-for this public leaderboard. Entries are sorted by solve count descending.
-Equal totals are resolved by the time the participant completed their latest
-counted solve, so the participant who reached that total first ranks first. The
-public page is `/leaderboard`.
+Returns the final frozen top-ten Mini CTF standings: rank, an optional
+organizer-approved `realName`, pwn.college `username`, and `solves`. It includes
+all final source-scoreboard participants, including users without a matching
+HackShield registration. The public page is `/leaderboard`.
+
+After the Mini CTF, the public leaderboard is intentionally frozen as a local
+final-standings snapshot in `server/pwn-college/frozen-mini-ctf-leaderboard.ts`.
+It includes organizer-approved name overrides and one name-less participant.
+The public page and leaderboard API use this snapshot rather than the database
+cache. The collector remains available for internal archival purposes, but its
+server cron is paused.
 
 ### Run a synchronization
 
