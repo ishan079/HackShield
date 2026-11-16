@@ -8,9 +8,25 @@ import nextConfig from '@/next.config.mjs'
 import RegisterPage from '@/app/register/page'
 
 describe('Registration closed routing', () => {
-  it('does not redirect /register to the Mini CTF registration form', async () => {
+  it('redirects the retired Mini CTF direct-registration link before the page renders', async () => {
     const config = nextConfig('phase-production-build')
-    expect(config.redirects).toBeUndefined()
+    expect(config.redirects).toBeDefined()
+
+    const redirects = await config.redirects!()
+    expect(redirects).toEqual([
+      {
+        source: '/ctf',
+        has: [
+          {
+            type: 'query',
+            key: 'register',
+            value: 'mini-14',
+          },
+        ],
+        destination: '/ctf?type=mini',
+        permanent: false,
+      },
+    ])
   })
 
   it('shows the closed-registration status for legacy /register visits', () => {
