@@ -48,7 +48,7 @@ export default function InteractiveTerminal() {
       case 'help':
         newHistory.push({
           type: 'output',
-          text: 'AVAILABLE COMMANDS: cat challenge.txt | decrypt | whoami | members | flag | ctf | clear',
+          text: 'AVAILABLE COMMANDS: cat challenge.txt | decrypt | solve | whoami | clear',
         })
         break
       case 'cat challenge.txt':
