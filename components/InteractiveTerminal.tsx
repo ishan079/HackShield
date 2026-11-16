@@ -86,18 +86,6 @@ export default function InteractiveTerminal() {
           text: 'uid=1000(guest_researcher) gid=1000(hackshield_community) groups=1000(hackshield),4(adm),27(sudo)',
         })
         break
-      case 'members':
-        newHistory.push({
-          type: 'output',
-          text: 'LEADS: Yash Bhople (Kn1gh7), Ishan Mishra, Arjun Verma, Priya Sharma\nCAMPUS: IIT Patna Bihta Node',
-        })
-        break
-      case 'ctf':
-        newHistory.push({
-          type: 'output',
-          text: 'NEXT EVENT: HackShield CTF 2025 (Flagship National Tournament)\nREGISTRATION: Pre-register at /ctf',
-        })
-        break
       case 'clear':
         setHistory([])
         setInputVal('')
@@ -107,7 +95,6 @@ export default function InteractiveTerminal() {
           type: 'error',
           text: `bash: command not found: ${raw}. Type "help" for options.`,
         })
-        break
     }
 
     setHistory(newHistory)
