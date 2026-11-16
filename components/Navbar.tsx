@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -42,7 +42,14 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [registrationNoticeOpen, setRegistrationNoticeOpen] = useState(false)
+  const registrationNoticeCloseRef = useRef<HTMLButtonElement>(null)
   const pathname = usePathname()
+
+  const openRegistrationNotice = () => {
+    setMobileMenuOpen(false)
+    setRegistrationNoticeOpen(true)
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,6 +67,17 @@ export default function Navbar() {
       document.body.style.overflow = ''
     }
   }, [mobileMenuOpen])
+
+  useEffect(() => {
+    if (!registrationNoticeOpen) return
+
+    registrationNoticeCloseRef.current?.focus()
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setRegistrationNoticeOpen(false)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [registrationNoticeOpen])
 
   return (
     <>
@@ -82,10 +100,11 @@ export default function Navbar() {
           transition: 'padding 0.42s cubic-bezier(0.16, 1, 0.3, 1), gap 0.42s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        <Link
-          href="/register"
+        <button
+          type="button"
+          onClick={openRegistrationNotice}
           className="hs-register-overlay-btn"
-          aria-label="Register for HackShield CTF"
+          aria-label="Registration is currently unavailable"
           style={{
             pointerEvents: 'auto',
             display: 'inline-flex',
@@ -111,9 +130,11 @@ export default function Navbar() {
             WebkitBackdropFilter: 'blur(16px)',
             transition: 'all 0.42s cubic-bezier(0.16, 1, 0.3, 1)',
             cursor: 'pointer',
+            appearance: 'none',
             flexShrink: 0,
             userSelect: 'none',
             whiteSpace: 'nowrap',
+            fontFamily: 'inherit',
           }}
         >
           <span
@@ -147,7 +168,7 @@ export default function Navbar() {
           >
             ↗
           </span>
-        </Link>
+        </button>
 
         <header
           style={{
@@ -749,9 +770,9 @@ export default function Navbar() {
                   gap: '10px',
                 }}
               >
-                <Link
-                  href="/register"
-                  onClick={() => setMobileMenuOpen(false)}
+                <button
+                  type="button"
+                  onClick={openRegistrationNotice}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -767,11 +788,14 @@ export default function Navbar() {
                     textDecoration: 'none',
                     fontSize: '0.95rem',
                     boxShadow: '0 4px 16px rgba(168, 85, 247, 0.45)',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
                   }}
                 >
                   <span>Register</span>
                   <span>↗</span>
-                </Link>
+                </button>
                 <a
                   href="https://chat.whatsapp.com/Kk4EPaNeHkp8oNQZ8O0ZR7"
                   target="_blank"
@@ -799,6 +823,84 @@ export default function Navbar() {
               </div>
             </motion.div>
           </>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {registrationNoticeOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onMouseDown={() => setRegistrationNoticeOpen(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 1100,
+              display: 'grid',
+              placeItems: 'center',
+              padding: '24px',
+              background: 'rgba(0, 0, 0, 0.56)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+            }}
+          >
+            <motion.section
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="registration-notice-title"
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ duration: 0.18 }}
+              onMouseDown={(event) => event.stopPropagation()}
+              style={{
+                width: 'min(100%, 460px)',
+                padding: '32px',
+                borderRadius: '24px',
+                textAlign: 'center',
+                background: 'var(--bg-card)',
+                border: '1px solid var(--border-subtle)',
+                boxShadow: '0 24px 72px rgba(0, 0, 0, 0.38)',
+              }}
+            >
+              <p
+                style={{
+                  margin: '0 0 10px',
+                  color: 'var(--accent)',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
+                }}
+              >
+                REGISTRATION STATUS
+              </p>
+              <h2 id="registration-notice-title" style={{ margin: '0 0 14px' }}>
+                No current event registrations are active.
+              </h2>
+              <p style={{ margin: '0 0 24px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                Please check back when the next HackShield event is announced.
+              </p>
+              <button
+                ref={registrationNoticeCloseRef}
+                type="button"
+                onClick={() => setRegistrationNoticeOpen(false)}
+                style={{
+                  border: 'none',
+                  borderRadius: '9999px',
+                  padding: '12px 22px',
+                  background: 'var(--accent)',
+                  color: '#ffffff',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  fontWeight: 700,
+                }}
+              >
+                Got it
+              </button>
+            </motion.section>
+          </motion.div>
         )}
       </AnimatePresence>
 

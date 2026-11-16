@@ -1,34 +1,23 @@
-import { describe, expect, it, vi } from 'vitest'
+// @vitest-environment jsdom
+
+import { render, screen } from '@testing-library/react'
+import React from 'react'
+import { describe, expect, it } from 'vitest'
 import nextConfig from '@/next.config.mjs'
-
-const { redirect } = vi.hoisted(() => ({
-  redirect: vi.fn(),
-}))
-
-vi.mock('next/navigation', () => ({
-  redirect,
-}))
 
 import RegisterPage from '@/app/register/page'
 
-describe('Register redirect configuration', () => {
-  it('redirects /register to the mini-14 CTF registration destination in next.config', async () => {
+describe('Registration closed routing', () => {
+  it('does not redirect /register to the Mini CTF registration form', async () => {
     const config = nextConfig('phase-production-build')
-    expect(config.redirects).toBeDefined()
-    const redirects = await config.redirects!()
-    const registerRedirect = redirects.find((r) => r.source === '/register')
-
-    expect(registerRedirect).toBeDefined()
-    expect(registerRedirect?.destination).toBe(
-      '/ctf?type=mini&register=mini-14#registration-mini-14'
-    )
-    expect(registerRedirect?.permanent).toBe(false)
+    expect(config.redirects).toBeUndefined()
   })
 
-  it('invokes Next.js redirect to mini-14 registration in the /register page component', () => {
-    RegisterPage()
-    expect(redirect).toHaveBeenCalledWith(
-      '/ctf?type=mini&register=mini-14#registration-mini-14'
-    )
+  it('shows the closed-registration status for legacy /register visits', () => {
+    render(React.createElement(RegisterPage))
+    expect(
+      screen.getByRole('heading', { name: 'No current event registrations are active.' })
+    ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Return home' })).toHaveAttribute('href', '/')
   })
 })
