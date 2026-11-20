@@ -1,4 +1,4 @@
-import React from 'react'
+import type { ReactNode } from 'react'
 
 export type Theme = 'dark' | 'light'
 
@@ -16,7 +16,7 @@ export interface PillarItem {
   title: string
   subtitle?: string
   description: string
-  icon: React.ReactNode
+  icon: ReactNode
   accentColor?: string
 }
 
@@ -48,7 +48,7 @@ export interface WeekItem {
 
 export interface CTFCategory {
   name: string
-  icon: React.ReactNode
+  icon: ReactNode
   tag: string
   desc: string
 }
@@ -79,7 +79,7 @@ export interface MiniCTFSprint {
 export interface MiniStatItem {
   label: string
   val: string
-  icon: React.ReactNode
+  icon: ReactNode
 }
 
 export interface TerminalLine {
@@ -101,7 +101,7 @@ export interface ResourceItem {
   desc: string
   tags: string[]
   link: string
-  icon: React.ReactNode
+  icon: ReactNode
 }
 
 export interface TeamMember {

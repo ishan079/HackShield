@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect} from 'react'
+import {useEffect} from 'react'
 import {motion} from 'framer-motion'
 import {useInView} from 'react-intersection-observer'
 import {Cpu, Lock, Sparkles, Terminal, Users} from 'lucide-react'
@@ -16,10 +16,6 @@ export default function AboutPage() {
         threshold: 0.1,
     })
     const {ref: valuesRef, inView: valuesInView} = useInView({
-        triggerOnce: true,
-        threshold: 0.1,
-    })
-    const {ref: timelineRef, inView: timelineInView} = useInView({
         triggerOnce: true,
         threshold: 0.1,
     })
@@ -44,30 +40,6 @@ export default function AboutPage() {
             icon: <Cpu size={24} color="var(--accent)"/>,
             title: 'Systems-Level Thinking',
             desc: 'From logic gates to cloud orchestration, we explore every layer of the stack. No blindly running scripts or scanners —understand what\'s happening under the hood, then make your move.',
-        },
-    ]
-
-
-    const milestones = [
-        {
-            year: '2021',
-            title: 'The Genesis at IIT Patna',
-            desc: 'Founded by a close-knit group of computer science undergraduates who wanted more practical systems security beyond standard coursework.',
-        },
-        {
-            year: '2022',
-            title: 'First Inter-Collegiate CTF',
-            desc: 'Launched our inaugural internal and inter-IIT Capture The Flag competition with over 300 students and custom-authored reverse engineering challenges.',
-        },
-        {
-            year: '2023',
-            title: 'Bootcamp & Industry Synergy',
-            desc: 'Introduced our flagship 6-Week Structured Cybersecurity track and hosted guest lectures with security researchers from Google Project Zero and top security consultancies.',
-        },
-        {
-            year: '2024+',
-            title: 'National Standing & Research',
-            desc: 'HackShield CTF expanded nationwide with 1,500+ participants, while our club members contributed CVEs, bug bounties, and academic security papers.',
         },
     ]
 
@@ -303,9 +275,6 @@ export default function AboutPage() {
                             </motion.div>
                         ))}
                     </div>
-                </div>
-
-                <div ref={timelineRef} style={{marginBottom: '80px'}}>
                 </div>
             </div>
         </div>

@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { motion } from 'framer-motion'
 import BinaryRainTree from '@/components/BinaryRainTree'
 import Hero from '@/components/Hero'
@@ -87,21 +86,30 @@ export default function HomePage() {
           <InteractiveTerminal />
         </div>
 
-        <div
-          style={{
-            maxWidth: 1280,
-            margin: '80px auto 40px',
-            padding: '0 24px',
-          }}
-        >
+        <div>
           <CTASection />
         </div>
       </div>
 
       <style jsx global>{`
+        .hs-cta-screen {
+          min-height: auto;
+          margin: 20px auto 0;
+        }
+        @media (min-width: 769px) {
+          .hs-cta-screen {
+            min-height: calc(100vh - 250px) !important;
+            margin: 0 auto !important;
+          }
+        }
         @supports (min-height: 100dvh) {
           .hs-hero-screen {
             min-height: 100dvh !important;
+          }
+          @media (min-width: 769px) {
+            .hs-cta-screen {
+              min-height: calc(100dvh - 250px) !important;
+            }
           }
         }
       `}</style>

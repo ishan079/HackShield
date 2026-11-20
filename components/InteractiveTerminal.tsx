@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useEffect, FormEvent } from 'react'
+import { useState, useRef, useEffect, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { TerminalLine } from '@/types'

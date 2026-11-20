@@ -1,9 +1,9 @@
 'use client'
 
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {motion} from 'framer-motion'
 import {useInView} from 'react-intersection-observer'
-import {ArrowUpRight, BookOpen, CheckCircle2, Terminal} from 'lucide-react'
+import {ArrowUpRight, CheckCircle2, Terminal} from 'lucide-react'
 import {ProgramTrack, WeekItem} from '@/types'
 
 export default function ProgramsPage() {
