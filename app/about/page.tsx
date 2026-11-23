@@ -1,9 +1,9 @@
 'use client'
 
-import {useEffect} from 'react'
-import {motion} from 'framer-motion'
-import {useInView} from 'react-intersection-observer'
-import {Cpu, Lock, Sparkles, Terminal, Users} from 'lucide-react'
+import { useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
+import { Cpu, Lock, Sparkles, Terminal, Users } from 'lucide-react'
 import TeamSection from '@/components/TeamSection'
 
 export default function AboutPage() {
@@ -11,33 +11,33 @@ export default function AboutPage() {
         window.scrollTo(0, 0)
     }, [])
 
-    const {ref: heroRef, inView: heroInView} = useInView({
+    const { ref: heroRef, inView: heroInView } = useInView({
         triggerOnce: true,
         threshold: 0.1,
     })
-    const {ref: valuesRef, inView: valuesInView} = useInView({
+    const { ref: valuesRef, inView: valuesInView } = useInView({
         triggerOnce: true,
         threshold: 0.1,
     })
 
     const values = [
         {
-            icon: <Terminal size={24} color="var(--accent)"/>,
+            icon: <Terminal size={24} color="var(--accent)" />,
             title: 'Pragmatic Security First',
             desc: 'Theory sets the stage. Practice steals the show. From memory buffers and network packets to reverse-engineering binaries, we dive straight into offensive and defensive security. Less slides, more bytes.',
         },
         {
-            icon: <Users size={24} color="var(--accent)"/>,
+            icon: <Users size={24} color="var(--accent)" />,
             title: 'Fiercely Collaborative',
             desc: 'No hacker works alone. From curious freshers to seasoned CTF warriors and alumni in top security firms and defense agencies, HackShield brings the entire crew together. Share knowledge, crack challenges, grow stronger.',
         },
         {
-            icon: <Lock size={24} color="var(--accent)"/>,
+            icon: <Lock size={24} color="var(--accent)" />,
             title: 'Responsible & Ethical',
             desc: 'With great hacking power comes great responsibility. Every lab and workshop stays within ethical boundaries, because breaking rules isn\'t the goal breaking vulnerabilities is. White-hat mindset, from day one.',
         },
         {
-            icon: <Cpu size={24} color="var(--accent)"/>,
+            icon: <Cpu size={24} color="var(--accent)" />,
             title: 'Systems-Level Thinking',
             desc: 'From logic gates to cloud orchestration, we explore every layer of the stack. No blindly running scripts or scanners —understand what\'s happening under the hood, then make your move.',
         },
@@ -51,18 +51,18 @@ export default function AboutPage() {
                 background: 'transparent',
                 minHeight: '100vh',
                 paddingTop: '100px',
-                paddingBottom: '80px',
+                paddingBottom: '20px',
                 color: 'var(--text-primary)',
                 transition: 'color 0.35s ease',
             }}
         >
-            <div style={{maxWidth: 1100, margin: '0 auto', padding: '0 24px'}}>
+            <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px' }}>
                 <motion.div
                     ref={heroRef}
-                    initial={{opacity: 0, y: 30}}
-                    animate={heroInView ? {opacity: 1, y: 0} : {}}
-                    transition={{duration: 0.7}}
-                    style={{textAlign: 'center', marginBottom: '70px'}}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={heroInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.7 }}
+                    style={{ textAlign: 'center', marginBottom: '70px' }}
                 >
                     <h1
                         style={{
@@ -76,7 +76,7 @@ export default function AboutPage() {
                         }}
                     >
                         Find the Pattern.
-                        <br/>
+                        <br />
                         <span
                             style={{
                                 color: 'var(--accent)',
@@ -104,9 +104,9 @@ export default function AboutPage() {
                 </motion.div>
 
                 <motion.div
-                    initial={{opacity: 0, scale: 0.96}}
-                    animate={{opacity: 1, scale: 1}}
-                    transition={{duration: 0.8, delay: 0.2}}
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
                     style={{
                         position: 'relative',
                         background: 'var(--card-gradient)',
@@ -130,7 +130,7 @@ export default function AboutPage() {
                             marginBottom: '12px',
                         }}
                     >
-                        <Sparkles size={20}/>
+                        <Sparkles size={20} />
                         <span
                             style={{
                                 textTransform: 'uppercase',
@@ -139,8 +139,8 @@ export default function AboutPage() {
                                 fontWeight: 700,
                             }}
                         >
-              Our Vision
-            </span>
+                            Our Vision
+                        </span>
                     </div>
                     <h2
                         style={{
@@ -169,27 +169,34 @@ export default function AboutPage() {
                 </motion.div>
 
                 <div
-                    style={{maxWidth: 1280, margin: '60px auto', padding: '0 24px'}}
+                    style={{ maxWidth: 1280, margin: '60px auto 40px', padding: '0 24px' }}
                 >
-                    <TeamSection/>
+                    <TeamSection />
                 </div>
 
-                <div ref={valuesRef} style={{marginBottom: '90px'}}>
-                    <div style={{textAlign: 'center', marginBottom: '45px'}}>
-            <span
-                style={{
-                    color: 'var(--accent)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '2px',
-                    fontSize: '0.8rem',
-                    fontWeight: 700,
-                }}
-            >
-              Principles
-            </span>
+                <div
+                    ref={valuesRef}
+                    style={{
+                        marginBottom: '20px',
+                        paddingTop: '30px',
+                        scrollMarginTop: '100px',
+                    }}
+                >
+                    <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+                        <span
+                            style={{
+                                color: 'var(--accent)',
+                                textTransform: 'uppercase',
+                                letterSpacing: '2px',
+                                fontSize: '0.8rem',
+                                fontWeight: 700,
+                            }}
+                        >
+                            Principles
+                        </span>
                         <h2
                             style={{
-                                fontSize: '2.2rem',
+                                fontSize: 'clamp(1.8rem, 3.5vw, 2.2rem)',
                                 fontWeight: 800,
                                 marginTop: '8px',
                                 color: 'var(--text-primary)',
@@ -203,22 +210,22 @@ export default function AboutPage() {
                         style={{
                             display: 'grid',
                             gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                            gap: '24px',
+                            gap: '20px',
                         }}
                     >
                         {values.map((val, idx) => (
                             <motion.div
                                 key={idx}
-                                initial={{opacity: 0, y: 25}}
-                                animate={valuesInView ? {opacity: 1, y: 0} : {}}
-                                transition={{duration: 0.5, delay: idx * 0.12}}
+                                initial={{ opacity: 0, y: 25 }}
+                                animate={valuesInView ? { opacity: 1, y: 0 } : {}}
+                                transition={{ duration: 0.5, delay: idx * 0.12 }}
                                 style={{
                                     background: 'var(--bg-card)',
                                     border: '1px solid var(--border-subtle)',
                                     borderTop: '1.5px solid var(--border-specular)',
                                     borderBottom: '1px solid var(--border-bottom)',
-                                    borderRadius: '26px',
-                                    padding: '28px',
+                                    borderRadius: '24px',
+                                    padding: '24px',
                                     boxShadow: 'var(--shadow-card)',
                                     backdropFilter: 'blur(14px)',
                                     WebkitBackdropFilter: 'blur(14px)',
@@ -240,23 +247,23 @@ export default function AboutPage() {
                             >
                                 <div
                                     style={{
-                                        width: '48px',
-                                        height: '48px',
+                                        width: '44px',
+                                        height: '44px',
                                         borderRadius: '12px',
                                         background: 'var(--accent-dim)',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        marginBottom: '18px',
+                                        marginBottom: '14px',
                                     }}
                                 >
                                     {val.icon}
                                 </div>
                                 <h3
                                     style={{
-                                        fontSize: '1.2rem',
+                                        fontSize: '1.15rem',
                                         fontWeight: 700,
-                                        marginBottom: '10px',
+                                        marginBottom: '8px',
                                         color: 'var(--text-primary)',
                                     }}
                                 >
@@ -264,8 +271,8 @@ export default function AboutPage() {
                                 </h3>
                                 <p
                                     style={{
-                                        fontSize: '0.95rem',
-                                        lineHeight: 1.6,
+                                        fontSize: '0.92rem',
+                                        lineHeight: 1.55,
                                         color: 'var(--text-secondary)',
                                         margin: 0,
                                     }}
@@ -280,4 +287,3 @@ export default function AboutPage() {
         </div>
     )
 }
-
