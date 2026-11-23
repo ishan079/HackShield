@@ -1,10 +1,10 @@
 'use client'
 
-import {useState} from 'react'
-import {motion} from 'framer-motion'
-import {useInView} from 'react-intersection-observer'
-import {User} from 'lucide-react'
-import {TeamMember} from '@/types'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
+import { User } from 'lucide-react'
+import { TeamMember } from '@/types'
 
 export const teamMembers: TeamMember[] = [
     {
@@ -35,7 +35,7 @@ export const teamMembers: TeamMember[] = [
     },
     {
         name: 'Himanshu Kundal',
-        role: 'Core Member',
+        role: 'Member',
         email: 'himanahu_ua2504cdh203@iitp.ac.in',
         linkedin: 'https://linkedin.com/in/himanshukundal',
         website: 'https://himanshuiitp.github.io/portfolio/',
@@ -44,7 +44,7 @@ export const teamMembers: TeamMember[] = [
     },
     {
         name: 'Antra Priyadarshini',
-        role: 'Core Member',
+        role: 'Member',
         email: 'antra_ua2503cdh63@iitp.ac.in',
         linkedin: 'https://www.linkedin.com/in/antra-priyadarshini-79a5a0399/',
         badge: 'Member',
@@ -52,7 +52,7 @@ export const teamMembers: TeamMember[] = [
     },
     {
         name: 'Ishan Mishra',
-        role: 'Core Member',
+        role: 'Member',
         email: 'ishan_ua2504aih103@iitp.ac.in',
         linkedin: 'www.linkedin.com/in/ishanmishra079',
         badge: 'Member',
@@ -60,7 +60,7 @@ export const teamMembers: TeamMember[] = [
     },
     {
         name: 'Aditya Adep',
-        role: 'Core Member',
+        role: 'Member',
         email: 'aditya_ua2504aih22@iitp.ac.in',
         linkedin: 'https://www.linkedin.com/in/aditya-adep-a08248366/',
         badge: 'Member',
@@ -69,7 +69,7 @@ export const teamMembers: TeamMember[] = [
 
     {
         name: 'Anurag Kumar',
-        role: 'Core Member',
+        role: 'Member',
         email: 'anurag_ua2604aih15@iitp.ac.in',
         linkedin: 'https://www.linkedin.com/in/anurag-kumar-473736349',
         badge: 'Member',
@@ -101,7 +101,7 @@ function normalizeImagePath(path?: string): string {
     return trimmed
 }
 
-function MemberAvatar({member}: { member: TeamMember }) {
+function MemberAvatar({ member }: { member: TeamMember }) {
     const [hasError, setHasError] = useState(false)
     const normalizedSrc = normalizeImagePath(member.image)
     const showImage = Boolean(normalizedSrc && !hasError)
@@ -177,7 +177,7 @@ function MemberAvatar({member}: { member: TeamMember }) {
                             zIndex: 1,
                         }}
                     >
-                        <User size={24} strokeWidth={1.5}/>
+                        <User size={24} strokeWidth={1.5} />
                     </div>
                     <span
                         style={{
@@ -223,8 +223,8 @@ function MemberAvatar({member}: { member: TeamMember }) {
     )
 }
 
-export default function TeamSection({members = teamMembers}: {members?: TeamMember[]} = {}) {
-    const {ref, inView} = useInView({triggerOnce: true, threshold: 0.12})
+export default function TeamSection({ members = teamMembers }: { members?: TeamMember[] } = {}) {
+    const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.12 })
 
     const advisor = members.find((m) => m.role.toLowerCase().includes('advisor'))
     const coordinators = members.filter((m) =>
@@ -237,8 +237,8 @@ export default function TeamSection({members = teamMembers}: {members?: TeamMemb
     const renderCard = (member: TeamMember, idx: number) => (
         <motion.div
             key={member.name}
-            initial={{opacity: 0, y: 20}}
-            animate={inView ? {opacity: 1, y: 0} : {}}
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{
                 duration: 0.5,
                 delay: idx * 0.05,
@@ -277,7 +277,7 @@ export default function TeamSection({members = teamMembers}: {members?: TeamMemb
         >
             <div>
                 {/* 200 × 230 Image / Placeholder Container */}
-                <MemberAvatar member={member}/>
+                <MemberAvatar member={member} />
 
                 {/* Name & Role on the bottom */}
                 <h3
@@ -329,8 +329,8 @@ export default function TeamSection({members = teamMembers}: {members?: TeamMemb
                         transition: 'color 0.2s',
                     }}
                     onMouseEnter={(e) =>
-                        ((e.target as HTMLElement).style.color =
-                            'var(--text-primary)')
+                    ((e.target as HTMLElement).style.color =
+                        'var(--text-primary)')
                     }
                     onMouseLeave={(e) =>
                         ((e.target as HTMLElement).style.color = 'var(--text-muted)')
@@ -339,7 +339,7 @@ export default function TeamSection({members = teamMembers}: {members?: TeamMemb
                     {member.email}
                 </a>
 
-                <div style={{display: 'flex', gap: '12px', alignItems: 'center', marginTop: '2px'}}>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginTop: '2px' }}>
                     {member.linkedin && (
                         <a
                             href={member.linkedin.startsWith('http') ? member.linkedin : `https://${member.linkedin.replace(/^\/\/\s*/, '').trim()}`}
@@ -363,7 +363,7 @@ export default function TeamSection({members = teamMembers}: {members?: TeamMemb
                             }
                         >
                             <span>LinkedIn</span>
-                            <span style={{fontSize: '0.66rem'}}>↗</span>
+                            <span style={{ fontSize: '0.66rem' }}>↗</span>
                         </a>
                     )}
 
@@ -392,7 +392,7 @@ export default function TeamSection({members = teamMembers}: {members?: TeamMemb
                             }
                         >
                             <span>Website</span>
-                            <span style={{fontSize: '0.66rem'}}>↗</span>
+                            <span style={{ fontSize: '0.66rem' }}>↗</span>
                         </a>
                     )}
                 </div>
@@ -413,10 +413,10 @@ export default function TeamSection({members = teamMembers}: {members?: TeamMemb
             }
         >
             <motion.div
-                initial={{opacity: 0, y: 24}}
-                animate={inView ? {opacity: 1, y: 0} : {}}
-                transition={{duration: 0.65, ease: [0.16, 1, 0.3, 1]}}
-                style={{marginBottom: '40px'}}
+                initial={{ opacity: 0, y: 24 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+                style={{ marginBottom: '40px' }}
             >
                 <div
                     style={{
