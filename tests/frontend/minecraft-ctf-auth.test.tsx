@@ -42,9 +42,12 @@ describe('Defend The Village registration page', () => {
     await user.selectOptions(screen.getByLabelText('Semester'), '3')
     await user.type(screen.getByLabelText('Institute Email'), 'participant@iitp.ac.in')
     await user.type(screen.getByLabelText('CTFd Username'), 'bad name')
+    await user.tab()
+    expect(screen.getByRole('alert')).toHaveTextContent('spaces are not allowed')
+    expect(screen.getByLabelText('CTFd Username')).toHaveAttribute('aria-invalid', 'true')
     await user.type(screen.getByLabelText('Mobile Number'), '9876543210')
     await user.click(screen.getByRole('button', { name: 'Submit Registration' }))
-    expect(screen.getByRole('status')).toHaveTextContent('Choose a CTFd username')
+    expect(screen.getByRole('alert')).toHaveTextContent('spaces are not allowed')
 
     await user.clear(screen.getByLabelText('CTFd Username'))
     await user.type(screen.getByLabelText('CTFd Username'), 'test.participant')

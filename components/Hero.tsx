@@ -159,7 +159,7 @@ export default function Hero() {
             </a>
 
             <a
-              href="#story"
+              href="/about"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
