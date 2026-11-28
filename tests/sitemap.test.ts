@@ -16,6 +16,7 @@ describe('public sitemap metadata', () => {
     expect(sitemap().map((entry) => entry.url)).toEqual([
       'https://hackshield.example',
       'https://hackshield.example/ctf',
+      'https://hackshield.example/ctf/defendthevillage',
       'https://hackshield.example/programs',
       'https://hackshield.example/resources',
       'https://hackshield.example/about',

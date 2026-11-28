@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: origin, changeFrequency: 'weekly', priority: 1 },
     { url: `${origin}/ctf`, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${origin}/ctf/defendthevillage`, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${origin}/programs`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${origin}/resources`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${origin}/about`, changeFrequency: 'yearly', priority: 0.7 },

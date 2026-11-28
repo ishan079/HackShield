@@ -1,10 +1,9 @@
 'use client'
 
-import React from 'react'
-import Image from 'next/image'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import Link from 'next/link'
+import { ArrowUpRight, Calendar, Clock, Trophy, Users } from 'lucide-react'
 
 export default function CTFBanner() {
   const { ref, inView } = useInView({
@@ -14,200 +13,292 @@ export default function CTFBanner() {
   })
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '300px 1fr auto',
-        alignItems: 'center',
-        background: 'var(--bg-card)',
-        backdropFilter: 'blur(14px)',
-        WebkitBackdropFilter: 'blur(14px)',
-        border: '1px solid var(--border-subtle)',
-        borderTop: '1.5px solid var(--border-specular)',
-        borderBottom: '1px solid var(--border-bottom)',
-        borderRadius: '28px',
-        overflow: 'hidden',
-        boxShadow: 'var(--shadow-card)',
-        maxWidth: '1280px',
-        width: '100%',
-        margin: '0 auto',
-        transition: 'all 0.32s cubic-bezier(0.16, 1, 0.3, 1)',
-      }}
-      className="hs-ctf-card"
-      onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.30)'
-        e.currentTarget.style.borderTopColor = 'rgba(255, 255, 255, 0.58)'
-        e.currentTarget.style.boxShadow = 'var(--shadow-card-hover)'
-        e.currentTarget.style.transform = 'translateY(-3px)'
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = 'var(--border-subtle)'
-        e.currentTarget.style.borderTopColor = 'var(--border-specular)'
-        e.currentTarget.style.boxShadow = 'var(--shadow-card)'
-        e.currentTarget.style.transform = 'translateY(0)'
-      }}
+    <Link
+      href="/ctf/defendthevillage"
+      aria-label="Explore Defend The Village Flagship CTF"
+      className="hs-ctf-banner-link"
     >
-      <div
-        style={{
-          width: '300px',
-          height: '375px',
-          minWidth: '300px',
-          minHeight: '375px',
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          overflow: 'hidden',
-        }}
-        className="hs-ctf-visual"
+      <motion.section
+        ref={ref}
+        initial={{ opacity: 0, y: 36 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 36 }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        className="hs-ctf-banner"
       >
-        <Image
-          src="/CTFPoster.webp"
-          alt="HackShield CTF Flagship Poster"
-          width={300}
-          height={375}
-          priority
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            display: 'block',
-          }}
-        />
-      </div>
+        <div className="hs-ctf-banner-bg" aria-hidden="true">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/minecraft-ctf-backdrop.jpg"
+            alt=""
+            className="hs-ctf-banner-img"
+          />
+          <div className="hs-ctf-banner-scrim" />
+        </div>
 
-      <div
-        style={{
-          padding: '36px 44px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '8px',
-        }}
-        className="hs-ctf-text"
-      >
-        <span
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            color: 'var(--accent)',
-          }}
-        >
-          FLAGSHIP EVENT
-        </span>
+        <div className="hs-ctf-banner-content">
+          <div className="hs-ctf-banner-kicker">
+            <span className="hs-ctf-banner-dot" aria-hidden="true" />
+            <span>Flagship Event · HackShield CTF 2026</span>
+          </div>
 
-        <h3
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(1.7rem, 3vw, 3rem)',
-            fontWeight: 800,
-            color: 'var(--text-primary)',
-            margin: 0,
-            lineHeight: 1.18,
-            letterSpacing: '-0.02em',
-          }}
-        >
-DEFEND THE VILLAGE        </h3>
-          <h2
-              style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1rem, 1.5vw, 2rem)',
-                  fontWeight: 800,
-                  color: 'var(--text-primary)',
-                  margin: 0,
-                  lineHeight: 1.18,
-                  letterSpacing: '-0.02em',
-              }}
-          >
-              HackShield CTF
+          <h2 className="hs-ctf-banner-title">
+            <span className="hs-ctf-banner-title-white">Defend</span>{' '}
+            <span className="hs-ctf-banner-title-red">The Village</span>
           </h2>
 
-        <p
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '0.98rem',
-            color: 'var(--text-secondary)',
-            margin: 0,
-            lineHeight: 1.65,
-            maxWidth: '480px',
-          }}
-        >
-          Our biannual Capture The Flag — real challenges, real skills, a strong community.
-        </p>
-      </div>
+          <p className="hs-ctf-banner-desc">
+            Our 24-hour jeopardy cybersecurity tournament — 40+ original
+            challenges built by IIT Patna researchers across 9 security domains.
+          </p>
 
-      <div style={{ padding: '0 44px' }} className="hs-ctf-action">
-        <Link
-          href="/ctf"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '12px 24px',
-            border: '1.5px solid var(--accent)',
-            borderRadius: '8px',
-            background: 'transparent',
-            color: 'var(--accent)',
-            fontFamily: 'var(--font-sans)',
-            fontSize: '0.92rem',
-            fontWeight: 600,
-            textDecoration: 'none',
-            letterSpacing: '0.01em',
-            whiteSpace: 'nowrap',
-            transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'var(--accent)'
-            e.currentTarget.style.color = '#ffffff'
-            e.currentTarget.style.boxShadow = '0 0 20px var(--accent-glow)'
-            e.currentTarget.style.transform = 'translateY(-2px)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'transparent'
-            e.currentTarget.style.color = 'var(--accent)'
-            e.currentTarget.style.boxShadow = 'none'
-            e.currentTarget.style.transform = 'translateY(0)'
-          }}
-        >
-          <span>Explore CTF</span>
-          <span style={{ fontSize: '1.05rem', lineHeight: 1 }}>↗</span>
-        </Link>
-      </div>
+          <div className="hs-ctf-banner-meta">
+            <span>
+              <Calendar size={14} color="#7dd3fc" aria-hidden="true" /> Dec 14, 2026
+            </span>
+            <span>
+              <Clock size={14} color="#7dd3fc" aria-hidden="true" /> 24 Hours
+            </span>
+            <span>
+              <Users size={14} color="#34d399" aria-hidden="true" /> Teams of 1–4
+            </span>
+            <span>
+              <Trophy size={14} color="#fbbf24" aria-hidden="true" /> Goodies &amp; Interviews
+            </span>
+          </div>
+
+          <div className="hs-ctf-banner-cta-row">
+            <span className="hs-ctf-banner-cta">
+              <span>Explore Defend The Village</span>
+              <ArrowUpRight size={16} className="hs-ctf-banner-arrow" aria-hidden="true" />
+            </span>
+          </div>
+        </div>
+      </motion.section>
 
       <style>{`
-        @media (max-width: 900px) {
-          .hs-ctf-card {
-            grid-template-columns: 1fr !important;
+        .hs-ctf-banner-link {
+          display: block;
+          width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .hs-ctf-banner {
+          position: relative;
+          width: 100%;
+          min-height: 360px;
+          border-radius: 28px;
+          overflow: hidden;
+          background: #050814;
+          border: 1px solid rgba(148, 163, 184, 0.22);
+          border-top: 1.5px solid rgba(125, 211, 252, 0.36);
+          box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.55);
+          display: flex;
+          align-items: center;
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                      border-color 0.3s ease,
+                      box-shadow 0.3s ease;
+        }
+
+        .hs-ctf-banner-link:hover .hs-ctf-banner,
+        .hs-ctf-banner-link:focus-visible .hs-ctf-banner {
+          transform: translate3d(0, -4px, 0);
+          border-color: rgba(125, 211, 252, 0.52);
+          box-shadow: 0 30px 72px -12px rgba(0, 0, 0, 0.7),
+                      0 0 36px rgba(56, 189, 248, 0.16);
+        }
+
+        .hs-ctf-banner-bg {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+          overflow: hidden;
+        }
+
+        .hs-ctf-banner-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: 78% 28%;
+          transform: scale(1.01);
+          transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hs-ctf-banner-link:hover .hs-ctf-banner-img {
+          transform: scale(1.045);
+        }
+
+        .hs-ctf-banner-scrim {
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(
+              90deg,
+              rgba(5, 8, 20, 0.96) 0%,
+              rgba(5, 8, 20, 0.88) 40%,
+              rgba(5, 8, 20, 0.52) 66%,
+              rgba(5, 8, 20, 0.14) 100%
+            ),
+            linear-gradient(
+              180deg,
+              rgba(5, 8, 20, 0.45) 0%,
+              rgba(5, 8, 20, 0) 35%,
+              rgba(5, 8, 20, 0.55) 100%
+            );
+        }
+
+        .hs-ctf-banner-content {
+          position: relative;
+          z-index: 2;
+          max-width: 620px;
+          padding: clamp(32px, 5vw, 52px);
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .hs-ctf-banner-kicker {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 5px 12px;
+          border-radius: 999px;
+          background: rgba(9, 16, 34, 0.82);
+          border: 1px solid rgba(125, 211, 252, 0.28);
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #bae6fd;
+          margin-bottom: 16px;
+        }
+
+        .hs-ctf-banner-dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 1px;
+          background: #ef4444;
+          box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
+        }
+
+        .hs-ctf-banner-title {
+          font-family: 'MinecraftPixel', var(--font-display), monospace;
+          font-size: clamp(2.1rem, 4.4vw, 3.35rem);
+          font-weight: 700;
+          line-height: 0.98;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          margin: 0 0 14px;
+        }
+
+        .hs-ctf-banner-title-white {
+          color: #f8fafc;
+          text-shadow: 0 3px 0 #1e293b, 0 6px 0 #050814;
+        }
+
+        .hs-ctf-banner-title-red {
+          color: #ef4444;
+          text-shadow: 0 3px 0 #7f1d1d, 0 6px 0 #050814;
+        }
+
+        .hs-ctf-banner-desc {
+          font-family: var(--font-sans);
+          font-size: 0.98rem;
+          line-height: 1.65;
+          color: rgba(226, 232, 240, 0.84);
+          margin: 0 0 20px;
+          max-width: 500px;
+        }
+
+        .hs-ctf-banner-meta {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-bottom: 24px;
+        }
+
+        .hs-ctf-banner-meta span {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 11px;
+          border-radius: 8px;
+          background: rgba(9, 16, 34, 0.78);
+          border: 1px solid rgba(148, 163, 184, 0.18);
+          font-family: var(--font-mono);
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: #e2e8f0;
+        }
+
+        .hs-ctf-banner-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 9px;
+          padding: 12px 22px;
+          border-radius: 10px;
+          border: 1px solid rgba(248, 113, 113, 0.65);
+          background: linear-gradient(180deg, rgba(220, 38, 38, 0.45) 0%, rgba(127, 29, 29, 0.62) 100%);
+          color: #ffffff;
+          font-family: var(--font-mono);
+          font-size: 0.8rem;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+          transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .hs-ctf-banner-link:hover .hs-ctf-banner-cta {
+          border-color: #fecaca;
+          background: linear-gradient(180deg, rgba(239, 68, 68, 0.65) 0%, rgba(153, 27, 27, 0.76) 100%);
+        }
+
+        .hs-ctf-banner-arrow {
+          transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hs-ctf-banner-link:hover .hs-ctf-banner-arrow {
+          transform: translate3d(2px, -2px, 0);
+        }
+
+        @media (max-width: 768px) {
+          .hs-ctf-banner {
+            min-height: 400px;
+            align-items: flex-end;
           }
-          .hs-ctf-visual {
-            width: 100% !important;
-            max-width: 300px !important;
-            height: 375px !important;
-            min-height: 0 !important;
-            margin: 0 auto !important;
+
+          .hs-ctf-banner-img {
+            object-position: 70% 15%;
           }
-          .hs-ctf-text {
-            padding: 28px 24px 16px !important;
+
+          .hs-ctf-banner-scrim {
+            background: linear-gradient(
+              180deg,
+              rgba(5, 8, 20, 0.22) 0%,
+              rgba(5, 8, 20, 0.72) 45%,
+              rgba(5, 8, 20, 0.96) 100%
+            );
           }
-          .hs-ctf-action {
-            padding: 0 24px 28px !important;
+
+          .hs-ctf-banner-content {
+            padding: 28px 22px;
           }
         }
-        @media (max-width: 360px) {
-          .hs-ctf-visual {
-            width: 100% !important;
-            height: auto !important;
-            aspect-ratio: 4 / 5 !important;
+
+        @media (prefers-reduced-motion: reduce) {
+          .hs-ctf-banner,
+          .hs-ctf-banner-img,
+          .hs-ctf-banner-cta,
+          .hs-ctf-banner-arrow {
+            transition: none !important;
           }
         }
       `}</style>
-    </motion.div>
+    </Link>
   )
 }

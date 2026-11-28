@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 
@@ -160,7 +159,7 @@ export default function Hero() {
             </a>
 
             <a
-              href="#story"
+              href="/about"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',

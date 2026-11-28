@@ -50,6 +50,25 @@ model MiniSprintRegistration {
   @@map("mini_sprint_registrations")
 }
 
+model FlagshipRegistration {
+  id                     String   @id @default(uuid()) @db.Uuid
+  fullName               String   @map("full_name")
+  rollNumber             String   @map("roll_number")
+  subject                String
+  semester               Int
+  mobileNumber           String   @unique @map("mobile_number")
+  email                  String
+  emailNormalized        String   @unique @map("email_normalized")
+  ctfdUsername           String   @map("ctfd_username")
+  ctfdUsernameNormalized String   @unique @map("ctfd_username_normalized")
+  status                 String   @default("REGISTERED")
+  registeredAt           DateTime @default(now()) @map("registered_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+
+  @@index([ctfdUsernameNormalized])
+  @@map("flagship_registrations")
+}
+
 model PwnCollegeHacker {
   userId            String                       @id @map("user_id")
   username          String?

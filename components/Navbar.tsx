@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -13,6 +13,7 @@ const NAV_LINKS: NavLinkItem[] = [
   { to: '/', label: 'Home' },
   { to: '/programs', label: 'Programs' },
   { to: '/ctf', label: 'CTF' },
+  { to: '/ctf/defendthevillage', label: 'Defend The Village' },
   { to: '/resources', label: 'Resources' },
   { to: '/about', label: 'About' },
 ]
@@ -310,6 +311,8 @@ export default function Navbar() {
                 const isActive =
                   link.to === '/'
                     ? pathname === '/'
+                    : link.to === '/ctf'
+                    ? pathname === '/ctf'
                     : pathname.startsWith(link.to)
 
                 return (
@@ -319,7 +322,8 @@ export default function Navbar() {
                     onMouseEnter={() => setHoveredIdx(idx)}
                     style={{
                       position: 'relative',
-                      padding: '6px 14px',
+                      padding: '6px 12px',
+                      whiteSpace: 'nowrap',
                       fontSize: '0.88rem',
                       fontWeight: isActive ? 700 : 500,
                       color: isActive
@@ -719,6 +723,8 @@ export default function Navbar() {
                     const isActive =
                       link.to === '/'
                         ? pathname === '/'
+                        : link.to === '/ctf'
+                        ? pathname === '/ctf'
                         : pathname.startsWith(link.to)
 
                     return (

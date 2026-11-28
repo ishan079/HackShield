@@ -1,10 +1,10 @@
 'use client'
 
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {AnimatePresence, motion} from 'framer-motion'
 import {useInView} from 'react-intersection-observer'
 import {BookmarkCheck, Code2, Cpu, ExternalLink, Globe, Lock, Search, Sparkles, Terminal,} from 'lucide-react'
-import {ResourceCategory, ResourceItem} from '@/types'
+import {ResourceItem} from '@/types'
 
 export default function ResourcesPage() {
     useEffect(() => {
@@ -17,14 +17,6 @@ export default function ResourcesPage() {
     })
     const [activeCategory, setActiveCategory] = useState('all')
     const [searchTerm, setSearchTerm] = useState('')
-
-    const categories: ResourceCategory[] = [
-        {id: 'all', label: 'All Resources'},
-        {id: 'platforms', label: 'Practice Arenas'},
-        {id: 'tools', label: 'Core Tools'},
-        {id: 'guides', label: 'Cheat Sheets & Docs'},
-        {id: 'community', label: 'Community & Groups'},
-    ]
 
     const resources: ResourceItem[] = [
         {
@@ -178,18 +170,6 @@ export default function ResourcesPage() {
                         escalation references vetted by IIT Patna HackShield mentors.
                     </p>
                 </motion.div>
-
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: '20px',
-                        marginBottom: '44px',
-                    }}
-                >
-
-                </div>
 
                 {filtered.length > 0 ? (
                     <motion.div

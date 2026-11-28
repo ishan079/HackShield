@@ -107,17 +107,19 @@ export interface FlagshipStatusDto {
 }
 
 export interface FlagshipRegistrationRequest {
-  teamName: string
+  fullName: string
+  rollNumber: string
+  subject: MiniCtfSubject
+  semester: number
+  mobileNumber: string
   email: string
-  membersCount: number
+  ctfdUsername: string
 }
 
 export interface FlagshipRegistrationDto {
   registrationId: string
-  teamName: string
-  captainEmail: string
-  membersCount: number
-  status: 'PRE_REGISTERED' | 'CONFIRMED' | 'WAITLISTED'
+  ctfdUsername: string
+  status: 'REGISTERED'
   registeredAt: IsoDateTime
 }
 
