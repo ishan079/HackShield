@@ -16,6 +16,7 @@ import {
   User,
 } from 'lucide-react'
 import { useTheme } from '@/context/ThemeContext'
+import { api } from '@/lib/api'
 import { MINI_CTF_SUBJECTS, type MiniCtfSubject } from '@/types/api'
 import '../minecraft-ctf.css'
 
@@ -46,8 +47,9 @@ function detectPerformanceTier(): PerfTier {
 export default function MinecraftCTFAuthPage() {
   const { theme } = useTheme()
   const [perfTier, setPerfTier] = useState<PerfTier>('high')
-  const [mode, setMode] = useState<AuthMode>('login')
+  const [mode, setMode] = useState<AuthMode>('register')
   const [showPassword, setShowPassword] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [status, setStatus] = useState<{ kind: 'idle' | 'error' | 'success'; text: string }>({
     kind: 'idle',
     text: '',
@@ -64,6 +66,8 @@ export default function MinecraftCTFAuthPage() {
     subject: '' as '' | MiniCtfSubject,
     semester: '',
     email: '',
+    mobileNumber: '',
+    ctfdUsername: '',
   })
 
   useEffect(() => {
@@ -105,19 +109,21 @@ export default function MinecraftCTFAuthPage() {
     })
   }
 
-  const handleRegisterSubmit = (event: FormEvent) => {
+  const handleRegisterSubmit = async (event: FormEvent) => {
     event.preventDefault()
     const fullName = registerForm.fullName.trim()
     const rollNumber = registerForm.rollNumber.trim()
     const semester = Number(registerForm.semester)
     const email = registerForm.email.trim()
+    const mobileNumber = registerForm.mobileNumber.trim()
+    const ctfdUsername = registerForm.ctfdUsername.trim()
 
     if (
       !fullName ||
       !rollNumber ||
       !registerForm.subject ||
       !registerForm.semester ||
-      !email
+      !email || !mobileNumber || !ctfdUsername
     ) {
       setStatus({ kind: 'error', text: 'Complete all required fields before registering.' })
       return
@@ -145,11 +151,26 @@ export default function MinecraftCTFAuthPage() {
       setStatus({ kind: 'error', text: 'Enter a valid @iitp.ac.in institute email address.' })
       return
     }
+    if (!/^[6-9]\d{9}$/.test(mobileNumber)) {
+      setStatus({ kind: 'error', text: 'Enter a valid 10-digit Indian mobile number.' })
+      return
+    }
+    if (!/^[a-zA-Z0-9_.-]{3,64}$/.test(ctfdUsername)) {
+      setStatus({ kind: 'error', text: 'Choose a CTFd username using 3–64 letters, numbers, periods, hyphens, or underscores.' })
+      return
+    }
 
-    setStatus({
-      kind: 'success',
-      text: `Details validated for ${fullName} (${rollNumber}). Official registration opens ahead of December 14, 2026.`,
+    setSubmitting(true)
+    const result = await api.preRegisterFlagship({
+      fullName, rollNumber, subject: registerForm.subject as MiniCtfSubject, semester,
+      mobileNumber, email, ctfdUsername,
     })
+    setSubmitting(false)
+    if (!result.success) {
+      setStatus({ kind: 'error', text: result.error.message })
+      return
+    }
+    setStatus({ kind: 'success', text: `Registration complete for ${result.data.ctfdUsername}. We will contact you using your institute email.` })
   }
 
   return (
@@ -221,11 +242,11 @@ export default function MinecraftCTFAuthPage() {
                   color: 'rgba(226, 232, 240, 0.74)',
                 }}
               >
-                Sign in with your participant account or register a team of 1–4.
+                Register as a participant for Defend The Village. Team formation will happen closer to the event.
               </p>
 
               <div className="mc-auth-tabs" role="tablist" aria-label="Authentication mode">
-                {(['login', 'register'] as const).map((tab) => {
+                {(['register'] as const).map((tab) => {
                   const selected = mode === tab
                   return (
                     <button
@@ -245,7 +266,7 @@ export default function MinecraftCTFAuthPage() {
                           transition={{ type: 'spring', stiffness: 420, damping: 32 }}
                         />
                       )}
-                      {tab === 'login' ? 'Login' : 'Register'}
+                      Register
                     </button>
                   )
                 })}
@@ -485,12 +506,37 @@ export default function MinecraftCTFAuthPage() {
                       </div>
                     </div>
 
+                    <div className="mc-auth-field">
+                      <label className="mc-auth-label" htmlFor="mc-reg-username">
+                        <span>CTFd Username</span>
+                      </label>
+                      <div className="mc-auth-input-wrap">
+                        <span className="mc-auth-input-icon" aria-hidden="true"><User size={16} /></span>
+                        <input id="mc-reg-username" type="text" autoComplete="username" minLength={3} maxLength={64}
+                          required placeholder="Choose a unique username" className="mc-auth-input"
+                          value={registerForm.ctfdUsername}
+                          onChange={(e) => { setRegisterForm({ ...registerForm, ctfdUsername: e.target.value }); clearStatus() }} />
+                      </div>
+                    </div>
+
+                    <div className="mc-auth-field">
+                      <label className="mc-auth-label" htmlFor="mc-reg-mobile"><span>Mobile Number</span></label>
+                      <div className="mc-auth-input-wrap">
+                        <span className="mc-auth-input-icon" aria-hidden="true"><Hash size={16} /></span>
+                        <input id="mc-reg-mobile" type="tel" inputMode="numeric" autoComplete="tel" maxLength={10}
+                          required placeholder="10-digit mobile number" className="mc-auth-input"
+                          value={registerForm.mobileNumber}
+                          onChange={(e) => { setRegisterForm({ ...registerForm, mobileNumber: e.target.value }); clearStatus() }} />
+                      </div>
+                    </div>
+
                     <button
                       type="submit"
                       className="mc-btn-primary"
+                      disabled={submitting}
                       style={{ width: '100%', marginTop: '8px' }}
                     >
-                      <span>Submit Registration</span>
+                      <span>{submitting ? 'Creating Account…' : 'Submit Registration'}</span>
                       <ArrowRight size={15} aria-hidden="true" />
                     </button>
                   </motion.form>
